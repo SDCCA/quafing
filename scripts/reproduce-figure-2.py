@@ -3,6 +3,8 @@ Reproduce Figure 2 from the following paper:
 
     Omri Har-Shemesh et al. Scientific Reports 10, 8633 (2020)
     https://doi.org/10.1038/s41598-020-63760-8
+
+This script is based on `spherical.py`.
 """
 
 import matplotlib.pyplot as plt

@@ -3,6 +3,8 @@ Reproduce Figure 3 from the following paper:
 
     Omri Har-Shemesh et al. Scientific Reports 10, 8633 (2020)
     https://doi.org/10.1038/s41598-020-63760-8
+
+This script is based on the function `plot_pca_fi` from `hypersphere.py`
 """
 
 import os.path
