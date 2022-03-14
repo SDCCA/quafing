@@ -1,2 +1,3 @@
 __pycache__
-reproduce-figure-2.pdf
+reproduce-figure-?.pdf
+*.npy

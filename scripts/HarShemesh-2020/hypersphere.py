@@ -355,8 +355,8 @@ def compute_mds(df, dim=2, compute_joint=False, columns=None, return_stress=Fals
     res = {}
     res_joint = {}
     for c1, c2 in all_pairs:
-        s1 = sqrt_prob.ix[c1]
-        s2 = sqrt_prob.ix[c2]
+        s1 = sqrt_prob.loc[c1]
+        s2 = sqrt_prob.loc[c2]
 
         # To compute the Fisher distance, we use
         # FI = arccos(sum(sqrt(p_i*q_i))) for each question separately.
