@@ -9,7 +9,7 @@ from itertools import combinations, product
 from pprint import pprint
 
 import matplotlib as mpl
-mpl.use('TkAgg')
+mpl.use('Agg')
 import matplotlib.cm as cm
 import matplotlib.pyplot as plt
 import numpy as np
@@ -28,7 +28,7 @@ from sklearn.preprocessing import OneHotEncoder
 
 import multiprocess
 from helpers import get_pca
-from mca import mca
+import mca
 
 def get_mfa(df, columns, dim=2):
     """ Computes the FactorAnalysis from the data.
@@ -234,7 +234,7 @@ def procrustes(X, Y, scaling=True, reflection='best'):
     V = Vt.T
     T = np.dot(V, U.T)
 
-    if reflection is not 'best':
+    if reflection != 'best':
 
         # does the current solution use a reflection?
         have_reflection = np.linalg.det(T) < 0
@@ -597,7 +597,7 @@ def get_curve_samples(number_q=3, number_a=3, count=1000, samples=20, m=2,
 
     coords = get_coords(angles)
 
-    if inds is not None:
+    if inds != None:
         if return_t:
             ts = x[inds]
             return coords[:, inds].T, ts
@@ -673,7 +673,7 @@ def get_alternative_curve_samples(number_q=3, number_a=3, count=1000, samples=20
 
     coords = get_coords(angles)
 
-    if inds is not None:
+    if inds != None:
         if return_t:
             ts = x[inds]
             return coords[:, inds].T, ts
