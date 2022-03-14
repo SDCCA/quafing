@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from IPython import embed
-from mca import mca
+import mca
 from mpl_toolkits.mplot3d import Axes3D, proj3d
 from scipy.spatial.distance import pdist, squareform
 from sklearn import svm
@@ -108,7 +108,7 @@ def procrustes(X, Y, scaling=True, reflection='best'):
     V = Vt.T
     T = np.dot(V, U.T)
 
-    if reflection is not 'best':
+    if reflection != 'best':
 
         # does the current solution use a reflection?
         have_reflection = np.linalg.det(T) < 0
@@ -248,7 +248,7 @@ def get_hellinger_dist_mat(data, columns, permute=False, dist_type='mean',
             res_mean[c2] = {c1: H_mean, c2: 0.0}
     hellinger_dist_mat = pd.DataFrame(res)
     hellinger_mean_dist_mat = pd.DataFrame(res_mean)
-    if dist_type is 'mean':
+    if dist_type == 'mean':
         return hellinger_mean_dist_mat
     return hellinger_dist_mat
 
@@ -312,7 +312,7 @@ def compute_mds(df, dim=2, compute_joint=False, columns=None, get_names=False,
     # Estimate probabilities from questionnaire
     ind_df = pd.DataFrame()
     ind_df = ind_df.join(df.name_1, how="right")
-    if columns is None:
+    if columns == None:
         columns = df.columns.drop("name_1")
     for c in columns:
         ind_df = ind_df.join(pd.get_dummies(df[c], prefix=c))
@@ -485,7 +485,7 @@ def get_mds(df, columns, method='FI', dim=2, get_fisher=False,
     Returns: coordinates of the embedding and names of Subaks
 
     """
-    if method is 'FI+PCA':
+    if method == 'FI+PCA':
         n_comp = 19
         print("Method is FI+PCA!")
     else:
@@ -497,7 +497,7 @@ def get_mds(df, columns, method='FI', dim=2, get_fisher=False,
     else:
         dist_mat = get_hellinger_dist_mat(df, columns, dist_type='independent', get_fisher=get_fisher)
     coords = mds.fit_transform(dist_mat)
-    if method is "FI+PCA":
+    if method == "FI+PCA":
         coords = PCA(n_components=2).fit_transform(coords)
     if return_corr:
         corr = compute_correlation_with_mds(align_coords(coords), dist_mat)
@@ -605,7 +605,7 @@ def get_embedding(df, columns, method='FI', dim=2, get_fisher=False):
 
     if 'FI' in method:
         return get_mds(df, columns, method, dim=dim, get_fisher=get_fisher)
-    elif method is 'MCA':
+    elif method == 'MCA':
         return get_mca(df, columns)
     else:
         return get_pca(df, columns)
@@ -654,18 +654,18 @@ def get_permutations(df, columns, method='FI', count=100):
         if method in ['FI', 'FI+PCA', 'FI ind']:
             dist_mat = get_hellinger_dist_mat(df, columns, permute=True,
                     get_fisher=True)
-            if method is 'FI+PCA':
+            if method == 'FI+PCA':
                 mds = MDS(n_components=19, random_state=np.random.seed(i), dissimilarity='precomputed')
             else:
                 mds = MDS(n_components=2, random_state=np.random.seed(i), dissimilarity='precomputed')
             coords = mds.fit_transform(dist_mat)
-            if method is 'FI+PCA':
+            if method == 'FI+PCA':
                 coords = PCA(n_components=2).fit_transform(coords)
             results.append(coords)
-        elif method is "MCA":
+        elif method == "MCA":
             coords, subaks = get_mca(df, columns, permute=True)
             results.append(coords)
-        elif method is "PCA":
+        elif method == "PCA":
             coords, subaks = get_pca(df, columns, permute=True)
             results.append(coords)
 
@@ -769,7 +769,7 @@ def get_distances_from_center(df, columns, center_prob, method='mean'):
         res[c] = H
         res_mean[c] = H_mean
 
-    if method is "mean":
+    if method == "mean":
         return res_mean
     return res
 
@@ -887,7 +887,7 @@ def get_pairwise_hellinger(df, ind_df, groupby='name_1', kind='mean',
     H = 1.0 if np.any(questions==1) else np.sqrt(1 - (1 - questions).prod())
     H_mean = questions.mean()
 
-    if kind is "mean":
+    if kind == "mean":
         return H_mean
     else:
         return H
