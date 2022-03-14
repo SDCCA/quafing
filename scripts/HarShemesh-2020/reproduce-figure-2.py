@@ -49,7 +49,7 @@ if __name__ == "__main__":
                                        m=m, sin_angle=kappa-1)
 
         ax = fig.add_subplot(1, n_plots, n + 1, projection="3d")
-        ax.set_aspect("equal")
+        ax.set_aspect("auto")
         ax.view_init(elev=26, azim=40)
 
         ax.plot(line_probs[:, 2], line_probs[:, 0], line_probs[:, 1],
