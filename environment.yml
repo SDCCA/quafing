@@ -1,4 +1,4 @@
-name: fine-py3
+name: fine-pytest2
 channels:
   - conda-forge
 dependencies:
@@ -16,6 +16,8 @@ dependencies:
   - pandas
   - metis
   - statsmodels
+  - IPython
+  - multiprocess
   - pip
   - pip:
     - openpyxl
@@ -26,5 +28,6 @@ dependencies:
     - pytest
     - seaborn
     - simplejson
+    - mca
 # then get the following file (no setup.py available) These are currently only py2 need to foark and convvert if desired
 # wget https://raw.githubusercontent.com/jbkinney/13_deft/master/deft.py
