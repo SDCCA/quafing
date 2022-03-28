@@ -1,4 +1,4 @@
-name: fine-pytest2
+name: fine
 channels:
   - conda-forge
 dependencies:
