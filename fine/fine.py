@@ -1,7 +1,7 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # encoding: utf-8
 
-from __future__ import print_function, division
+
 
 # Math imports
 import numpy as np
@@ -15,11 +15,11 @@ import matplotlib.cm as cm
 import matplotlib.mlab as mlab
 from mpl_toolkits.mplot3d import Axes3D
 from mpl_toolkits.mplot3d import proj3d
-from mpltools import style
-style.use("ggplot")
+#from mpltools import style
+plt.style.use("ggplot")
 
 # Density Estimation
-from deft import deft_1d, deft_2d
+#from deft import deft_1d, deft_2d
 from scipy.stats import gaussian_kde
 from astroML.plotting import hist
 from astroML.density_estimation import bayesian_blocks
@@ -101,7 +101,7 @@ def discrete_kl(p1, p2, base=None):
     else:
         log = np.log10
 
-    v1, v2 = p1.keys(), p2.keys()
+    v1, v2 = list(p1.keys()), list(p2.keys())
     kl = 0.0
     for k in v1:
         if k in v2:
@@ -136,7 +136,7 @@ def continuous_kl(p1, p2, bbox=(-np.inf, np.inf), base=None):
 
     if base is None:
         log = np.log
-    elif base is 2:
+    elif base == 2:
         log = np.log2
     else:
         log = np.log10
@@ -169,8 +169,8 @@ def discrete_hellinger(p1, p2):
     #assert np.sum(p1.values()) == 1.0, "Sum %f not equal to one!" % np.sum(p1.values())
     #assert np.sum(p2.values()) == 1.0, "Sum %f not equal to one!" % np.sum(p2.values())
 
-    k1 = p1.keys()
-    k2 = p2.keys()
+    k1 = list(p1.keys())
+    k2 = list(p2.keys())
 
     tot_sum = 0.0
     for k in k1:
@@ -390,10 +390,10 @@ class InformationDistance:
         pdfs1 = self._p1.get_pdfs()
         pdfs2 = self._p2.get_pdfs()
 
-        if method is "hellinger":
+        if method == "hellinger":
             cont_dist = continuous_hellinger
             disc_dist = discrete_hellinger
-        elif method is "kl":
+        elif method == "kl":
             cont_dist = continuous_kl
             #disc_dist = discrete_kl
             disc_dist = symmetric_disc_kl
@@ -426,9 +426,9 @@ class InformationDistance:
             #print("value: %.2f" % distances[count])
             #count += 1
 
-        if dist_type is "rms":
+        if dist_type == "rms":
             return np.sqrt(np.sum(distances ** 2))
-        elif dist_type is "sum":
+        elif dist_type == "sum":
             return np.array(distances).sum()
         return np.array(distances).average()
 
@@ -447,8 +447,8 @@ class FINE:
 
     """ Runs the FINE algorithm on data. """
 
-    def __init__(self, filename, type_row=0, question_number_row=1, header_row=1,
-                        name_row=2, start_row=3, group_by=0, skip_footer=0, sheet_number=0,
+    def __init__(self, filename, type_row=1, question_number_row=2, header_row=3,
+                        name_row=3, start_row=4, group_by=0, skip_footer=0, sheet_number=1,
                         shuffle=False):
         """ Initialize the FINE object with data loaded from the file specified
             by filename.
@@ -486,20 +486,24 @@ class FINE:
         wb = pd.ExcelFile(filename)
 
         # Extract metadata from the excel sheet
-        types = wb.book.sheet_by_index(sheet_number).row(type_row)
+        #types = wb.book.sheet_by_index(sheet_number).row(type_row)
+        ws = wb.book.get_sheet_by_name(wb.book.sheetnames[sheet_number -1])
+        types = ws[type_row]
         self._types = types = [t.value for t in types]
-        qns = wb.book.sheet_by_index(sheet_number).row(question_number_row)
+        #qns = wb.book.sheet_by_index(sheet_number).row(question_number_row)
+        qns = ws[question_number_row]
         qns = [t.value for t in qns]
         question_numbers = []
         for t in qns:
-            if type(t) is not "str":
+            if not isinstance(t, str):
                 try:
                     t = str(int(t))
                 except:
                     t = t
             question_numbers.append(t)
         self._question_numbers = question_numbers
-        column_names = [t.value for t in wb.book.sheet_by_index(sheet_number).row(name_row)]
+        #column_names = [t.value for t in wb.book.sheet_by_index(sheet_number).row(name_row)]
+        column_names = [t.value for t in ws[name_row]]
 
         # Compute column indices to include and create a
         # metadata structure for column types.
@@ -516,7 +520,7 @@ class FINE:
         self._column_metadata = col_metadata
         #raw_data = wb.parse(sheetname=sheet_number, header=header_row,
                             #skip_footer=skip_footer, parse_cols=parse_cols, skiprows=skip_rows)
-        raw_data = wb.parse(sheetname=sheet_number, header=start_row-1, parse_cols=parse_cols)
+        raw_data = wb.parse(sheetname=sheet_number, header=start_row-2, parse_cols=parse_cols)
 
         self._raw_data = raw_data
 
@@ -599,7 +603,7 @@ class FINE:
         assert np.all(A >= 0)
 
         g = nx.from_numpy_matrix(A)
-        paths = nx.all_pairs_dijkstra_path_length(g)
+        paths = dict(nx.all_pairs_dijkstra_path_length(g))
         new_mat = np.zeros(A.shape)
         for i in range(A.shape[0]):
             for j in range(i):
@@ -614,7 +618,7 @@ class FINE:
         Returns: The d-dimensional embedding.
 
         """
-        assert isinstance(d, (int, long))
+        assert isinstance(d, int)
         assert d > 1, "Dimension of MDS computation must be greater than 1"
         seed = np.random.RandomState(seed=3)
         mds = manifold.MDS(n_components=d, metric=True, max_iter=3000, eps=1e-9,
@@ -640,7 +644,7 @@ class FINE:
         max_dim = len(self._groups) - 1
 
         stresses = list()
-        dims = range(2, max_dim + 1)
+        dims = list(range(2, max_dim + 1))
         for d in dims:
             stresses.append(self.get_mds(d=d, method=method, use_binning=True, return_stress=True))
         plt.plot(dims, stresses)
@@ -649,6 +653,7 @@ class FINE:
         plt.title("MDS computed stress as function of dimension")
         plt.show()
 
+   
     def plot_embedding(self, d=2, method="hellinger", dist_type="rms", use_binning=False,
                        show_labels=True, show=True, color="distance"):
         """ Plots the embedding computed in d dimensions (d=2,3)
@@ -660,7 +665,7 @@ class FINE:
                          "partition": according to network partitioning
 
         """
-        assert isinstance(d, (int, long))
+        assert isinstance(d, int)
         #assert d in (2, 3, 4)
         assert color in ("distance", "partition", "metis"), "color must be one of 'distance', 'partition', 'metis'."
 
@@ -672,14 +677,14 @@ class FINE:
 
         if d == 2:
             x, y = em[:,0], em[:,1]
-            if color is "distance":
+            if color == "distance":
                 cms = (np.average(em[:,0]), np.average(em[:,1]))
                 dx = x - cms[0]
                 dy = y - cms[1]
                 t = np.sqrt(dx**2 + dy**2)
                 t = (t - t.min()) * 100.0 / (t.max() - t.min())
-            elif color is "partition":
-                t = [part[i] for i in range(len(part.keys()))]
+            elif color == "partition":
+                t = [part[i] for i in range(len(list(part.keys())))]
             else: # metis
                 t = part2[1]
 
@@ -690,15 +695,15 @@ class FINE:
                 for i, txt in enumerate(labels):
                         ax.annotate(txt[0], (x[i]+0.05, y[i]))
         elif d == 3:
-            if color is "distance":
+            if color == "distance":
                 cms = (np.average(em[:,0]), np.average(em[:,1]), np.average(em[:,2]))
                 dx = em[:,0] - cms[0]
                 dy = em[:,1] - cms[1]
                 dz = em[:,2] - cms[2]
                 t = np.sqrt(dx**2 + dy**2 + dz**2)
                 t = (t - t.min()) * 100.0 / (t.max() - t.min())
-            elif color is "partition":
-                t = [part[i] for i in range(len(part.keys()))]
+            elif color == "partition":
+                t = [part[i] for i in range(len(list(part.keys())))]
             else: # metis
                 t = part2[1]
             fig = plt.figure()
@@ -725,7 +730,7 @@ class FINE:
             pass
         plt.title("Subak positions computed using %s method" % method)
         plt.show()
-
+    
     def get_labels(self):
         """ Returns the labels of the grouping
         Returns: @todo
@@ -779,7 +784,8 @@ def test_continuous_hellinger_converges_to_analytic_result():
     assert (np.abs(hell_dist - analytic) / analytic) < 1e-4
 
 if __name__ == "__main__":
-    f = FINE("/home/omri/repos/research/subaks/in_sg/data/omri_subak_data.xlsx")
+    f = FINE("/Users/eslt0101/Projects/SABM/testpy2/omri_subak_data.xlsx")
+    #f = FINE("/home/omri/repos/research/subaks/in_sg/data/omri_subak_data.xlsx")
     # f = FINE("/home/omri/repos/research/subaks/in_sg/data/shortest.xlsx")
     #print(f.get_distance_matrix(method='kl', use_binning=False))
     #print(indices)

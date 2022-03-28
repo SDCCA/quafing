@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # encoding: utf-8
 """
 Simulate data for sparse FINE
@@ -16,7 +16,7 @@ University of Amsterdam
 
 """
 
-from __future__ import print_function, division
+
 
 # Standard imports
 import numpy as np
@@ -179,7 +179,7 @@ def create_excel_file(filename, N_questions=12, N_answers=4, N_params=6, N_group
     column_types.insert(0, 'g')
 
     data = [column_types]
-    questions = range(N_questions)
+    questions = list(range(N_questions))
     questions.insert(0, 'name')
     data.append(questions)
 
@@ -206,7 +206,7 @@ def create_excel_file(filename, N_questions=12, N_answers=4, N_params=6, N_group
 if __name__ == '__main__':
     fname = "one_parameter_with_kl"
     create_excel_file("sim_res/%s" % fname, N_questions=5, N_answers_per_group=30, N_groups=30, N_params=1, seed=100)
-    f = FINE("sim_res/%s.xlsx" % fname, start_row=2)
+    f = FINE("sim_res/%s.xlsx" % fname, start_row=3)
     f.plot_stress(method="kl")
     f.plot_embedding(d=2, method="kl")
     f.plot_embedding(d=3, method="kl")
