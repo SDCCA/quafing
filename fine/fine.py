@@ -207,6 +207,49 @@ def continuous_hellinger(p1, p2, bbox=(-np.inf, np.inf)):
     return np.sqrt(integral[0])
 
 
+def discrete_cos(p1, p2):
+    """ Computes the cosine (great-circle) distance between p1 and p2.
+
+    Args:
+        p1 : dict with keys as values and values as probabilities
+        p2 : dict with keys as values and values as probabilities
+
+    Returns: The computed cosine distance.
+
+    """
+    assert isinstance(p1, dict)
+    assert isinstance(p2, dict)
+
+    # Only keys that are present in both p1 and p2 give contribution
+    tot_sum = 0.0
+    for k in p1.keys():
+        if k in p2.keys():
+            tot_sum += np.sqrt(p1[k] * p2[k])
+    return np.arccos(tot_sum)
+
+def continuous_cos(p1, p2, bbox=(-np.inf, np.inf)):
+    """ Computes the cosine (great-circle) distance of two continuous PDFs.
+
+    Args:
+        p1 (function): PDF1 to compute the cosine distance.
+        p2 (function): PDF2 to compute the cosine distance.
+        bbox (2-tuple): Integration bounds.
+
+    Returns: The computed cosine distance.
+
+    """
+    assert isinstance(bbox, (tuple, list))
+    assert len(bbox) == 2 and bbox[0] < bbox[1]
+    assert hasattr(p1, '__call__')
+    assert hasattr(p2, '__call__')
+
+    def cos(x, p1, p2):
+        return np.sqrt(p1(x) * p2(x))
+
+    integral = quad(lambda x: cos(x, p1, p2), bbox[0], bbox[1])
+    return np.arccos(integral[0])
+
+
 class DensityEstimator():
 
     """ A class for performing the nonparametric density estimation on the data.
@@ -375,7 +418,7 @@ class InformationDistance:
 
         Parameters
         ----------
-        method (str) : Either hellinger or kl distance
+        method (str) : Either 'hellinger', 'kl' or 'cos' distance
         dist_type (str) : Either 'rms', 'sum' or 'average'
         use_binning (bool) : Use the bins computed for the continuous PDFs?
         deft (bool) : Use DEFT to do the continuous density estimation?
@@ -383,7 +426,7 @@ class InformationDistance:
         Returns (float) : The computed distance
         """
         assert isinstance(method, str)
-        assert method in ("hellinger", "kl")
+        assert method in ("hellinger", "kl", "cos")
         assert isinstance(dist_type, str)
         assert dist_type in ("rms", "sum", "average")
 
@@ -397,6 +440,9 @@ class InformationDistance:
             cont_dist = continuous_kl
             #disc_dist = discrete_kl
             disc_dist = symmetric_disc_kl
+        elif method == "cos":
+            cont_dist = continuous_cos
+            disc_dist = discrete_cos
 
         distances = []
 
@@ -782,6 +828,19 @@ def test_continuous_hellinger_converges_to_analytic_result():
     analytic = np.sqrt(2 * analytic)
     # On my machine relative error around 1e-16
     assert (np.abs(hell_dist - analytic) / analytic) < 1e-4
+
+def test_cos_distance_zero_if_equal():
+    p1 = {1 : 0.2, 2 : 0.1, 3 : 0.7}
+    p2 = {1 : 0.2, 2 : 0.1, 3 : 0.7}
+    assert discrete_cos(p1, p2) == 0.
+
+def test_cos_distance_with_analytic_result():
+    p1 = {1 : 1.}
+    p2 = {2 : 1.}
+    cos_dist = discrete_cos(p1, p2)
+    analytic = np.pi/2
+    assert (np.abs(cos_dist - analytic) / analytic) < 1e-4
+
 
 if __name__ == "__main__":
     f = FINE("/Users/eslt0101/Projects/SABM/testpy2/omri_subak_data.xlsx")
