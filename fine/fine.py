@@ -178,9 +178,9 @@ def discrete_hellinger(p1, p2):
             tot_sum += (np.sqrt(p1[k]) - np.sqrt(p2[k])) ** 2
         else:
             tot_sum += p1[k]
-            non_k1 = [p for p in k2 if p not in k1]
-            for k in non_k1:
-                tot_sum += p2[k]
+    non_k1 = [p for p in k2 if p not in k1]
+    for k in non_k1:
+        tot_sum += p2[k]
 
     return 2 * np.sqrt(tot_sum)
 
@@ -755,6 +755,11 @@ def test_hellinger_distance_zero_if_equal():
     p1 = {1 : 0.2, 2 : 0.1, 3 : 0.7}
     p2 = {1 : 0.2, 2 : 0.1, 3 : 0.7}
     assert discrete_hellinger(p1, p2) == 0.0
+
+def test_hellinger_distance_is_symmetric():
+    p1 = {1 : 0.2, 2 : 0.1, 3 : 0.3, 4 : 0.4}
+    p2 = {1 : 0.2, 2 : 0.1, 4 : 0.7}
+    assert discrete_hellinger(p1, p2) == discrete_hellinger(p2, p1)
 
 def test_continuous_kl_converges_to_analytic_result():
     from scipy.stats import norm
