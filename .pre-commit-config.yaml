@@ -1,0 +1,25 @@
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.4.0
+    hooks:
+    -   id: check-yaml
+    -   id: end-of-file-fixer
+    -   id: trailing-whitespace
+    -   id: debug-statements
+    -   id: mixed-line-ending
+    -   id: name-tests-test
+        args: ['--django']
+-   repo: https://github.com/pycqa/isort
+    rev: 5.6.4
+    hooks:
+    -   id: isort
+        args: ["--profile", "black", "--filter-files"]
+-   repo: https://github.com/psf/black
+    rev: 22.3.0
+    hooks:
+    -   id: black
+        language_version: python3.9
+-   repo: https://github.com/PyCQA/prospector
+    rev: 1.7.5 # The version of Prospector to use, if not 'master' for latest
+    hooks:
+    -   id: prospector

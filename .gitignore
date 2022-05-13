@@ -29,3 +29,9 @@ env
 env3
 venv
 venv3
+
+# miscellaneos files to be ignored
+reproduce-figure-?.pdf
+*.npy
+sim_res
+

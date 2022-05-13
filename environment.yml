@@ -1,0 +1,33 @@
+name: fine
+channels:
+  - conda-forge
+dependencies:
+  - python>=3.9
+  - matplotlib
+  - numpy
+  - scipy
+  - cython
+  - mkl
+  - mkl-service
+  - pymc3
+  - astropy
+  - astroML
+  - scikit-learn
+  - pandas
+  - metis
+  - statsmodels
+  - IPython
+  - multiprocess
+  - pip
+  - pip:
+    - openpyxl
+    - metis
+    - mpltools
+    - networkx
+    - python-louvain
+    - pytest
+    - seaborn
+    - simplejson
+    - mca
+# then get the following file (no setup.py available) These are currently only py2 need to foark and convvert if desired
+# wget https://raw.githubusercontent.com/jbkinney/13_deft/master/deft.py
