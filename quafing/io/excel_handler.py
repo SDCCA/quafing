@@ -47,7 +47,7 @@ class ExcelHandler(IOHandler):
         ColTypeKWArgs = {'sheet_name':kwargs['sheet_name'],'header':None,'nrows':1,'skiprows':kwargs['type_row']}
         QuestionNumbersKWArgs = {'sheet_name':kwargs['sheet'],'header':None,'nrows':1,'skiprows':kwargs['question_row']}
 
-        ColNames = pd.read_excel(self.path, **ColNameKWArgs).to_numpy()
+        ColNames = pd.read_excel(self.path, **ColNameKWArgs).columns.values
         ColTypes = pd.read_exel(self.path, **ColTypeKWArgs).values[0]
         QuestionNumbers = pd.read_exel(self.path, QuestionNumbersKWArgs).values[0]
         metadata = {'ColNames':ColNames ,'ColTypes':ColTypes, 'QuestionNumbers':QuestionNumbers}
@@ -66,7 +66,7 @@ class ExcelHandler(IOHandler):
         """
         write function
 
-        TODO
+        @TODO
         """
         raise NotImplementedError(
     	    "Class %s doesn't implement write() yet"% self.__class__.__name__)
