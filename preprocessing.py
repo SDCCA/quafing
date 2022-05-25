@@ -13,6 +13,8 @@ class PreProccessor(object):
 	    :param rawmetadata: quesstionnaire metadata. Dict of arrays Colnames, ColTypes, 
 	    QuestionNumbers, of same length as number of columns in rawdata 
 	    """
+       
+
 	    self._rawdata = rawdata 
 	    self._rawmetadata = rawmetadata
 	    self._rawcolmetadata = None
@@ -22,6 +24,11 @@ class PreProccessor(object):
 	    self._grouplabels = None
 	    self._groups = None
         
+        """ valiate input formaat """
+        if not isinstance(rawdata, pd.DataFrame):
+        	raise RuntimeError(
+        		'raw data input is not of type pandas DataFrame')
+
         """check rawmetadata keys"""
         for key in ["ColNames","ColTypes"]:
         	if self._check_key(key, self._rawmetadata):
@@ -29,6 +36,7 @@ class PreProccessor(object):
         	else:
         		raise ValueError(
         			"Required key %s does not exist in metadata dictionary"%key)
+
         if self._check_key("QuestionNumbers",self._rawmetadata):
         	continue
         else:
