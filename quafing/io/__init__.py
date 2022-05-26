@@ -3,13 +3,13 @@ import os
 from .excel_handler import ExcelHandler as excel
 
 io_handlers = {
-		'.xls': excel,
-		'.xlsx': excel,
-		'.xlsm': excel,
-		'.xlsb': excel,
-		'.odf': excel,
-		'.ods': excel,
-		'.odt': excel
+	'.xls': excel,
+	'.xlsx': excel,
+	'.xlsm': excel,
+	'.xlsb': excel,
+	'.odf': excel,
+	'.ods': excel,
+	'.odt': excel
 }
 
 def get_io_handler(path, mode, format=None, overwrite=False):

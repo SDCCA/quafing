@@ -2,6 +2,8 @@
 import pandas as pd
 import warnings
 
+from quafing.discretization import discretize
+
 class PreProccessor(object):
     """ class for prepocessing raw data.
     """
@@ -14,7 +16,6 @@ class PreProccessor(object):
 	    QuestionNumbers, of same length as number of columns in rawdata 
 	    """
        
-
 	    self._rawdata = rawdata 
 	    self._rawmetadata = rawmetadata
 	    self._rawcolmetadata = None
@@ -219,6 +220,11 @@ class PreProccessor(object):
 		
 
 	def split_to_groups(self, col):
+		"""
+		split selected data into groups
+
+		:param col: name (str) or index (int, 0-indexed, based on self._data) of column to group by
+		"""
 		self._check_selection()
 		if self._grouplabels == None:
 		    self.group(col)
@@ -229,11 +235,18 @@ class PreProccessor(object):
 
 		self._groups = groups
 
+    def get_joint_discretization(self,method=method,*args,*kwargs):
+    	"""
+		Obtain discretization of columns/quuestions with continuous answer space,
+		common across all groups being considered
 
+		:param method: keyword specifying discretization method. See discretization documentation
+		:param *args: optional arguments to be passed to discrettization methods
+		:param *kwargs: optional keyword arguments to be passed to discrettization methods
+		:return discretization: list of arrays ith biin borders
+		"""
 
-
-
-
-
-
-    
+		self._check_selection()
+		disc = discretize(self._data,self._colmetadata,method=method,*args,*kwargs)
+		return disc 
+		
