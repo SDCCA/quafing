@@ -12,27 +12,38 @@ class BayesianBlockDiscretizer(Discretizer):
 	real valued data using bayesian optimized histogram binning
 	"""
 
-	def perform_discretization(self, *args, *kwargs):
+	def perform_discretization(self, cols=['c'], byType=True, *args, **kwargs):
 		"""
 		create discretization of data object
 
+		:param cols: keyword argumenmt specifying list of columns to discretize. list of types, or names or indicees
+        :param byType: keywword specifying wheter column specification is based on type  or name/index
 		:param *args: optional: arguments to pass to methods used
 		:param *kwargs: optional: keyword arguments to pass to methods used
     	:return bins_list: discretization. List of arrays with bin bordeers
     	"""
-        """
-    	if self._dim > 1:
-    		raise RuntimeError(
-    			'Dimensionality of data is greater than 1 and too large for method')
-    	"""
+    	
 
-    	cont_cols = [c['ColNames'] for c in self._colmetadata if c['ColType'] == 'c']
-        cont_data = self._data[cont_cols]
 
-        bins_list = []
-        for i in range(len(cont_data.columns)):
-            d = cont_data.iloc[:,i] 
-            bb = bayesian_blocks(d)
-            bins_list.append(bb)
+        
+        if byType:
+        	colnames = [ c['ColNames'] for c in self._colmetadata if c['ColTypes'] in cols] 
+        else:
+        	if all([isinstance(cols[i],str) for i in range(len(cols))]):
+				colnames = cols
+			elif all([isinstance(cols[i],int) for i in range(len(cols))]):
+				colnames = [self._colmetadata[cols[i]]["ColNames"] for i in range(len(cols))]
+			else:
+				raise ValueError(
+					'Column specification contains mixed types')
 
-        return bins_list
+        discretization = []
+        for i in range(len(self._colmetadata)):
+        	if self._colmetadata[i]['ColNames'] in colnames:
+        		d = self._data.loc[:,self._colmetadata[i]['ColNames']]
+        		bb = bayesian_blocks(d)
+        		discretization.append({'ColNames':self._colmetadata[i]['ColNames'], 'Disc':bb})
+        	else:
+        		 discretization.append({'ColNames':self._colmetadata[i]['ColNames'], 'Disc':None})
+
+        return discretization
