@@ -6,7 +6,7 @@ from quafing.io.base_io_handler import IOHandler
 class ExcelHandler(IOHandler):
 	""" Class for IO of data in Excel/spreadsheet format (e.g. .xls) format """
 
-	def read(self, header_row=2, question_row=1, type_row=0, sheet=0, start_row=3, skip_at_end=0, **kwargs)
+	def read(self,*, header_row=2, question_row=1, type_row=0, sheet=0, start_row=3, skip_at_end=0, **kwargs)
 	    """
 	    read data and metadata from a Excel/spreadsheet type file into memory
 

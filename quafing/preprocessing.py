@@ -156,7 +156,7 @@ class PreProccessor(object):
 
 		if deselect:
 			cnames = colsnames
-			colmetadata = [self._rawcometadata[i] for i in range(len(self._rawcolmetadata)) if self._rawcolmetadata[i]["ColNames"] not in colsnames]
+			colmetadata = [self._rawcolmetadata[i] for i in range(len(self._rawcolmetadata)) if self._rawcolmetadata[i]["ColNames"] not in colsnames]
 
 		else:
 			cnames = [self._rawcolmetadata[i]["ColNames"] for i in range(len(self._rawcolmetadata)) if self._rawcolmetadata[i]["ColNames"] not in colsnames]
@@ -235,18 +235,17 @@ class PreProccessor(object):
 
 		self._groups = groups
 
-    def get_joint_discretization(self,method=method,*args,*kwargs):
+    def get_joint_discretization(self,method=method,*args,**kwargs):
     	"""
-		Obtain discretization of columns/quuestions with continuous answer space,
+		Obtain discretization of columns/questions with continuous answer space,
 		common across all groups being considered
 
 		:param method: keyword specifying discretization method. See discretization documentation
-		:param *args: optional arguments to be passed to discrettization methods
+		:param *args: optional arguments to be passed to discretization methods
 		:param *kwargs: optional keyword arguments to be passed to discrettization methods
 		:return discretization: list of arrays ith biin borders
 		"""
 
 		self._check_selection()
-		disc = discretize(self._data,self._colmetadata,method=method,*args,*kwargs)
+		disc = discretize(self._data,self._colmetadata,method=method,*args,**kwargs)
 		return disc 
-		

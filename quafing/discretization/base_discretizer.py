@@ -34,7 +34,7 @@ class Discretizer(object):
     	"""
         
         raise NotImplementedError(
-        	"Class %s doesn't implement perform_ddiscretization()"% self.__class__.__name__)
+        	"Class %s doesn't implement perform_discretization()"% self.__class__.__name__)
 
 
     def _check_data_type(self):
@@ -46,4 +46,3 @@ class Discretizer(object):
     def _get_dimensionality(self):
     	self._data_dim = self._data.ndim
     """
-    
