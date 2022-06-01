@@ -205,7 +205,7 @@ class PreProccessor(object):
 		:return gbcol: Optional: name (str) of column that was grouped by
 		"""
 		self._check_selection()
-		if isintance(col,str):
+		if isinstance(col,str):
 		    if col in self._data.columns:
 		    	gbcol = col
 		    else:
