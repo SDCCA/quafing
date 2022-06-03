@@ -9,7 +9,7 @@ discretizers = {
 def get_discretizer(data, colmetadata, method):
 	_check_method(method)
 	discretizer = discretizers[method]
-	return discretizer(data, colmetadata, method)
+	return discretizer(data, colmetadata)
 
 def _check_method(method):
     if method not in discretizers:

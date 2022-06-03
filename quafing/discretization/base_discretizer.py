@@ -10,7 +10,7 @@ class Discretizer(object):
         discretizers should handle continuous real-valued data
         """
 
-    def __init__(self, data, colmetadata, method):
+    def __init__(self, data, colmetadata):
     	"""
     	perform checks on data type and determine dimensionaality of data
 
@@ -22,7 +22,7 @@ class Discretizer(object):
     	self._colmetadata = colmetadata
     	#self._dim = None
 
-    	_check_data_type()
+    	self._check_data_type()
     	#_get_dimensionality()
 
 

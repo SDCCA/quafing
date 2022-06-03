@@ -2,9 +2,9 @@
 import pandas as pd
 import warnings
 
-from quafing.discretization import discretize
+from quafing.discretization.discretize import discretize
 
-class PreProccessor(object):
+class PreProcessor(object):
     """ class for prepocessing raw data.
     """
 	def __init__(self,rawdata, rawmetadata):
@@ -25,7 +25,7 @@ class PreProccessor(object):
 	    self._grouplabels = None
 	    self._groups = None
         
-        """ valiate input formaat """
+        """ validate input formaat """
         if not isinstance(rawdata, pd.DataFrame):
         	raise RuntimeError(
         		'raw data input is not of type pandas DataFrame')
@@ -177,7 +177,7 @@ class PreProccessor(object):
 		!!! CAUTION !!!
 		Randomize the data set by reassigning the labels to be used for grouping.
 		This process is IRREVERSSIBLE on the selected data set. Recovering
-		non-randomized data requires relection from the raw data.
+		non-randomized data requires reselection from the raw data.
 
 		:param col: name (str) or index (int, 0-indexed, based on self._data) of column to group by 
 		"""
