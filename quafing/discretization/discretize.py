@@ -1,6 +1,6 @@
 from quafing.discretization import get_discretizer
 
-def discretize(data, colmetadata, method=method, *args, **kwargs):
+def discretize(data, colmetadata, method=None, *args, **kwargs):
     """
     perform discretization (binning) of answers/variables with continuos support
 
@@ -9,7 +9,11 @@ def discretize(data, colmetadata, method=method, *args, **kwargs):
     :param method: keyword (str) specifyying disretization method to use
     :return discretization: discretization determined. Array of Dicts with bin borders
     """ 
-	discretizer = get_discretizer(data,colmetadata,method)
-	discretization = discretizer.perform_discretization( *args, **kwargs)
+    if not method == None:
+	    discretizer = get_discretizer(data,colmetadata,method)
+	    discretization = discretizer.perform_discretization( *args, **kwargs)
+    else:
+    	raise RuntimeError(
+    		'discretize requires a method to be specified, but none was specified')
 
 	return discretization

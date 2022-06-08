@@ -39,7 +39,7 @@ class PreProcessor(object):
         			"Required key %s does not exist in metadata dictionary"%key)
 
         if self._check_key("QuestionNumbers",self._rawmetadata):
-        	continue
+        	pass
         else:
             warnings.warn("Warning: key 'QuestionNumbers' does not exist in metadata dictionary")
 
@@ -231,11 +231,11 @@ class PreProcessor(object):
 
 		groups = []
 		for i in range(len(self._grouplabels)):
-			groups.append(self._data.loc[self._data[self._groupingcolumn] = self._grouplabels[i]])
+			groups.append(self._data.loc[self._data[self._groupingcolumn] == self._grouplabels[i]])
 
 		self._groups = groups
 
-    def get_joint_discretization(self,method=method,*args,**kwargs):
+    def get_joint_discretization(self,method=None,*args,**kwargs):
     	"""
 		Obtain discretization of columns/questions with continuous answer space,
 		common across all groups being considered

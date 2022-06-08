@@ -40,6 +40,7 @@ class IOHandler(object):
         Read data from specified path
 
         :return data:
+        :return metadata:
         """
 
         raise NotImplementedError(

@@ -11,5 +11,5 @@ def load(path, format=None, *args, **kwargs):
 	:return: data
 	"""
 	reader = get_io_handler(path, mode='r', format=format)
-	data = reader.read(*args, **kwargs)
-	return data
+	metadata, data = reader.read(*args, **kwargs)
+	return metadata, data
