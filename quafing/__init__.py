@@ -1,6 +1,7 @@
 """Documentation about quafing"""
 import logging
 
+from quafing.io.load import load
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())
 
