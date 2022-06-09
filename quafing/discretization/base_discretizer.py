@@ -11,38 +11,39 @@ class Discretizer(object):
         """
 
     def __init__(self, data, colmetadata):
-    	"""
-    	perform checks on data type and determine dimensionaality of data
+        """
+        perform checks on data type and determine dimensionaality of data
 
         :param data: data to discretize in form of ndarray, pandas DataFrame orr pandas Series
         :param colmetadata: column-wise meta data, including data type (continuous etc.) of column
         :param method: string indicating discretization method to be employed.
         """  		
-   		self._data = data 
-    	self._colmetadata = colmetadata
-    	#self._dim = None
+           self._data = data 
+        self._colmetadata = colmetadata
+        #self._dim = None
 
-    	self._check_data_type()
-    	#_get_dimensionality()
+        self._check_data_type()
+        #_get_dimensionality()
 
 
 
     def perform_discretization(self):
-    	"""
-    	create discretization of data object
-    	:return : discretization
-    	"""
+        """
+        create discretization of data object
+        :return : discretization
+        """
         
         raise NotImplementedError(
-        	"Class %s doesn't implement perform_discretization()"% self.__class__.__name__)
+            "Class %s doesn't implement perform_discretization()"% self.__class__.__name__)
 
 
     def _check_data_type(self):
-    	if not (isinstance(self._data, np.ndarray) or isinstance(self._data,pd.DataFrame) or isinstance(self._data,pd.Series)):
-    		raise TypeError(
-    			'data of type %s not supported' )% (type(self._data))
+        if not (isinstance(self._data, np.ndarray) or isinstance(self._data,pd.DataFrame) or isinstance(self._data,pd.Series)):
+            raise TypeError(
+                'data of type %s not supported' )% (type(self._data))
 
     """
     def _get_dimensionality(self):
-    	self._data_dim = self._data.ndim
+        self._data_dim = self._data.ndim
     """
+    

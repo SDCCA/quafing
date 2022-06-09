@@ -10,10 +10,10 @@ def discretize(data, colmetadata, method=None, *args, **kwargs):
     :return discretization: discretization determined. Array of Dicts with bin borders
     """ 
     if not method == None:
-	    discretizer = get_discretizer(data,colmetadata,method)
-	    discretization = discretizer.perform_discretization( *args, **kwargs)
+        discretizer = get_discretizer(data,colmetadata,method)
+        discretization = discretizer.perform_discretization( *args, **kwargs)
     else:
-    	raise RuntimeError(
-    		'discretize requires a method to be specified, but none was specified')
+        raise RuntimeError(
+            'discretize requires a method to be specified, but none was specified')
 
-	return discretization
+    return discretization

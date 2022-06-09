@@ -8,30 +8,30 @@ from quafing.density.base_density_estimators import DiscreteDensityEstimator
 
 class DiscreteDensityEstimator1d(DiscreteDensityEstimator):
 
-	def _check_input_1d(self):
-		if isinstance(self._data,pd.Series):
-		    pass    
-		elif isinstance(self._data,np.ndarray):
-			if self._data.ndim == 1:
-				pass
-			else:
-				raise RuntimeError(
-					'input data is not one dimensional.')
-		else:
-			raise TypeError(
-				'input data is not of supported type (pandas.Series or numpy.ndarray (1d)')
+    def _check_input_1d(self):
+        if isinstance(self._data,pd.Series):
+            pass    
+        elif isinstance(self._data,np.ndarray):
+            if self._data.ndim == 1:
+                pass
+            else:
+                raise RuntimeError(
+                    'input data is not one dimensional.')
+        else:
+            raise TypeError(
+                'input data is not of supported type (pandas.Series or numpy.ndarray (1d)')
 
-	def obtain_density(self, discrete=True, discretization=False):
-		super()._check_discretization_info(discrete=discrete, discretization=discretization)
-		self._check_input_1d()
+    def obtain_density(self, discrete=True, discretization=False):
+        super()._check_discretization_info(discrete=discrete, discretization=discretization)
+        self._check_input_1d()
 
-		if self._discrete:
-			self._intrinsic_discrete_data_density()
-		else:
-			self._discretized_data_density()
+        if self._discrete:
+            self._intrinsic_discrete_data_density()
+        else:
+            self._discretized_data_density()
 
-	def _intrinsic_data_density(self):
-		if isinstance(self._data, pd.Series):
+    def _intrinsic_data_density(self):
+        if isinstance(self._data, pd.Series):
             self._unique = data.unique()
         else:
             self._unique = np.unique(self._data)
@@ -42,7 +42,7 @@ class DiscreteDensityEstimator1d(DiscreteDensityEstimator):
         self._discrete_pdf = disc_pdf
 
     def _discretized_data_denity|(self):
-    	# Compute the probabilities of each bin
+        # Compute the probabilities of each bin
         h = np.histogram(self._data, bins=self._discretization, normed=True)[0]
         widths = [bins[i+1] - bins[i] for i in range(len(bins)-1)]
         probs = h * widths
@@ -51,6 +51,4 @@ class DiscreteDensityEstimator1d(DiscreteDensityEstimator):
         for i in range(len(bins)-1):
             disc_pdf[i] = probs[i]
         self._discrete_pdf = disc_pdf
-			
-
 

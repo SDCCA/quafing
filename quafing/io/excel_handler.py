@@ -11,14 +11,14 @@ class ExcelHandler(IOHandler):
 
         :param header_row: number of row (0-indexed) containing column names
         :param question_row: number of row (0-indexed) containing number of question
-	    :param type_row: number of row (0-indexed) containing column type definitions 
-	    :param sheet: number or name of sheet
-	    :param start_row: row number where data begins
-	    :param skip_at_end: number of rows at end to skip
-	    :param kwargs: optional addittional keyword arguments of pandas 'read_excel' method 
+        :param type_row: number of row (0-indexed) containing column type definitions 
+        :param sheet: number or name of sheet
+        :param start_row: row number where data begins
+        :param skip_at_end: number of rows at end to skip
+        :param kwargs: optional addittional keyword arguments of pandas 'read_excel' method 
 
-	    :return data: parsed data in DataFrame
-	    :return metadata: dict of arrays with column metadata
+        :return data: parsed data in DataFrame
+        :return metadata: dict of arrays with column metadata
         """
 
         mdonlyargs = {
@@ -32,7 +32,7 @@ class ExcelHandler(IOHandler):
             'skiprows':start_row,
             'skipfooter':skip_at_end
         }
-	
+    
         pdargs.update(kwargs)
 
         mdargs = {**mdonlyargs,**pdargs}
@@ -71,5 +71,5 @@ class ExcelHandler(IOHandler):
         @TODO
         """
         raise NotImplementedError(
-    	    "Class %s doesn't implement write() yet"% self.__class__.__name__)
+            "Class %s doesn't implement write() yet"% self.__class__.__name__)
 

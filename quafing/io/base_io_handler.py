@@ -17,7 +17,7 @@ class IOHandler(object):
         :param path: path for IO operation
         :param mode: 'r' for reading, 'w' for writing
         :param overwrite: overwrite existing file if it already exists     
-	    """
+        """
 
         self.path = path
         if mode == 'r':
@@ -54,4 +54,4 @@ class IOHandler(object):
         """
 
         raise NotImplementedError(
-    	    "Class %s doesn't implement write()"% self.__class__.__name__)    
+            "Class %s doesn't implement write()"% self.__class__.__name__)    
