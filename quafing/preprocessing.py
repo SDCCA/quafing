@@ -80,9 +80,9 @@ class PreProcessor(object):
         """
         colmetadata = []
         for i in range(len(self._rawmetadata.keys())):
-            colmetadata.append({'Type':self._rawmetadata["ColTypes"][i],
-                                'Name':self._rawmetadata["ColNames"][i],
-                                'QuestionNumber':self._rawmetadata["QuestionNumbers"][i]})
+            colmetadata.append({"ColTypes":self._rawmetadata["ColTypes"][i],
+                                "ColNames":self._rawmetadata["ColNames"][i],
+                                "QuestionNumbers":self._rawmetadata["QuestionNumbers"][i]})
 
         self._rawcolmetadata = colmetadata
 
@@ -103,16 +103,16 @@ class PreProcessor(object):
             self._colmetadata = self._rawcolmetadata.copy()
         else:
             if by_type == True:
-                self._select_by_type(cols,deselect=deselect)
+                self._select_by_type(cols,deselect=False)
             else:
-                self._select_by_label(cols,deselect=deselect)
+                self._select_by_label(cols,deselect=False)
 
     def _check_selection():
         if self._data == None or self._colmetadata == None:
             raise RuntimeError(
                 'No data has been selected for analysis. Please select data using the select_columns() method.')
 
-    def _select_by_type(self,cols,deslect=False):
+    def _select_by_type(self,cols,deselect=False):
         """
         select columns for analysis by column type
 
@@ -122,13 +122,13 @@ class PreProcessor(object):
         cnames = []
         colmetadata = []
         if deselect:
-            for i in len(self._rawcolmetadata):
+            for i in range(len(self._rawcolmetadata)):
                 if self._rawcolmetadata[i]["ColTypes"] in cols:
                     cnames.append(self._rawcolmetadata[i]["ColNames"])
                 else:
                     colmetadata.append(self._rawcolmetadata[i])
         else:
-            for i in len(self._rawcolmetadata):
+            for i in range(len(self._rawcolmetadata)):
                 if self._rawcolmetadata[i]["ColTypes"] not in cols:
                     cnames.append(self._rawcolmetadata[i]["ColNames"])
                 else:
@@ -161,8 +161,8 @@ class PreProcessor(object):
         else:
             cnames = [self._rawcolmetadata[i]["ColNames"] for i in range(len(self._rawcolmetadata)) if self._rawcolmetadata[i]["ColNames"] not in colsnames]
             colmetadata = [self._rawcolmetadata[i] for i in range(len(self._rawcolmetadata)) if self._rawcolmetadata[i]["ColNames"] in colsnames]
-
-        self._data = self._rawdata.copy().drop(columns=names)
+        print(cnames)
+        self._data = self._rawdata.copy().drop(columns=cnames)
         self._colmetadata = colmetadata
 
     def shuffle(self):
