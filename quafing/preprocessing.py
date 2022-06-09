@@ -63,7 +63,7 @@ class PreProcessor(object):
         check whether data and metadata dimensions match as expected
         """
         mdKeys = list(self._rawmetadata.keys())
-        mdLength = len(self._rawmetadata[mdkeys[0]])
+        mdLength = len(self._rawmetadata[mdKeys[0]])
 
         for key in mdKeys:
             if len(self._rawmetadata[key]) != mdLength:
@@ -80,9 +80,9 @@ class PreProcessor(object):
         """
         colmetadata = []
         for i in range(len(self._rawmetadata.keys())):
-            colmetadata.append({'Type':ColTypes[i],
-                                'Name':ColNames[i],
-                                'QuestionNumber':QuestionNumbers[i]})
+            colmetadata.append({'Type':self._rawmetadata["ColTypes"][i],
+                                'Name':self._rawmetadata["ColNames"][i],
+                                'QuestionNumber':self._rawmetadata["QuestionNumbers"][i]})
 
         self._rawcolmetadata = colmetadata
 
