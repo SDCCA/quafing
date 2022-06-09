@@ -43,9 +43,9 @@ class PreProcessor(object):
         else:
             warnings.warn("Warning: key 'QuestionNumbers' does not exist in metadata dictionary")
 
-         self._check_dimensions()
+        self._check_dimensions()
 
-         self._generate_col_metadata()
+        self._generate_col_metadata()
 
     def _check_key(self, key, dd):
         """
@@ -55,7 +55,7 @@ class PreProcessor(object):
         :param dd: dictionary
         :return iskey: Boolean indicating whether key exists in dictionary
         """
-        iskey = key in dd.keys():
+        iskey = key in dd.keys()
         return iskey
 
     def _check_dimensions(self):

@@ -4,11 +4,11 @@ import numpy as np
 import pandas as pd 
 
 class Discretizer(object):
-        """
-        Abstract discretizer class
+    """
+    Abstract discretizer class
 
-        discretizers should handle continuous real-valued data
-        """
+    discretizers should handle continuous real-valued data
+    """
 
     def __init__(self, data, colmetadata):
         """
@@ -18,7 +18,7 @@ class Discretizer(object):
         :param colmetadata: column-wise meta data, including data type (continuous etc.) of column
         :param method: string indicating discretization method to be employed.
         """  		
-           self._data = data 
+        self._data = data 
         self._colmetadata = colmetadata
         #self._dim = None
 
