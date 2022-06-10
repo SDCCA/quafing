@@ -17,18 +17,18 @@ class DensityEstimator(object):
         """
 
     def __init__(self, data, colmetadata):
-    	"""
-    	perform checks on data type and determine dimensionaality of data
+        """
+        perform checks on data type and determine dimensionaality of data
 
         :param data: data to estimate density for in form of ndarray, pandas DataFrame orr pandas Series
         :param colmetadata: column(-wise) meta data, including data type (continuous etc.) of column(s)
         """  		
-   		self._data = data 
-    	self._colmetadata = colmetadata
-    	#self._dim = None
+           self._data = data 
+        self._colmetadata = colmetadata
+        #self._dim = None
 
-    	self._check_data_type()
-    	#_get_dimensionality()
+        self._check_data_type()
+        #_get_dimensionality()
 
     def _check_data_type(self):
         if not (isinstance(self._data, np.ndarray) or isinstance(self._data,pd.DataFrame) or isinstance(self._data,pd.Series)):
@@ -36,12 +36,12 @@ class DensityEstimator(object):
                 'data of type %s not supported' )% (type(self._data))
     """
     def obtain_density_estimate(self):
-    	obtain density estimate for data object
-    	:return : density_estimate
+        obtain density estimate for data object
+        :return : density_estimate
     
         
         raise NotImplementedError(
-        	"Class %s doesn't implement obtain_density_estimate()"% self.__class__.__name__)
+            "Class %s doesn't implement obtain_density_estimate()"% self.__class__.__name__)
     """
 
 class DiscreteDensityEstimator(DensityEstimator):
@@ -84,9 +84,4 @@ class ContinuousDensityEstimator(DensityEstimator):
 
     continuous density estimators should return a function
     """
-
-
-
-    
-
 

@@ -14,6 +14,6 @@ class FactorizedMultiDimensionalPDF(MultiDimensionalPDF):
     """
 
     def __init__(self, data, colmetadata, discretization=None):
-    	super().__init__(data,colmetadata)
+        super().__init__(data,colmetadata)
 
 
