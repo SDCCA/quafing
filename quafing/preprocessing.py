@@ -75,16 +75,22 @@ class PreProcessor(object):
     			"Mismatch in length between data and metadata")
 
     def _generate_col_metadata(self):
-    	"""
-    	create column wise meta data dictionary
-    	"""
-    	colmetadata = []
-    	for i in range(len(self._rawmetadata.keys())):
-    		colmetadata.append({'Type':ColTypes[i],
-    							'Name':ColNames[i],
-    							'QuestionNumber':QuestionNumbers[i]})
+        """
+        create column wise meta data dictionary"
+        """
+        ColTypes = self._rawmetadata['ColTypes']
+        ColNames = self._rawmetadata['ColNames']
+        if 'QuesionNumbers' in self._rawmetadata.keys():
+        	QuestionNumbers = self._rawmetadata['QuestionNumber']
+        else:
+        	QuestionNumbers = [None]*len(ColTypes)
+        colmetadata = []
+        for ColType,ColName,QuestionNumber in zip(ColTypes,ColNames,QuestionNumbers):
+        	colmetadata.append({'ColType':Coltype,
+        		                'ColName':ColName,
+        		                'QuestionNumber':QuestionNumber})
 
-    	self._rawcolmetadata = colmetadata
+        self._rawcolmetadata = colmetadata
 
     def select_columns(self,cols,deselect=False,by_type=True,select_all=False):
     	"""
@@ -108,7 +114,7 @@ class PreProcessor(object):
     			self._select_by_label(cols,deselect=deselect)
 
     def _check_selection():
-    	if self._data == None or self._colmetadata == None:
+    	if (self._data is None) or (self._colmetadata is None):
     		raise RuntimeError(
     			'No data has been selected for analysis. Please select data using the select_columns() method.')
 
@@ -123,14 +129,14 @@ class PreProcessor(object):
         colmetadata = []
         if deselect:
         	for i in len(self._rawcolmetadata):
-        		if self._rawcolmetadata[i]["ColTypes"] in cols:
-        			cnames.append(self._rawcolmetadata[i]["ColNames"])
+        		if self._rawcolmetadata[i]["ColType"] in cols:
+        			cnames.append(self._rawcolmetadata[i]["ColName"])
         		else:
         			colmetadata.append(self._rawcolmetadata[i])
         else:
         	for i in len(self._rawcolmetadata):
-        		if self._rawcolmetadata[i]["ColTypes"] not in cols:
-        			cnames.append(self._rawcolmetadata[i]["ColNames"])
+        		if self._rawcolmetadata[i]["ColType"] not in cols:
+        			cnames.append(self._rawcolmetadata[i]["ColName"])
         		else:
         			colmetadata.append(self._rawcolmetadata[i])
 
@@ -149,18 +155,18 @@ class PreProcessor(object):
 		if all([isinstance(cols[i],str) for i in range(len(cols))]):
 			colsnames = cols
 		elif all([isinstance(cols[i],int) for i in range(len(cols))]):
-			colsnames = [self._rawcolmetadata[cols[i]]["ColNames"] for i in range(len(cols))]
+			colsnames = [self._rawcolmetadata[cols[i]]["ColName"] for i in range(len(cols))]
 		else:
 			raise ValueError(
 				'Column specification contains mixed types')
 
 		if deselect:
 			cnames = colsnames
-			colmetadata = [self._rawcolmetadata[i] for i in range(len(self._rawcolmetadata)) if self._rawcolmetadata[i]["ColNames"] not in colsnames]
+			colmetadata = [self._rawcolmetadata[i] for i in range(len(self._rawcolmetadata)) if self._rawcolmetadata[i]["ColName"] not in colsnames]
 
 		else:
-			cnames = [self._rawcolmetadata[i]["ColNames"] for i in range(len(self._rawcolmetadata)) if self._rawcolmetadata[i]["ColNames"] not in colsnames]
-			colmetadata = [self._rawcolmetadata[i] for i in range(len(self._rawcolmetadata)) if self._rawcolmetadata[i]["ColNames"] in colsnames]
+			cnames = [self._rawcolmetadata[i]["ColName"] for i in range(len(self._rawcolmetadata)) if self._rawcolmetadata[i]["ColName"] not in colsnames]
+			colmetadata = [self._rawcolmetadata[i] for i in range(len(self._rawcolmetadata)) if self._rawcolmetadata[i]["ColName"] in colsnames]
 
 		self._data = self._rawdata.copy().drop(columns=names)
 		self._colmetadata = colmetadata
