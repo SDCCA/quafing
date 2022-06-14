@@ -81,12 +81,12 @@ class PreProcessor(object):
         ColTypes = self._rawmetadata['ColTypes']
         ColNames = self._rawmetadata['ColNames']
         if 'QuestionNumbers' in self._rawmetadata.keys():
-            QuestionNumbers = self._rawmetadata['QuestionNumber']
+            QuestionNumbers = self._rawmetadata['QuestionNumbers']
         else:
             QuestionNumbers = [None]*len(ColTypes)
         colmetadata = []
         for ColType,ColName,QuestionNumber in zip(ColTypes,ColNames,QuestionNumbers):
-           	colmetadata.append({'ColType':Coltype,
+               colmetadata.append({'ColType':ColType,
                                 'ColName':ColName,
                                 'QuestionNumber':QuestionNumber})
 
@@ -115,8 +115,8 @@ class PreProcessor(object):
 
     def _check_selection():
         if (self._data is None) or (self._colmetadata is None):
-    	    raise RuntimeError(
-    	        'No data has been selected for analysis. Please select data using the select_columns() method.')
+            raise RuntimeError(
+                'No data has been selected for analysis. Please select data using the select_columns() method.')
 
     def _select_by_type(self,cols,deselect=False):
         """
@@ -136,7 +136,7 @@ class PreProcessor(object):
         else:
             for i in len(self._rawcolmetadata):
                 if self._rawcolmetadata[i]["ColType"] not in cols:
-        		    cnames.append(self._rawcolmetadata[i]["ColName"])
+                    cnames.append(self._rawcolmetadata[i]["ColName"])
                 else:
                     colmetadata.append(self._rawcolmetadata[i])
 
@@ -146,12 +146,12 @@ class PreProcessor(object):
 
 
     def _select_by_label(self,cols,deselect=False):
-    	"""
-    	select columns for analysis by name or index
+        """
+        select columns for analysis by name or index
 
-    	:param cols: list of names (strings) or indices (integers, 0-indexed) to (de)select
-    	:param deselect: keyword to select complement 
-		"""
+        :param cols: list of names (strings) or indices (integers, 0-indexed) to (de)select
+        :param deselect: keyword to select complement 
+        """
         if all([isinstance(cols[i],str) for i in range(len(cols))]):
             colsnames = cols
         elif all([isinstance(cols[i],int) for i in range(len(cols))]):
@@ -165,8 +165,8 @@ class PreProcessor(object):
             colmetadata = [self._rawcolmetadata[i] for i in range(len(self._rawcolmetadata)) if self._rawcolmetadata[i]["ColName"] not in colsnames]
 
         else:
-		    cnames = [self._rawcolmetadata[i]["ColName"] for i in range(len(self._rawcolmetadata)) if self._rawcolmetadata[i]["ColName"] not in colsnames]
-		    colmetadata = [self._rawcolmetadata[i] for i in range(len(self._rawcolmetadata)) if self._rawcolmetadata[i]["ColName"] in colsnames]
+            cnames = [self._rawcolmetadata[i]["ColName"] for i in range(len(self._rawcolmetadata)) if self._rawcolmetadata[i]["ColName"] not in colsnames]
+            colmetadata = [self._rawcolmetadata[i] for i in range(len(self._rawcolmetadata)) if self._rawcolmetadata[i]["ColName"] in colsnames]
 
         self._data = self._rawdata.copy().drop(columns=names)
         self._colmetadata = colmetadata
@@ -240,7 +240,6 @@ class PreProcessor(object):
             groups.append(self._data.loc[self._data[self._groupingcolumn] == self._grouplabels[i]])
 
         self._groups = groups
->>>>>>> f3f742c5e643b265da8e80a80bf988f37d4981f3
 
     def get_joint_discretization(self,method=None,*args,**kwargs):
         """
