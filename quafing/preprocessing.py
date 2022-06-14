@@ -80,7 +80,7 @@ class PreProcessor(object):
         """
         ColTypes = self._rawmetadata['ColTypes']
         ColNames = self._rawmetadata['ColNames']
-        if 'QuesionNumbers' in self._rawmetadata.keys():
+        if 'QuestionNumbers' in self._rawmetadata.keys():
             QuestionNumbers = self._rawmetadata['QuestionNumber']
         else:
             QuestionNumbers = [None]*len(ColTypes)
