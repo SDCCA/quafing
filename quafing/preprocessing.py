@@ -113,7 +113,7 @@ class PreProcessor(object):
             else:
                 self._select_by_label(cols,deselect=False)
 
-    def _check_selection():
+    def _check_selection(self):
         if (self._data is None) or (self._colmetadata is None):
             raise RuntimeError(
                 'No data has been selected for analysis. Please select data using the select_columns() method.')
@@ -176,7 +176,7 @@ class PreProcessor(object):
         shuffle data rows
         """
         self._check_selection()
-        self._data.sample(frac=1)
+        self._data=self._data.sample(frac=1)
 
     def randomize_data(self,col):
         """
