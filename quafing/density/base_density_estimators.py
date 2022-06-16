@@ -23,7 +23,7 @@ class DensityEstimator(object):
         :param data: data to estimate density for in form of ndarray, pandas DataFrame orr pandas Series
         :param colmetadata: column(-wise) meta data, including data type (continuous etc.) of column(s)
         """  		
-           self._data = data 
+        self._data = data 
         self._colmetadata = colmetadata
         #self._dim = None
 

@@ -27,7 +27,7 @@ class BayesianBlockDiscretizer(Discretizer):
         
         if byType:
             types = list(set([c['ColTypes'] for c in self._colmetadata]))
-            if all([coltype in cols for coltype in types]):
+            if all([coltype in types for coltype in cols]):
                 colnames = [ c['ColNames'] for c in self._colmetadata if c['ColTypes'] in cols]
             else:
                 raise ValueError(
