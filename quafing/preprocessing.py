@@ -197,9 +197,8 @@ class PreProcessor(object):
         elif isinstance(col,int):
             gbcol = self._data.columns[col]
 
-        labels = self._data.loc[:,gbcol].copy()
-        print(labels.sample(frac=1))
-        self._data.loc[:,gbcol] = labels.sample(frac=1)
+        labels = self._data.loc[:,gbcol].copy().sample(frac=1)
+        self._data.loc[:,gbcol] = labels.values
 
 
     def group(self,col):
@@ -221,7 +220,7 @@ class PreProcessor(object):
         elif isinstance(col,int):
             gbcol = self._data.columns[col]
 
-        self._data.groupby(by=gbcol)
+        self._data.sort_values(by=gbcol, inplace=True)
         self._groupingcolumn = gbcol
         self._grouplabels = self._data[gbcol].unique()
         
@@ -233,12 +232,12 @@ class PreProcessor(object):
         :param col: name (str) or index (int, 0-indexed, based on self._data) of column to group by
         """
         self._check_selection()
-        if self._grouplabels == None:
+        if self._grouplabels is None:
             self.group(col)
 
         groups = []
-        for i in range(len(self._grouplabels)):
-            groups.append(self._data.loc[self._data[self._groupingcolumn] == self._grouplabels[i]])
+        for _, grouplabel in enumerate(self._grouplabels):
+            groups.append(self._data.loc[self._data[self._groupingcolumn] == grouplabel])
 
         self._groups = groups
 
