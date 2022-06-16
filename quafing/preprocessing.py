@@ -85,10 +85,10 @@ class PreProcessor(object):
         else:
             QuestionNumbers = [None]*len(ColTypes)
         colmetadata = []
-        for ColType,ColName,QuestionNumber in zip(ColTypes,ColNames,QuestionNumbers):
-               colmetadata.append({'ColType':ColType,
-                                'ColName':ColName,
-                                'QuestionNumber':QuestionNumber})
+        for ColTypes,ColNames,QuestionNumbers in zip(ColTypes,ColNames,QuestionNumbers):
+               colmetadata.append({'ColTypes':ColTypes,
+                                'ColNames':ColNames,
+                                'QuestionNumbers':QuestionNumbers})
 
         self._rawcolmetadata = colmetadata
 
@@ -129,14 +129,14 @@ class PreProcessor(object):
         colmetadata = []
         if deselect:
             for i in len(self._rawcolmetadata):
-                if self._rawcolmetadata[i]["ColType"] in cols:
-                    cnames.append(self._rawcolmetadata[i]["ColName"])
+                if self._rawcolmetadata[i]["ColTypes"] in cols:
+                    cnames.append(self._rawcolmetadata[i]["ColNames"])
                 else:
                     colmetadata.append(self._rawcolmetadata[i])
         else:
             for i in len(self._rawcolmetadata):
-                if self._rawcolmetadata[i]["ColType"] not in cols:
-                    cnames.append(self._rawcolmetadata[i]["ColName"])
+                if self._rawcolmetadata[i]["ColTypes"] not in cols:
+                    cnames.append(self._rawcolmetadata[i]["ColNames"])
                 else:
                     colmetadata.append(self._rawcolmetadata[i])
 
@@ -155,18 +155,18 @@ class PreProcessor(object):
         if all([isinstance(cols[i],str) for i in range(len(cols))]):
             colsnames = cols
         elif all([isinstance(cols[i],int) for i in range(len(cols))]):
-            colsnames = [self._rawcolmetadata[cols[i]]["ColName"] for i in range(len(cols))]
+            colsnames = [self._rawcolmetadata[cols[i]]["ColNames"] for i in range(len(cols))]
         else:
             raise ValueError(
                 'Column specification contains mixed types')
 
         if deselect:
             cnames = colsnames
-            colmetadata = [self._rawcolmetadata[i] for i in range(len(self._rawcolmetadata)) if self._rawcolmetadata[i]["ColName"] not in colsnames]
+            colmetadata = [self._rawcolmetadata[i] for i in range(len(self._rawcolmetadata)) if self._rawcolmetadata[i]["ColNames"] not in colsnames]
 
         else:
-            cnames = [self._rawcolmetadata[i]["ColName"] for i in range(len(self._rawcolmetadata)) if self._rawcolmetadata[i]["ColName"] not in colsnames]
-            colmetadata = [self._rawcolmetadata[i] for i in range(len(self._rawcolmetadata)) if self._rawcolmetadata[i]["ColName"] in colsnames]
+            cnames = [self._rawcolmetadata[i]["ColNames"] for i in range(len(self._rawcolmetadata)) if self._rawcolmetadata[i]["ColNames"] not in colsnames]
+            colmetadata = [self._rawcolmetadata[i] for i in range(len(self._rawcolmetadata)) if self._rawcolmetadata[i]["ColNames"] in colsnames]
 
         self._data = self._rawdata.copy().drop(columns=names)
         self._colmetadata = colmetadata
@@ -188,7 +188,7 @@ class PreProcessor(object):
         :param col: name (str) or index (int, 0-indexed, based on self._data) of column to group by 
         """
         self._check_selection()
-        if isintance(col,str):
+        if isinstance(col,str):
             if col in self._data.columns:
                 gbcol = col
             else:
@@ -198,7 +198,8 @@ class PreProcessor(object):
             gbcol = self._data.columns[col]
 
         labels = self._data.loc[:,gbcol].copy()
-        self._data.loc[:gbcol] = labels.sample(frac=1)
+        print(labels.sample(frac=1))
+        self._data.loc[:,gbcol] = labels.sample(frac=1)
 
 
     def group(self,col):
