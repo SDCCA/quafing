@@ -200,6 +200,35 @@ class PreProcessor(object):
         labels = self._data.loc[:,gbcol].copy().sample(frac=1)
         self._data.loc[:,gbcol] = labels.values
 
+    def set_cont_disc(self,cols=['c'],*,by_type=True,complement=True, disccols=None):
+
+        self._check_selection()
+        if not by_type:
+            if all([isinstance(col,str) for _,col in enumerate(cols)]):
+                colnames = cols
+            elif all([isinstance(col,int) for _,col in enumerate(cols)]):
+                colnames = [self._colmetadata[cols[i]]["ColNames"] for i in range(len(cols))]
+            else:
+                raise ValueError(
+                    'Column specification contains mixed types')
+
+        if by_type:
+            moniker = 'ColTypes'
+        else:
+            moniker = 'ColNames'
+
+        for c in self._colmetadata:
+            if c[moniker] in cols:
+                disc_entry = {'discrete':False}
+            else:
+                if complement:
+                    disc_entry = {'discrete':True}
+                else:
+                    if c[moniker] in disccols:
+                        disc_entry = {'discrete':True}
+                    else:
+                        disc_entry = {'discrete':None}
+        c.update(disc_entry)                
 
     def group(self,col):
         """
