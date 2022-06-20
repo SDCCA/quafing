@@ -22,9 +22,6 @@ class BayesianBlockDiscretizer(Discretizer):
         :returns discreiztion: discretization (bin list). List of dicts with column names and array with bin borders, None if not discretized.
         """
         
-
-
-        
         if byType:
             types = list(set([c['ColTypes'] for c in self._colmetadata]))
             if all([coltype in types for coltype in cols]):
