@@ -9,6 +9,7 @@ class MultiDimensionalPDF(object):
 
         self._data = data 
         self._colmetadata = colmetadata
+        self._pdfs = None
 
         """ validate input format """
         if not isinstance(data, pd.DataFrame):
@@ -19,4 +20,8 @@ class MultiDimensionalPDF(object):
             raise RuntimeError(
                 'metadata does not match data (column number mismatch)')
 
-      
+    def get_pdfs(self):
+    	return self._pdfs 
+
+    def get_metadata(self):
+        return self._colmetadata  
