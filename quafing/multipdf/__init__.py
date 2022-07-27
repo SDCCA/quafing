@@ -1,15 +1,15 @@
 import os
 
-from .factorized_multi_dimensional_pdf import FactorizedMultiDimensionalPDF as FatorizedMDPDF
+from .factorized_multi_dimensional_pdf import FactorizedMultiDimensionalPDF as FactorizedMDPDF
 
-mdpdfTypes = {
-	'factorized': FatorizedMDPDF
+multipdf_types = {
+	'factorized': FactorizedMDPDF
 }
 
-def obtain_mdpdf(data,colmetadata,pdftype,*args,**kwargs):
+def multipdf_init(pdftype):
     _check_type(pdftype)
-    multipdf = mddpdftypes[pdftype]
-    return multipdf(data,colmetadata,*args,**kwargs)
+    multipdf = multipdf_types[pdftype]
+    return multipdf
 
 def _check_type(pdftype):
     if pdftype not in multipdf_types:
