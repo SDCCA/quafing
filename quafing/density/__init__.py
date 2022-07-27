@@ -7,11 +7,11 @@ estimators = {
     }
 
 def get_density_estimator(data, colmetadata, method):
-    _check_method(method)
+    _check_density_method(method)
     estimator = estimators[method]
     return estimator(data, colmetadata)
 
-def _check_method(method):
+def _check_density_method(method):
     if method not in estimators:
         raise NotImplementedError(
             "Density estimator %s unknown. Supported methods are: %s" % (method, ', '.join(estimators.keys())))

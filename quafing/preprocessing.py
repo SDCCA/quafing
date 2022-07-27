@@ -1,8 +1,10 @@
 """ pre processing steps for loaded questionnaaire data """
 import pandas as pd
+import numpy as np
 import warnings
 
 from quafing.discretization.discretize import discretize
+from quafing.density import _check_density_method 
 
 class PreProcessor(object):
     """ class for prepocessing raw data.
@@ -200,17 +202,22 @@ class PreProcessor(object):
         labels = self._data.loc[:,gbcol].copy().sample(frac=1)
         self._data.loc[:,gbcol] = labels.values
 
+    def _validate_by_label(self,cols):
+        colnames=None
+        if all([isinstance(col,str) for _,col in enumerate(cols)]):
+            colnames = cols
+        elif all([isinstance(col,int) for _,col in enumerate(cols)]):
+            colnames = [self._colmetadata[cols[i]]["ColNames"] for i in range(len(cols))]
+        else:
+            raise ValueError(
+                    'Column specification contains mixed types')
+        return colnames
+
     def set_cont_disc(self,cols=['c'],*,by_type=True,complement=True, disccols=None):
 
         self._check_selection()
         if not by_type:
-            if all([isinstance(col,str) for _,col in enumerate(cols)]):
-                colnames = cols
-            elif all([isinstance(col,int) for _,col in enumerate(cols)]):
-                colnames = [self._colmetadata[cols[i]]["ColNames"] for i in range(len(cols))]
-            else:
-                raise ValueError(
-                    'Column specification contains mixed types')
+            cols = self._validate_by_label(cols)
 
         if by_type:
             moniker = 'ColTypes'
@@ -229,6 +236,52 @@ class PreProcessor(object):
                     else:
                         disc_entry = {'discrete':None}
         c.update(disc_entry)                
+
+    def set_density_method(self,method=None,cols=['c'],*,by_type=True):
+
+        self._check_selection()
+
+        if isinstance(method,str):
+            _check_density_method(method)
+            if not by_type:
+                cols = self._validate_by_label(cols)
+        elif isinstance(method, dict) or isinstance(method,list):
+            if isinstance(method,dict):
+                cols = []
+                tmethod =[]
+                for k,m in method.items()
+                    cols.append(k)
+                    tmethod.append(m)
+                method = tmethod
+                delvar(tmethod)
+            if not by_type:
+                cols=self._validate_by_label(cols)
+            if len(method) != len(cols):
+                    raise RuntimeError(
+                        'number of specified methods does not match number of specified columns/types')
+            else:
+                for m in method:
+                    _check_density_method(m)
+        else:
+                raise RuntimeError(
+                    'no method for density estimation specified')
+
+        if by_type:
+            moniker = 'ColTypes'
+        else:
+            moniker = 'ColNames'
+
+        for c in self._colmetadata:
+            c.update({'density_method':None})
+            if isinstance(method,str):
+                if c[moniker] in cols:
+                    c['density_method'] = method
+            else:
+                for i, m in enumerate(method):
+                    if c[moniker] eq cols[i]:
+                        c['density_method']= m
+
+        
 
     def group(self,col):
         """

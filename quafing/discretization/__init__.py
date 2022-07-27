@@ -7,11 +7,11 @@ discretizers = {
     }
 
 def get_discretizer(data, colmetadata, method):
-    _check_method(method)
+    _check_discretization_method(method)
     discretizer = discretizers[method]
     return discretizer(data, colmetadata)
 
-def _check_method(method):
+def _check_discretization_method(method):
     if method not in discretizers:
         raise NotImplementedError(
             "Discretization method %s unknown. Supported methods are: %s" % (method, ', '.join(discretizers.keys())))
