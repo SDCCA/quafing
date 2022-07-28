@@ -16,15 +16,15 @@ class DensityEstimator(object):
         of one or multiple dimensions
         """
 
-    def __init__(self, data, colmetadata):
+    def __init__(self, data, metadata=None):
         """
         perform checks on data type and determine dimensionaality of data
 
         :param data: data to estimate density for in form of ndarray, pandas DataFrame orr pandas Series
-        :param colmetadata: column(-wise) meta data, including data type (continuous etc.) of column(s)
+        :param metadata: optional; descriptive metadata for data column(s)
         """  		
         self._data = data 
-        self._colmetadata = colmetadata
+        self._metadata = metadata
         #self._dim = None
 
         self._check_data_type()
@@ -62,7 +62,7 @@ class DiscreteDensityEstimator(DensityEstimator):
                 raise RuntimeError(
                     'discretization schemes for intrinsically discrete data are not supported')
         else:
-            if self._discretization not None:
+            if discretization not None:
                 self._set_class_discretization_info(discrete,discretization)
             else:
                 raise RuntimeError(

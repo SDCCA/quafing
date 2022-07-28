@@ -6,10 +6,10 @@ estimators = {
     'Discrete1D':dde1d
     }
 
-def get_density_estimator(data, colmetadata, method):
+def get_density_estimator(data, method, metadata=None):
     _check_density_method(method)
     estimator = estimators[method]
-    return estimator(data, colmetadata)
+    return estimator(data, metadata=metadata)
 
 def _check_density_method(method):
     if method not in estimators:
