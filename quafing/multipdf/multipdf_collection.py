@@ -4,10 +4,15 @@ import warnings
 from quafing.multipdf.multipdf import create_multi_pdf
 
 
-def create_mdpdf_collection(groups, mdpftype):
+def create_mdpdf_collection(mdpfType, group_data, group_labels,colmetadata, calculate=True, validate_metadata=False, *args, **kwargs):
     """
     TODO
     """
+    mdpdfs = []
+    for i, data in enumerate(group_data):
+    	mdpdf = create_multi_pdf(mdpdfType,data, colmetadata, calculate=calculate, *args, **kwargs)
+        mdpdfs.append(mdpdf)
+    mdpdf_collection = MultiPdfCollection(mdpdfs,group_labels, colmetadata, mdpdfType, validate_metadata=validate_metadata)
 	return mdpdf_collection
 
 class MultiPdfCollection(object): 

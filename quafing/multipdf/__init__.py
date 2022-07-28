@@ -7,6 +7,9 @@ multipdf_types = {
 }
 
 def multipdf_init(pdftype):
+	"""
+	Initialize 
+	"""
     _check_type(pdftype)
     multipdf = multipdf_types[pdftype]
     multipdf._type = pdftyp
