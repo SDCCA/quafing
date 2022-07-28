@@ -307,11 +307,13 @@ class PreProcessor(object):
         self._grouplabels = self._data[gbcol].unique()
         
 
-    def split_to_groups(self, col):
+    def split_to_groups(self, col, inplace=False):
         """
         split selected data into groups
 
         :param col: name (str) or index (int, 0-indexed, based on self._data) of column to group by
+        :param inplace: bool; parameter spcifiying whether drop of grouping column is performed inplace (True) 
+                              or a copy is returned (default, False)
         """
         self._check_selection()
         if self._grouplabels is None:
@@ -319,7 +321,12 @@ class PreProcessor(object):
 
         groups = []
         for _, grouplabel in enumerate(self._grouplabels):
-            groups.append(self._data.loc[self._data[self._groupingcolumn] == grouplabel])
+            groupdata = self._data.loc[self._data[self._groupingcolumn] == grouplabel]
+            if inplace:
+                groupdata.drop(columns=self._groupingcolumn,inplace=inplace)
+            else:
+                groupdata = groupdata.drop(columns=self.groupingcolumn,inplace=inplace)
+            groups.append(groupdata)
 
         self._groups = groups
 
