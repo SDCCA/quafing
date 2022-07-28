@@ -6,7 +6,7 @@ def discretize(data, colmetadata, method=None, *args, **kwargs):
 
     :param data: data to discretize
     :param colmetadata: column wise metadata enabling the selection of continuous data columns
-    :param method: keyword (str) specifyying disretization method to use
+    :param method: keyword (str) specifying disretization method to use
     :return discretization: discretization determined. Array of Dicts with bin borders
     """ 
     if not method == None:
