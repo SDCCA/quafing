@@ -9,6 +9,7 @@ class MultiDimensionalPDF(object):
         self._data = None
         self._colmetadata = None
         self._pdf = None
+        self._type = None
 
     def _import_data(self, data, colmetadata):
         self._data = data 

@@ -14,50 +14,51 @@ class FactorizedMultiDimensionalPDF(MultiDimensionalPDF):
     """
 
     def calculate_pdf(self,method=None,discretization=None):
-
-        if 'Disc' not in self._colmetadata[0].keys():
-            if discretization is None:
-               c.update({'Disc':None}) for c in self._colmetadata
-            else:
-                for c in self._colmetadata:
-                    coldisc= [d for i,d in enumerate(discretization) if d['ColNames'] == c['ColNames']][0]
-                    c.update(coldisc)
-        else:
-            if discretization is None:
-                pass
-            else:
-                for c in self._colmetadata:
-                    coldisc= [d for i,d in enumerate(discretization) if d['ColNames'] == c['ColNames']][0]
-                    c.update(coldisc)
-
-        if 'density_method' not in self._colmetadata[0].keys():
-        	if method is None:
-        		raise RuntimeError(
-        			'no method for density estimation specified')
-            else:
-                if is instance(method,str):
-                	c.update({'density_method':method}) for c in self._colmetadata
+        
+        if self._pdf is None:
+            if 'Disc' not in self._colmetadata[0].keys():
+                if discretization is None:
+                   c.update({'Disc':None}) for c in self._colmetadata
                 else:
-                	for c in self._colmetadata:
-                		colmeth = [m for i,m in enumerate(method) if m['ColNames'] == c['ColNames']][0]
-                		c.update(colmeth)
-        else:
-        	if method is None:
-        		pass
-        	else:
-                if is instance(method,str):
-                	c.update({'density_method':method}) for c in self._colmetadata
+                    for c in self._colmetadata:
+                        coldisc= [d for i,d in enumerate(discretization) if d['ColNames'] == c['ColNames']][0]
+                        c.update(coldisc)
+            else:
+                if discretization is None:
+                    pass
                 else:
-                	for c in self._colmetadata:
-                		colmeth = [m for i,m in enumerate(method) if m['ColNames'] == c['ColNames']][0]
-                		c.update(colmeth)
+                    for c in self._colmetadata:
+                        coldisc= [d for i,d in enumerate(discretization) if d['ColNames'] == c['ColNames']][0]
+                        c.update(coldisc)
 
-        fpdfs = []
-        for column in self._colmetadata:
-            d = self._data[column['ColNames']]
-            pdf = get_density_estimate(d,column,method=column['density_method'],discrete=column['discrete'],discretization=column['Disc'])
-            fpdfs.append(pdf)
+            if 'density_method' not in self._colmetadata[0].keys():
+        	    if method is None:
+        		    raise RuntimeError(
+        			    'no method for density estimation specified')
+                else:
+                    if is instance(method,str):
+                	    c.update({'density_method':method}) for c in self._colmetadata
+                    else:
+                	    for c in self._colmetadata:
+                		    colmeth = [m for i,m in enumerate(method) if m['ColNames'] == c['ColNames']][0]
+                		    c.update(colmeth)
+            else:
+        	    if method is None:
+        		    pass
+        	    else:
+                    if is instance(method,str):
+                	    c.update({'density_method':method}) for c in self._colmetadata
+                    else:
+                	    for c in self._colmetadata:
+                		    colmeth = [m for i,m in enumerate(method) if m['ColNames'] == c['ColNames']][0]
+                		    c.update(colmeth)
 
-        self._pdf = fpdfs
+            fpdfs = []
+            for column in self._colmetadata:
+                d = self._data[column['ColNames']]
+                pdf = get_density_estimate(d,column,method=column['density_method'],discrete=column['discrete'],discretization=column['Disc'])
+                fpdfs.append(pdf)
 
-
+            self._pdf = fpdfs
+        else:
+            pass
