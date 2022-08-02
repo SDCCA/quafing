@@ -2,9 +2,15 @@ import os
 
 from .discrete_1d_estimator import DiscreteDensityEstimator1d as dde1d
 
-estimators = {
-    'Discrete1D':dde1d
-    }
+discrete_estimators = {
+	'Discrete1D':dde1d
+}
+
+continuous_estimators = {
+	}
+
+estimators = {discrete_estimators,continuous_estimators}
+
 
 def get_density_estimator(data, method, metadata=None):
     _check_density_method(method)
