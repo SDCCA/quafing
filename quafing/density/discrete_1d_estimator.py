@@ -8,7 +8,8 @@ from quafing.density.base_density_estimators import DiscreteDensityEstimator
 
 class DiscreteDensityEstimator1d(DiscreteDensityEstimator):
 
-    self._discrete_pdf = None
+    def __init__(self):
+        self._discrete_pdf = None
 
     def _check_input_1d(self):
         if isinstance(self._data,pd.Series):

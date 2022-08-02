@@ -9,12 +9,12 @@ import numpy as np
 import pandas as pd 
 
 class DensityEstimator(object):
-        """
-        Abstract density estimator class
+    """
+    Abstract density estimator class
 
-        density estimators should handle discrete or continuous real-valued data
-        of one or multiple dimensions
-        """
+    density estimators should handle discrete or continuous real-valued data
+    of one or multiple dimensions
+    """
 
     def __init__(self, data, metadata=None):
         """
@@ -62,7 +62,7 @@ class DiscreteDensityEstimator(DensityEstimator):
                 raise RuntimeError(
                     'discretization schemes for intrinsically discrete data are not supported')
         else:
-            if discretization not None:
+            if discretization is not None:
                 self._set_class_discretization_info(discrete,discretization)
             else:
                 raise RuntimeError(

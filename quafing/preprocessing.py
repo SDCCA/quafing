@@ -249,7 +249,7 @@ class PreProcessor(object):
             if isinstance(method,dict):
                 cols = []
                 tmethod =[]
-                for k,m in method.items()
+                for k,m in method.items():
                     cols.append(k)
                     tmethod.append(m)
                 method = tmethod
@@ -278,7 +278,7 @@ class PreProcessor(object):
                     c['density_method'] = method
             else:
                 for i, m in enumerate(method):
-                    if c[moniker] eq cols[i]:
+                    if c[moniker] == cols[i]:
                         c['density_method']= m
 
         

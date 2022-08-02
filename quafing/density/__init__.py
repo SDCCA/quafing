@@ -7,10 +7,9 @@ discrete_estimators = {
 }
 
 continuous_estimators = {
-	}
+}
 
-estimators = {discrete_estimators,continuous_estimators}
-
+estimators = dict(discrete_estimators, **continuous_estimators)
 
 def get_density_estimator(data, method, metadata=None):
     _check_density_method(method)
