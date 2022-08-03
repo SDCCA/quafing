@@ -54,6 +54,10 @@ class DiscreteDensityEstimator(DensityEstimator):
     discrete density estimators should return density estimates as key value pairs
     """
 
+    def __init__(self, data, metadata=None):
+        super().__init__(data,metadata=metadata)
+        self._discrete_pdf = None
+
     def _check_discretization_info(self, discrete=True, discretization=None):
         if discrete:
             if discretization == None:
