@@ -170,7 +170,7 @@ class PreProcessor(object):
             cnames = [self._rawcolmetadata[i]["ColNames"] for i in range(len(self._rawcolmetadata)) if self._rawcolmetadata[i]["ColNames"] not in colsnames]
             colmetadata = [self._rawcolmetadata[i] for i in range(len(self._rawcolmetadata)) if self._rawcolmetadata[i]["ColNames"] in colsnames]
 
-        self._data = self._rawdata.copy().drop(columns=names)
+        self._data = self._rawdata.copy().drop(columns=cnames)
         self._colmetadata = colmetadata
 
     def shuffle(self):
