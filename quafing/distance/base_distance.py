@@ -1,4 +1,5 @@
 import os
+import types
 
 import warnings
 import numpy as np
@@ -8,7 +9,7 @@ from quafing.density import continuous_estimators
 
 
 def _avg_dist(distances):
-	return np.array(distances).average()
+	return np.average(np.array(distances))
 
 def _rms_dist(distances):
     return np.sqrt(np.sum(distances ** 2))
@@ -68,7 +69,7 @@ class InformationDistance(object):
 
 class InformationDistancePiecewise(InformationDistance):
 
-	def __init__(self, mdpdf1, mdpdf2, pwdist):
+	def __init__(self, mdpdf1, mdpdf2, pwdist=None):
 
 		super().__init__(mdpdf1,mdpdf2)
 		self._pwdistfunc = None
@@ -80,7 +81,7 @@ class InformationDistancePiecewise(InformationDistance):
 		self._pwdistfunc = _get_pwdist_func(pwdist)
 		
 		
-	def calculate_distance(self, infinite_indicees = False ):
+	def calculate_distance(self, infinite_indicees = False, **kwargs ):
         if self._pwdistfunc is None:
         	raise RuntimeError(
         		"no piecewise distance aggregator specified")
@@ -93,22 +94,35 @@ class InformationDistancePiecewise(InformationDistance):
         pdfs2 = self._mdpdfs2.get_pdf()
         pdfs2_meta = self._mdpdfs2.get_pdf_metadata()
 
+        if isinstance(self._info_dist,list):
+        	if len(self._info_dist) != len(pdfs1):
+        		raise RuntimeError(
+        			'number of specified distance function does not match number of component pdfs')
+
         pwdistances = []
-        infindic
+        
 
         for i in len(range(pdfs1)):
             if not pdfs1_meta[i] == pdfs2_meta[i]:
                 raise RuntimeError(
                     'mismatch of component pdf metadata')
-            if  pdfs1[i]['method'] in discrete_estimators.keys():
+
+            if  pdfs1_meta[i]['method'] in discrete_estimators.keys():
             	is_discrete = True
-            elif pdfs1[i]['method'] in continuous_estimators.keys():
+            elif pdfs1_meta[i]['method'] in continuous_estimators.keys():
             	is_discrete = False
             else:
             	raise RuntimeError(
-            		'pdf_meta[method] is not a valid estimator')
+            		"pdf_meta['method'] is not a valid density estimator")
 
-            dist = self._info_dist(pdfs1[i],pdfs2[i],is_discrete=is_discrete)
+            if isinstance(self._info_dist, types.FunctionType):
+                dist = self._info_dist(pdfs1[i],pdfs2[i],is_discrete=is_discrete, **kwargs)
+            elif isinstance(self._info_dist, list) and isinstance(self._info_dist[i], types.FunctionType):
+            	dist = self._info_dist[i](pdfs1[i],pdfs2[i],is_discrete=is_discrete, **kwargs)
+            else:
+            	raise RuntimeError(
+            		'unexpected specification of distance function(s)')
+
             pwdistances.append(dist)
 
         pwdistances = np.array(pwdistances)
