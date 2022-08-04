@@ -249,7 +249,7 @@ class PreProcessor(object):
                         disc_entry = {'discrete':True}
                     else:
                         disc_entry = {'discrete':None}
-        c.update(disc_entry)                
+            c.update(disc_entry)                
 
     def set_density_method(self,method=None,cols=['c'],*,by_type=True):
 
