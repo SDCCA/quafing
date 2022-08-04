@@ -68,8 +68,9 @@ def test_select_col():
 def test_shuffle():
     processed_data.select_columns(select_all=True)
     data = processed_data._data
+    data2 = data.copy()
     processed_data.shuffle()
-    data2 = processed_data._data
+    data = processed_data._data
     assert list(data.index) != list(data2.index) 
 
 def test_randomize_data():
@@ -82,7 +83,18 @@ def test_randomize_data():
 
 def test_set_cont_disc():
     processed_data.select_columns(select_all=True)
-    processed_data.set_cont_disc('a')
+    processed_data.set_cont_disc(['a'], by_type=True)
+    assert processed_data._colmetadata[0]['discrete'] is False
+    assert processed_data._colmetadata[1]['discrete'] is True
+    assert len([d['discrete'] for d in processed_data._colmetadata]) == len([d['ColTypes'] for d in processed_data._colmetadata])
+    processed_data.set_cont_disc([1], by_type=False)
+    assert processed_data._colmetadata[1]['discrete'] is False
+    processed_data.set_cont_disc(['a'], by_type=True, complement=False, disccols=['b'])
+    assert processed_data._colmetadata[2]['discrete'] is None
+    assert processed_data._colmetadata[1]['discrete'] is True
 
 def test_validate_by_label():
-
+    with pytest.raises(ValueError, match=r'Column specification contains mixed types'):
+        processed_data.select_columns(select_all=True)
+        processed_data.set_cont_disc(cols=['Col1',2], by_type=False)
+        
