@@ -130,13 +130,13 @@ class PreProcessor(object):
         cnames = []
         colmetadata = []
         if deselect:
-            for i in len(self._rawcolmetadata):
+            for i in range(len(self._rawcolmetadata)):
                 if self._rawcolmetadata[i]["ColTypes"] in cols:
                     cnames.append(self._rawcolmetadata[i]["ColNames"])
                 else:
                     colmetadata.append(self._rawcolmetadata[i])
         else:
-            for i in len(self._rawcolmetadata):
+            for i in range(len(self._rawcolmetadata)):
                 if self._rawcolmetadata[i]["ColTypes"] not in cols:
                     cnames.append(self._rawcolmetadata[i]["ColNames"])
                 else:
@@ -306,7 +306,6 @@ class PreProcessor(object):
         self._groupingcolumn = gbcol
         self._grouplabels = self._data[gbcol].unique()
         
-
     def split_to_groups(self, col, inplace=False):
         """
         split selected data into groups
