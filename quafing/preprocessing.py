@@ -94,7 +94,7 @@ class PreProcessor(object):
 
         self._rawcolmetadata = colmetadata
 
-    def select_columns(self,cols,deselect=False,by_type=True,select_all=False):
+    def select_columns(self,cols=None,deselect=False,by_type=True,select_all=False):
         """
         select columns for use in analysis. Selection can be based on column name 
         or number (0-indexed) or on column type as provided in metadata. 
@@ -111,14 +111,28 @@ class PreProcessor(object):
             self._colmetadata = self._rawcolmetadata.copy()
         else:
             if by_type == True:
+                self._check_colTypes(cols)
                 self._select_by_type(cols,deselect=False)
             else:
+                self._check_colNames(cols)
                 self._select_by_label(cols,deselect=False)
 
     def _check_selection(self):
         if (self._data is None) or (self._colmetadata is None):
             raise RuntimeError(
                 'No data has been selected for analysis. Please select data using the select_columns() method.')
+
+    def _check_colTypes(self, cols):
+        for i in range(len(cols)):
+            if cols[i] not in [d['ColTypes'] for d in self._rawcolmetadata]:
+                warnings.warn("Warning: Column type '%s' not found in data. Please check column type."%cols[i])
+
+
+    def _check_colNames(self, cols):
+        for i in range(len(cols)):
+            if cols[i] not in [d['ColNames'] for d in self._rawcolmetadata]:
+                warnings.warn("Warning: Column name %s not found in data. Please check column name."%cols[i])
+        
 
     def _select_by_type(self,cols,deselect=False):
         """
@@ -130,13 +144,13 @@ class PreProcessor(object):
         cnames = []
         colmetadata = []
         if deselect:
-            for i in len(self._rawcolmetadata):
+            for i in range(len(self._rawcolmetadata)):
                 if self._rawcolmetadata[i]["ColTypes"] in cols:
                     cnames.append(self._rawcolmetadata[i]["ColNames"])
                 else:
                     colmetadata.append(self._rawcolmetadata[i])
         else:
-            for i in len(self._rawcolmetadata):
+            for i in range(len(self._rawcolmetadata)):
                 if self._rawcolmetadata[i]["ColTypes"] not in cols:
                     cnames.append(self._rawcolmetadata[i]["ColNames"])
                 else:
