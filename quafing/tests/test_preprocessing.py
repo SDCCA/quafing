@@ -1,6 +1,7 @@
 import sys
 from py import process
 from pyparsing import PrecededBy
+from zmq import PROTOCOL_ERROR_ZAP_INVALID_STATUS_CODE
 sys.path.insert(0, '/mnt/c/Documents and Settings/PranavChandramouli/Documents/One Drive/OneDrive - Netherlands eScience Center/Projects/Social_Dynamics/quafing')
 
 import pytest
@@ -59,18 +60,29 @@ def test_select_col():
     assert processed_data._data.shape == (4,1)
     processed_data.select_columns(["a","b"])
     assert processed_data._data.shape == (4,2)
+    with pytest.warns(UserWarning):
+        processed_data.select_columns(["col1"],by_type=False)
+    with pytest.warns(UserWarning):
+        processed_data.select_columns(["col1"])        
 
 def test_shuffle():
-    processed_data.select_columns([],select_all=True)
+    processed_data.select_columns(select_all=True)
     data = processed_data._data
     processed_data.shuffle()
     data2 = processed_data._data
-    assert list(data1.index) != list(data2.index) 
+    assert list(data.index) != list(data2.index) 
 
 def test_randomize_data():
-    processed_data.select_columns([],select_all=True)
+    processed_data.select_columns(select_all=True)
     data = processed_data._data
     data2 = data.copy()
     processed_data.randomize_data('Col1')
     data = processed_data._data
-    assert list(data1.index) != list(data2.index) 
+    assert list(data['Col1']) != list(data2['Col1']) 
+
+def test_set_cont_disc():
+    processed_data.select_columns(select_all=True)
+    processed_data.set_cont_disc('a')
+
+def test_validate_by_label():
+
