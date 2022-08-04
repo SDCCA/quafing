@@ -227,7 +227,7 @@ class PreProcessor(object):
                     'Column specification contains mixed types')
         return colnames
 
-    def set_cont_disc(self,cols=['c'],*,by_type=True,complement=True, disccols=None):
+    def set_cont_disc(self,cols=['c'],*,by_type=True,complement=True, disccols=[]):
 
         self._check_selection()
         if not by_type:
