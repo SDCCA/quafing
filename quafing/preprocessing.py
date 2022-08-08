@@ -267,7 +267,7 @@ class PreProcessor(object):
                     cols.append(k)
                     tmethod.append(m)
                 method = tmethod
-                delvar(tmethod)
+                del(tmethod)
             if not by_type:
                 cols=self._validate_by_label(cols)
             if len(method) != len(cols):
