@@ -39,30 +39,38 @@ class MultiPdfCollection(object):
 
     	if len(self._collection) != len(self._labels):
     		raise RuntimeError(
-    			f"number of mpdfs in collection ({len(self._collection)}) does not match number of labels ({len(self._labels)})")
+    			f"number of mdpdfs in collection ({len(self._collection)}) does not match number of labels ({len(self._labels)})")
 
-        if not all([mdpdf._mdpftype == self._mdpftype for mpdf in self._collection]):
+        if not all([mdpdf._mdpftype == self._mdpftype for mdpdf in self._collection]):
         	raise RuntimeError(
         		'mpdf types do not match expected type') 
         																																																																																																																																																								
     def _validate_metadata(self):
 
-    	if not all([mpdf._colmetadata == metadata for mpdf in self._collection]):
+    	if not all([mdpdf._colmetadata == self._metadata for mdpdf in self._collection]):
     	    raise RuntimeError(
     	    	'mismatch in metadata. mpdf column metadata does not match reference.')
 
-    	if not all([mpdf._colmetadata == self._collection[0]._colmetadata for mpdf in self._collection]):
+    	if not all([mdpdf._colmetadata == self._collection[0]._colmetadata for mdpdf in self._collection]):
     		raise RuntimeError(
-    			'mismatch between column metadata of mpdfs in collection ')
+    			'mismatch between column metadata of mdpdfs in collection ')
 
 
     def _calculate_all_mdpdfs(self,*args,**kwargs):
-   	    mpdf.caculate_pdf(*args,**kwargs) for mpdf in self._collection
+   	    mdpdf.caculate_pdf(*args,**kwargs) for mdpdf in self._collection
 
-   	def calculate_distance_matrix(self):
+   	def calculate_distance_matrix(self,method=None,pwdist=None,dims=None,kwargs_list=None):
    	    """
    	    TODO
    	    """
+        mdpdfs = self._collection
+        dist_matrix = np.zeros((len(mdpdfs), len(mdpdfs)))
+        for i in range(len(mdpdfs)):
+            for j in range(i):
+                if i == j: continue
+                ifd = information_distance(mdpdfs1,mdpdfs2,method=method,pwdist=pwdist,dims=dims,kwargs_list=None)
+                distances[i, j] = ifd
+                distances[j, i] = distances[i, j]
 
     def caculate_dissimilarity_matrix(self):
         """	
