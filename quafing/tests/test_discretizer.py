@@ -1,0 +1,43 @@
+from re import A
+import sys
+from py import process
+from pyparsing import PrecededBy
+from zmq import PROTOCOL_ERROR_ZAP_INVALID_STATUS_CODE
+
+sys.path.insert(0, '/mnt/c/Documents and Settings/PranavChandramouli/Documents/One Drive/OneDrive - Netherlands eScience Center/Projects/Social_Dynamics/quafing')
+
+import pytest
+
+import numpy as np
+import pandas as pd
+import quafing
+
+import quafing.preprocessing
+import quafing.discretization
+from quafing.discretization.discretize import discretize
+
+path='test_data.xlsx'
+metadata_true,data_true=quafing.load(path)
+processed_data = quafing.preprocessing.PreProcessor(data_true,metadata_true)
+processed_data.select_columns(select_all=True)
+
+def test_discretize():
+    disc = discretize(processed_data._data, processed_data._colmetadata, method = 'BayesianBlocks')
+    assert disc is not None
+    disc = discretize(processed_data._data, processed_data._colmetadata, method = 'BayesianBlocks', cols=['b'])
+    assert disc[0]['Disc'] is None
+    assert disc[1]['Disc'] is not None
+
+def test_method_specification():
+    with pytest.raises(RuntimeError, match=r'discretize requires a method to be specified, but none was specified'):
+        disc = discretize(processed_data._data, processed_data._colmetadata)
+    with pytest.raises(NotImplementedError):
+        disc = discretize(processed_data._data, processed_data._colmetadata, method = 'Bbl')
+
+def test_perform_discretization():
+    with pytest.raises(ValueError, match=r'specified column types not all present in data'):
+        disc = discretize(processed_data._data, processed_data._colmetadata, method='BayesianBlocks',cols=['d'])
+    with pytest.raises(ValueError, match=r'Column specification contains mixed types'):
+        disc = discretize(processed_data._data, processed_data._colmetadata, method='BayesianBlocks',cols=[2,'d'], byType=False)
+
+
