@@ -1,3 +1,4 @@
+from re import A
 import sys
 from py import process
 from pyparsing import PrecededBy
@@ -42,13 +43,15 @@ def test_check_dimensions():
         data = pd.DataFrame(np.random.randint(10, size=(3,3)))
         metadata = {
             "ColTypes": 'a', 
-            "ColNames": ['col1', 'col2']
+            "ColNames": ['col1', 'col2'],
+            "QuestionNumbers": ['1', '2' ]
         }
         data_test = quafing.preprocessing.PreProcessor(data,metadata) 
     with pytest.raises(ValueError, match = r'Mismatch in length between data and metadata'):
         metadata = {
             "ColTypes": ['a'], 
-            "ColNames": ['col1']
+            "ColNames": ['col1'],
+            "QuestionNumbers": ['1']
         }
         data_test = quafing.preprocessing.PreProcessor(data,metadata)
 
@@ -67,16 +70,14 @@ def test_select_col():
 
 def test_shuffle():
     processed_data.select_columns(select_all=True)
-    data = processed_data._data
-    data2 = data.copy()
+    data2 = processed_data._data.copy()
     processed_data.shuffle()
     data = processed_data._data
     assert list(data.index) != list(data2.index) 
 
 def test_randomize_data():
     processed_data.select_columns(select_all=True)
-    data = processed_data._data
-    data2 = data.copy()
+    data2 = processed_data._data.copy()
     processed_data.randomize_data('Col1')
     data = processed_data._data
     assert list(data['Col1']) != list(data2['Col1']) 
@@ -98,3 +99,33 @@ def test_validate_by_label():
         processed_data.select_columns(select_all=True)
         processed_data.set_cont_disc(cols=['Col1',2], by_type=False)
         
+def test_set_density_method():
+    processed_data.set_density_method(method='Discrete1D',cols=['b','c'])
+    assert processed_data._colmetadata[0]['density_method'] is None
+    assert processed_data._colmetadata[1]['density_method'] == 'Discrete1D' 
+    processed_data.set_density_method(method=['Discrete1D', 'Discrete1D'],cols=['b','c'])
+    assert processed_data._colmetadata[0]['density_method'] is None
+    assert processed_data._colmetadata[1]['density_method'] == 'Discrete1D' 
+    processed_data.set_density_method(method={'b': 'Discrete1D', 'c': 'Discrete1D'})
+    assert processed_data._colmetadata[0]['density_method'] is None
+    assert processed_data._colmetadata[1]['density_method'] == 'Discrete1D' 
+    with pytest.raises(RuntimeError, match=r'no method for density estimation specified'):
+        processed_data.set_density_method()
+
+def test_group():
+    processed_data.select_columns(select_all=True)
+    data2 = processed_data._data.copy()
+    processed_data._data.loc[2,'Col1'] = processed_data._data['Col1'][0]
+    processed_data.group('Col1')
+    data = processed_data._data
+    assert list(data['Col1']) != list(data2['Col1']) 
+
+def test_split_to_group():
+    processed_data.select_columns(select_all=True)
+    processed_data.split_to_groups('Col1')
+    assert processed_data._groups is not None
+
+def test_get_joint_discretization(method= 'BayesianBlocks'):
+    disc = pd.DataFrame(None)
+    disc = processed_data.get_joint_discretization(method = 'BayesianBlocks')
+    assert disc is not None
