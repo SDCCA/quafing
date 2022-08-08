@@ -339,7 +339,7 @@ class PreProcessor(object):
             if inplace:
                 groupdata.drop(columns=self._groupingcolumn,inplace=inplace)
             else:
-                groupdata = groupdata.drop(columns=self.groupingcolumn,inplace=inplace)
+                groupdata = groupdata.drop(columns=self._groupingcolumn,inplace=inplace)
             groups.append(groupdata)
 
         self._groups = groups
