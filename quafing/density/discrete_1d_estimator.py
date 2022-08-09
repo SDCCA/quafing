@@ -34,7 +34,7 @@ class DiscreteDensityEstimator1d(DiscreteDensityEstimator):
 
     def _intrinsic_discrete_data_density(self):
         if isinstance(self._data, pd.Series):
-            self._unique = data.unique()
+            self._unique = self._data.unique()
         else:
             self._unique = np.unique(self._data)
         disc_pdf = {}

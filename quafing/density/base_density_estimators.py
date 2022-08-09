@@ -72,7 +72,7 @@ class DiscreteDensityEstimator(DensityEstimator):
                 raise RuntimeError(
                     'Estimation of discrete densities for non-discrete data requires a user supplied discretization')
 
-    def _set_class_discetization_info(self, discrete, discretization):
+    def _set_class_discretization_info(self, discrete, discretization):
         self._discrete = discrete
         self._discretization = discretization
 
