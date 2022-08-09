@@ -109,8 +109,10 @@ def continuous_hellinger_nd():
 
 class HellingerDistance(InformationDistancePiecewise):
 
-    def __init__(self,mdpdfs1, mdpdfs2, pwdist=None, dims='1d'):
+    def __init__(self,mdpdfs1, mdpdfs2, pwdist=None, dims=None):
         super().__init__(mdpdfs1,mdpdfs2,pwdist)
+        if dims is None:
+            dims = self._auto_dims()
         self._set_dist(dims)
 
 

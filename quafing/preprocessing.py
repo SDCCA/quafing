@@ -228,7 +228,6 @@ class PreProcessor(object):
         return colnames
 
     def set_cont_disc(self,cols=['c'],*,by_type=True,complement=True, disccols=[]):
-        
         self._check_selection()
         if not by_type:
             cols = self._validate_by_label(cols)
