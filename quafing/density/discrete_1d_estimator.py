@@ -10,7 +10,7 @@ class DiscreteDensityEstimator1d(DiscreteDensityEstimator):
 
 
     def _check_input_1d(self):
-        if isinstance(self._data,pd.Series):
+        if isinstance(self._data,pd.Series ):
             pass    
         elif isinstance(self._data,np.ndarray):
             if self._data.ndim == 1:
@@ -34,7 +34,7 @@ class DiscreteDensityEstimator1d(DiscreteDensityEstimator):
 
     def _intrinsic_discrete_data_density(self):
         if isinstance(self._data, pd.Series):
-            self._unique = data.unique()
+            self._unique = self._data.unique()
         else:
             self._unique = np.unique(self._data)
         disc_pdf = {}
