@@ -3,29 +3,29 @@ from scipy.integrate import quad
 from quafing.distance.base_distance import InformationDistancePiecewise
 
 def _choose_cosine_func(dim):
-	if dim == '1d':
-    	info_dist = cosine_1d
+    if dim == '1d':
+        info_dist = cosine_1d
     elif dim == 'nd':
-    	"""
-    	TODO implement higher dimensional cosine distance
-    	"""
-    	info_dist = cosine_nd
+        """
+        TODO implement higher dimensional cosine distance
+        """
+        info_dist = cosine_nd
     else:
         raise RuntimeError(
-        	f'invalid distance specification {dims}')
+            f'invalid distance specification {dims}')
     return info_dist
 
 
 
 def cosine_1d(pdf1,pdf2,is_discrete=False, bbox=(-np.inf,np.inf)):
-	    if is_discrete:
-	    	return discrete_cosine_1d(pdf1,pdf2)
-	    else:
-	    	return continuous_cosine_1d(pdf1,pdf2,bbox=bbox)
+        if is_discrete:
+            return discrete_cosine_1d(pdf1,pdf2)
+        else:
+            return continuous_cosine_1d(pdf1,pdf2,bbox=bbox)
 
 
 def discrete_cosine_1d(p1,p2):
-	""" Computes the cosine (great-circle) distance between p1 and p2.
+    """ Computes the cosine (great-circle) distance between p1 and p2.
 
     Args:
         p1 : dict with keys as values and values as probabilities
@@ -44,7 +44,7 @@ def discrete_cosine_1d(p1,p2):
             tot_sum += np.sqrt(p1[k] * p2[k])
     return np.arccos(tot_sum)
 
-def continuous_cosine_1d(p1,p2,bbox=(-np.inf,np.inf))	
+def continuous_cosine_1d(p1,p2,bbox=(-np.inf,np.inf)):
     """ Computes the cosine (great-circle) distance of two continuous PDFs.
 
     Args:
@@ -67,27 +67,27 @@ def continuous_cosine_1d(p1,p2,bbox=(-np.inf,np.inf))
     return np.arccos(integral[0])
 
 def cosine_nd():
-	"""
-	TO DO
-	"""
+    """
+    TO DO
+    """
     if is_discrete:
-	    return discrete_cosine_nd()
-	else:
-	     return continuous_cosine_nd()
+        return discrete_cosine_nd()
+    else:
+         return continuous_cosine_nd()
 
 def discrete_cosine_nd():
-	"""
-	TO DO
-	"""
-	raise NotImplementedError(
-		'nd discrete cosine distance not yet implemented')
+    """
+    TO DO
+    """
+    raise NotImplementedError(
+        'nd discrete cosine distance not yet implemented')
 
 def continuous_cosine_nd():
-	"""
-	TO DO
-	"""
-	raise NotImplementedError(
-		'nd continuous cosine distance not yet implemented')
+    """
+    TO DO
+    """
+    raise NotImplementedError(
+        'nd continuous cosine distance not yet implemented')
 
     
 
@@ -103,8 +103,8 @@ class CosineDistance(InformationDistancePiecewise):
 
     def _set_dist(self, dims):
         if isinstance(dims,str):
-    	    self._info_dist = _choose_cosine_func(dims)
-        elif isinstance(dims,list)
+            self._info_dist = _choose_cosine_func(dims)
+        elif isinstance(dims,list):
             funcs = [ _choose_cosine_func(dim) for dim in dims]
             self._info_dist = funcs    
 
