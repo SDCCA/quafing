@@ -9,7 +9,7 @@ from quafing.density import continuous_estimators
 
 
 def _avg_dist(distances):
-	return np.average(np.array(distances))
+    return np.average(np.array(distances))
 
 def _rms_dist(distances):
     return np.sqrt(np.sum(distances ** 2))
@@ -18,11 +18,11 @@ def _sum_dist(distances):
     return np.array(distances).sum()
 
 def _get_pwdist_func(pwdist="rms"):
-	pwdistfuncs = {
-	    "avg": _avg_dist,
-	    "sum": _sum_dist,
-	    "rms": _rms_dist
-	}
+    pwdistfuncs = {
+        "avg": _avg_dist,
+        "sum": _sum_dist,
+        "rms": _rms_dist
+    }
     if not pwdist in pwdistfuncs.keys():
         raise RuntimeError(
             f'no valid piecewise distance function specified. valid options are {[f for f in pwdistfuncs]}')
@@ -63,41 +63,40 @@ class InformationDistance(object):
 
     def _validate_input(self):
 
-    	if self._mdpdf1._type == self._mdpdf2._type:
+        if type(self._mdpdf1) == type(self._mdpdf2):
             pass
-    	else:
+        else:
             raise RuntimeError(
                 f"mdpdf type mismatch. mdpdf1: {self._mdpdf1._type} mdpdf2: {self._mdpdf2._type} ")
 
         if self._mdpdf1._colmetadata == self._mdpdf2._colmetadata:
             pass
         else:
-        	raise RuntimeError(
-        		'mismatch in mdpdf metadata')
+            raise RuntimeError(
+                'mismatch in mdpdf metadata')
 
         if len(self._mdpdf1._pdf_meta) == len(self._mdpdf2._pdf_meta):
             pass
         else:
-        	raise RuntimeError(
-        		f'mismatch in length of mdpdfs. mdpdf1: {len(self._mdpdf1._pdf_meta)} mdpdf2: {len(self._mdpdf2._pdf_meta)} ')
+            raise RuntimeError(
+                f'mismatch in length of mdpdfs. mdpdf1: {len(self._mdpdf1._pdf_meta)} mdpdf2: {len(self._mdpdf2._pdf_meta)} ')
 
     def calculate_distance(self):
-    	raise NotImplementedError(
-    	    "Class %s doesn't implement calculate_distance()"% self.__class__.__name__ )
+        raise NotImplementedError(
+            "Class %s doesn't implement calculate_distance()"% self.__class__.__name__ )
 
 
 class InformationDistancePiecewise(InformationDistance):
 
-	def __init__(self, mdpdf1, mdpdf2, pwdist=None):
-
-		super().__init__(mdpdf1,mdpdf2)
-		self._pwdistfunc = None
+    def __init__(self, mdpdf1, mdpdf2, pwdist=None):
+        super().__init__(mdpdf1,mdpdf2)
+        self._pwdistfunc = None
         self._info_dist = None
 
         self._set_pwdist_func(pwdist)
 
-	def _set_pwdist_func(self, pwdist):
-		self._pwdistfunc = _get_pwdist_func(pwdist)
+    def _set_pwdist_func(self, pwdist):
+        self._pwdistfunc = _get_pwdist_func(pwdist)
 
     def _auto_dims(self):
         pdf_meta = self._mdpdfs1.get_pdf_metadata()
@@ -105,7 +104,7 @@ class InformationDistancePiecewise(InformationDistance):
         for i,md in enumerate(pdf_meta):
             if len(md['data_dimension']) == 1:
                 dim = '1d'
-            elif len(md['data_dimension']) >= 2
+            elif len(md['data_dimension']) >= 2:
                 dim = 'nd'
             else:
                 raise RuntimeError(
@@ -116,15 +115,15 @@ class InformationDistancePiecewise(InformationDistance):
             dims = dims[0]
 
         return dims
-		
-		
-	def calculate_distance(self, infinite_indicees = False, kwargs_list = None ):
+        
+        
+    def calculate_distance(self, infinite_indicees = False, kwargs_list = None ):
         if self._pwdistfunc is None:
-        	raise RuntimeError(
-        		"no piecewise distance aggregator specified")
+            raise RuntimeError(
+                "no piecewise distance aggregator specified")
         if self._info_dist is None:
-        	raise RuntimeError(
-        		"no distance function specified")
+            raise RuntimeError(
+                "no distance function specified")
 
         pdfs1 = self._mdpdfs1.get_pdf()
         pdfs1_meta = self._mdpdfs1.get_pdf_metadata()
@@ -132,9 +131,9 @@ class InformationDistancePiecewise(InformationDistance):
         pdfs2_meta = self._mdpdfs2.get_pdf_metadata()
 
         if isinstance(self._info_dist,list):
-        	if len(self._info_dist) != len(pdfs1):
-        		raise RuntimeError(
-        			'number of specified distance function does not match number of component pdfs')
+            if len(self._info_dist) != len(pdfs1):
+                raise RuntimeError(
+                    'number of specified distance function does not match number of component pdfs')
             func_list = self._info_dist
 
             if not all([isinstance(f,types.FunctionType) for f in func_list]):
@@ -160,14 +159,14 @@ class InformationDistancePiecewise(InformationDistance):
                 raise RuntimeError(
                     'kwargs_list must be a dict')
 
-         pwdistances = []       
+        pwdistances = []
 
         for pdf1,pdf1meta,pdf2,pdf2meta,func,kw in zip(pdfs1, pdfs1_meta, pdfs2, pdfs2_meta, func_list, kwargs_list):
             dist = _info_dist(pdf1,pdf1meta,pdf2,pdf2meta,func,kw)
             pwdistances.append(dist)
 
         pwdistances = np.array(pwdistances)
-        infindicees = [i, for i,d in enumerate(pwdistances) if np.isinf(d)]
+        infindicees = [i for i,d in enumerate(pwdistances) if np.isinf(d)]
 
         distance = self._pwdistfunc(pwdistances)
 
