@@ -1,5 +1,8 @@
 import os
 import warnings
+import networkx as nx
+import community
+import metis
 
 from quafing.multipdf.multipdf import create_multi_pdf
 
@@ -23,9 +26,9 @@ class MultiPdfCollection(object):
         self._labels = labels
         self._metadata = metadata
         self._mdpftype = mdpdftype
-        self._distance_matrix = None
-        self._shortest_path_matrix = None
-        self._dissimilarity_matrix = None
+        self.distance_matrix = None
+        self.shortest_path_matrix = None
+        self.dissimilarity_matrix = None
 
         self._validate()
         if validate_metadata:
@@ -59,7 +62,7 @@ class MultiPdfCollection(object):
     def _calculate_all_mdpdfs(self,*args,**kwargs):
    	    mdpdf.caculate_pdf(*args,**kwargs) for mdpdf in self._collection
 
-   	def calculate_distance_matrix(self,method=None,pwdist=None,dims=None,kwargs_list=None):
+   	def calculate_distance_matrix(self,method=None,pwdist=None,dims=None, return_result=False,kwargs_list=None):
    	    """
    	    TODO
    	    """
@@ -68,19 +71,52 @@ class MultiPdfCollection(object):
         for i in range(len(mdpdfs)):
             for j in range(i):
                 if i == j: continue
-                ifd = information_distance(mdpdfs1,mdpdfs2,method=method,pwdist=pwdist,dims=dims,kwargs_list=None)
-                distances[i, j] = ifd
-                distances[j, i] = distances[i, j]
+                ifd = information_distance(mdpdfs[i],mdpdfs[j],method=method,pwdist=pwdist,dims=dims,kwargs_list=None)
+                dist_matrix[i, j] = ifd
+                dist_matrix[j, i] = dist_matrix[i, j]
+
+        if return_result:
+            return dist_matrix
+        else:
+            self.distance_matrix = dist_matrix 
 
     def caculate_dissimilarity_matrix(self):
         """	
         TODO
         """
 
-   	def calculate_shortest_path_matrix(self):
-   	    """
-   	    TODO
-   	    """
+   	def calculate_shortest_path_matrix(self, dist_matrix=None, return_result=False):
+        """ Takes the distance matrix and computes the shortest path matrix
+        between all pairs of units in the groups.
+
+        Args:
+            A (numpy square matrix): A distances matrix (all entries positive)
+
+        Returns: A matrix with shortest distances.
+
+        """
+        if not dist_matrix is None:
+            A = dist_matrix
+        else:
+            A = self.distance_matrix
+
+
+        assert isinstance(A, np.ndarray)
+        assert len(A.shape) == 2 and A.shape[0] == A.shape[1]
+        assert np.all(A >= 0)
+
+        g = nx.from_numpy_matrix(A)
+        paths = dict(nx.all_pairs_dijkstra_path_length(g))
+        new_mat = np.zeros(A.shape)
+        for i in range(A.shape[0]):
+            for j in range(i):
+                new_mat[i, j] = new_mat[j, i] = paths[i][j]
+
+        if return_result:
+            return new_mat
+        else:
+            self.shortest_path_matrix = new_mat
+            
 
    	def get_distance_matrix(self):
    		if self._distance_matrix is None:
