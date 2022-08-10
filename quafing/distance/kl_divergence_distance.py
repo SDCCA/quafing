@@ -3,31 +3,31 @@ from scipy.integrate import quad
 from quafing.distance.base_distance import InformationDistancePiecewise
 
 def _choose_sym_kl_div_func(dim):
-	if dim == '1d':
-    	info_dist = sym_kl_div_1d
+    if dim == '1d':
+        info_dist = sym_kl_div_1d
     elif dim == 'nd':
-    	"""
-    	TODO implement higher dimensional cosine distance
-    	"""
-    	info_dist = sym_kl_div_nd
+        """
+        TODO implement higher dimensional cosine distance
+        """
+        info_dist = sym_kl_div_nd
     else:
         raise RuntimeError(
-        	f'invalid distance specification {dims}')
+            f'invalid distance specification {dims}')
     return info_dist
 
     
 
 
 def sym_kl_div_1d(pdf1,pdf2,is_discrete=False, bbox=(-np.inf,np.inf),base=None):
-	    if is_discrete:
-	    	kl12 = discrete_kl_div_1d(pdf1,pdf2,base=base)
+        if is_discrete:
+            kl12 = discrete_kl_div_1d(pdf1,pdf2,base=base)
             kl21 = discrete_kl_div_1d(pdf2,pdf1,base=base)
             if np.isinf(kl12) and np.isinf(kl21):
                 return np.inf
             else:
                 m = 2.0 * np.nanmin([kl1, kl2])
                 return np.sqrt(m)
-	    else:
+        else:
             kl12 = continuous_kl_div_1d(pdf1,pdf2,bbox=bbox,base=base)
             kl21 = continuous_kl_div_1d(pdf2,pdf1,bbox=bbox,base=base)
             if np.isinf(kl12) and np.isinf(kl21):
@@ -36,7 +36,7 @@ def sym_kl_div_1d(pdf1,pdf2,is_discrete=False, bbox=(-np.inf,np.inf),base=None):
                 m = 2.0 * np.nanmin([kl1, kl2])
                 return np.sqrt(m)
 
-	    	
+            
 
 
 def discrete_kl_div_1d(p1,p2,base=None):
@@ -84,7 +84,7 @@ def discrete_kl_div_1d(p1,p2,base=None):
             return np.inf
             #kl += 0
     return kl
-	
+    
 
 def continuous_kl_div_1d(p1,p2,bbox=(-np.inf,np.inf),base=None):
     """ Computes the continuous KL divergence from p1 to p2, limited to the
@@ -126,25 +126,25 @@ def continuous_kl_div_1d(p1,p2,bbox=(-np.inf,np.inf),base=None):
     
 
 def sym_kl_div_nd():
-	"""
-	TO DO
-	"""
+    """
+    TO DO
+    """
     raise NotImplementedError(
         'sym_kl_div_nd() not implemented')
 
 def discrete_kl_div_nd():
-	"""
-	TO DO
-	"""
-	raise NotImplementedError(
-		'nd discrete kl divergence distance not yet implemented')
+    """
+    TO DO
+    """
+    raise NotImplementedError(
+        'nd discrete kl divergence distance not yet implemented')
 
 def continuous_kl_div_nd():
-	"""
-	TO DO
-	"""
-	raise NotImplementedError(
-		'nd continuous kl divergence distance not yet implemented')
+    """
+    TO DO
+    """
+    raise NotImplementedError(
+        'nd continuous kl divergence distance not yet implemented')
 
     
 
@@ -160,8 +160,8 @@ class SymKLDivDistance(InformationDistancePiecewise):
 
     def _set_dist(self, dims):
         if isinstance(dims,str):
-    	    self._info_dist = _choose_sym_kl_div_func(dims)
-        elif isinstance(dims,list)
+            self._info_dist = _choose_sym_kl_div_func(dims)
+        elif isinstance(dims,list):
             funcs = [ _choose_sym_kl_div_func(dim) for dim in dims]
             self._info_dist = funcs    
 
