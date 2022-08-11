@@ -343,12 +343,14 @@ class PreProcessor(object):
 
         self._groups = groups
 
-    def get_joint_discretization(self,method=None,*args,**kwargs):
+    def get_joint_discretization(self,method=None,return_result=False,*args,**kwargs):
         """
         Obtain discretization of columns/questions with continuous answer space,
         common across all groups being considered
 
         :param method: keyword specifying discretization method. See discretization documentation
+        :param return_result: bool; default False. Either return obtained discretization, or 
+                              update self._colmetadata (default) of PreProcesor instance 
         :param *args: optional arguments to be passed to discretization methods
         :param *kwargs: optional keyword arguments to be passed to discrettization methods
         :return discretization: list of arrays ith biin borders
@@ -356,4 +358,14 @@ class PreProcessor(object):
 
         self._check_selection()
         disc = discretize(self._data,self._colmetadata,method=method,*args,**kwargs)
-        return disc 
+
+        if return_result:
+            return disc
+        else:
+            for i, ent in enumerate(disc):
+                for j, md in enumerate(self._colmetadata):
+                    if ent['ColNames'] == md['ColNames']
+                        self._colmetadata[j].update(ent)
+                        break
+                    else:
+                        pass 

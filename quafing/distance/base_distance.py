@@ -145,7 +145,7 @@ class InformationDistancePiecewise(InformationDistance):
             else:
                 if not isinstance(kwargs_list,list) and len(kwargs_list) == len(self._info_dist):
                     raise RuntimeError(
-                        'kwarg_list must be of type list and equal in lengtg to the pdfs provided')
+                        'kwargs_list must be of type list and equal in length to the pdfs provided')
         else:
             if not isinstance(self._info_dist,types.FunctionType):
                 raise RuntimeError(
