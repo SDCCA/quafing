@@ -67,7 +67,7 @@ class InformationDistance(object):
             pass
         else:
             raise RuntimeError(
-                f"mdpdf type mismatch. mdpdf1: {self._mdpdf1._type} mdpdf2: {self._mdpdf2._type} ")
+                f"mdpdf type mismatch. mdpdf1: {type(self._mdpdf1)} mdpdf2: {type(self._mdpdf2)} ")
 
         if self._mdpdf1._colmetadata == self._mdpdf2._colmetadata:
             pass
