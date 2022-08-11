@@ -27,6 +27,7 @@ class MultiPdfCollection(object):
         self._metadata = metadata
         self._mdpftype = mdpdftype
         self.distance_matrix = None
+        self._distance_matrix_type = None
         self.shortest_path_matrix = None
         self.dissimilarity_matrix = None
 
@@ -79,6 +80,7 @@ class MultiPdfCollection(object):
             return dist_matrix
         else:
             self.distance_matrix = dist_matrix 
+            self._distance_matrix_type = method
 
     def caculate_dissimilarity_matrix(self):
         """	
@@ -116,7 +118,7 @@ class MultiPdfCollection(object):
             return new_mat
         else:
             self.shortest_path_matrix = new_mat
-            
+
 
    	def get_distance_matrix(self):
    		if self._distance_matrix is None:
