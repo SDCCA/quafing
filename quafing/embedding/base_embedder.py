@@ -16,6 +16,7 @@ class Embedder(object):
 				warnings.warn(f'Warning: specified multi dimensional pdf collection oes not have expected type.')
 
 	    self._dmatrix = None
+	    
 
 	def user_supplied_matrix(self,A):
 
@@ -34,15 +35,12 @@ class Embedder(object):
             else:
             	warnings.warn('specified matrix is not of required type np.ndarray')
 
-    def update_embedding_default_parameters(self):
+    def set_embedding_parameters(self):
     	raise NotImplementedError(
-            "Class %s doesn't implement update_embedding_default_parmeters()"% self.__class__.__name__ )
+            "Class %s doesn't implement set_embedding_parmeters()"% self.__class__.__name__ )
 
     def embed(self):
         raise NotImplementedError(
             "Class %s doesn't implement embed()"% self.__class__.__name__ )
 
-    def plot_embedding(self):
-    	raise NotImplementedError(
-            "Class %s doesn't implement plot_embedding()"% self.__class__.__name__ )
 

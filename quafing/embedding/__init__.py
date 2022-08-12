@@ -6,7 +6,7 @@ embedders ={
 	'mds':mds
 }
 
-def get_embedder(method,mdpdf_collection=None):
+def retrieve_embedder(method,mdpdf_collection=None):
 
     _check_embedding_method(method)
     embedder = embedders[method]
@@ -21,4 +21,3 @@ def _check_embedding_method(method):
 
 
 
-        
