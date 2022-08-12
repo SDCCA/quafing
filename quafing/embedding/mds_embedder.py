@@ -20,7 +20,9 @@ class MDSEmbedder(Embedder):
             'n_jobs':1
             })
 
+        self._embedding_method = "MDS"
         self._mds_pars = dict(self._mds_defaults)
+
 
     def set_embedding_parameters(self, default=False, **kwargs):
     	if default:
@@ -56,7 +58,7 @@ class MDSEmbedder(Embedder):
         embedding = fit.embedding_
         stress = fit.stress_
 
-        auxinfo = {**self._mds_pars,**{'seed':seed,'stress':stress}}
+        auxinfo = {**self._mds_pars,**{'seed':seed,'stress':stress,"embedding_method":self._embedding_method}}
 
         if return_stress:
         	return stress

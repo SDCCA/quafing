@@ -16,6 +16,7 @@ class Embedder(object):
 				warnings.warn(f'Warning: specified multi dimensional pdf collection oes not have expected type.')
 
 	    self._dmatrix = None
+	    self._embedding_method = None
 	    
 
 	def user_supplied_matrix(self,A):
