@@ -122,18 +122,24 @@ class MultiPdfCollection(object):
 
    	def get_distance_matrix(self):
    		if self._distance_matrix is None:
-   			self.calculate_distance_matrix()
-   		return self._distance_matrix
+   			raise ValueError(
+                'no distance matrix has been computed. Please o so prior to calling this function')
+        else:
+   		    return self._distance_matrix
 
    	def get_dissimilarity_matrix(self):
    		if self._dissimilarity_matrix is None:
-   			self.calculate_dissimilarity_matrix()
-   		return self._dissimilarity_matrix
+   			raise ValueError(
+                'no dissimilarity matrix has been computed. Please o so prior to calling this function')
+        else:
+   		    return self._dissimilarity_matrix
 
    	def get_shortest_path_matrix(self):
    	    if self._shortest_path_matrix is None:
-   			self.calculate_shortest_path_matrix()
-   		return self._shortest_path_matrix  
+   			raise ValueError(
+                'no shortest path matrix has been computed. Please o so prior to calling this function')
+        else:
+   		    return self._shortest_path_matrix  
 
         
 
