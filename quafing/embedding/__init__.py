@@ -1,6 +1,6 @@
 import os
 
-from .mds_embedder import MDSEmbedding as mds
+from .mds_embedder import MDSEmbedder as mds
 
 embedders ={
 	'mds':mds

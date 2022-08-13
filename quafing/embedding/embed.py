@@ -1,11 +1,12 @@
+import os
 from quafing.embedding import retrieve_embedder
 
-def get_embedding(method,mdpdf_collection=None, dimension=2,**kwargs)
+def get_embedding(method,mdpdf_collection=None, dimension=2,**kwargs):
     embedder = retrieve_embedder(method,mdpdf_collection=mdpdf_collection)
     embeding = embedder.embed(dimension=dimension,return_all=True)
     return embedding
 
-def get_embedder(method,mdpdf_collection=None)
+def get_embedder(method,mdpdf_collection=None):
     embedder = retrieve_embedder()
     return embedder
 
@@ -15,12 +16,12 @@ def plot_embedding(embedding,mdpdf_collection,color="distance", plot_title=""):
 
     if color not in color_axis:
         raise ValueError(
-        	f"color must be one of {[col for col in color_axis]}")
+            f"color must be one of {[col for col in color_axis]}")
 
-	em = embedding[0]
-	auxinfo = embedding[1]
-	dimension = auxinfo['dimensions']
-	if dimension > 3:
+    em = embedding[0]
+    auxinfo = embedding[1]
+    dimension = auxinfo['dimensions']
+    if dimension > 3:
 	    print('embedings with dimensions greater than 3 are currently not supported')
 	    pass
     else:

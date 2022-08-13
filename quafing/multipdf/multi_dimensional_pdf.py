@@ -5,7 +5,7 @@ import pandas as pd
 
 class MultiDimensionalPDF(object):
 
-    def __init__(self)
+    def __init__(self):
         self._data = None
         self._colmetadata = None
         self._pdf = None

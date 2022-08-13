@@ -1,4 +1,5 @@
 from quafing.multipdf import multipdf_init
+from quafing.multipdf.multipdf_collection import MultiPdfCollection
 
 def create_multi_pdf(mdpdfType, data,colmetadata,calculate=True,*args,**kwargs):
 	"""
@@ -18,3 +19,15 @@ def create_multi_pdf(mdpdfType, data,colmetadata,calculate=True,*args,**kwargs):
 	if calculate:
 	    mdpdf.calculate_pdf(*args,**kwargs)  
 	return mdpdf
+
+
+def create_mdpdf_collection(mdpfType, group_data, group_labels,colmetadata, calculate=True, validate_metadata=False, *args, **kwargs):
+    """
+    TODO
+    """
+    mdpdfs = []
+    for i, data in enumerate(group_data):
+        mdpdf = create_multi_pdf(mdpdfType,data, colmetadata, calculate=calculate, *args, **kwargs)
+        mdpdfs.append(mdpdf)
+    mdpdf_collection = MultiPdfCollection(mdpdfs,group_labels, colmetadata, mdpdfType, validate_metadata=validate_metadata)
+    return mdpdf_collection

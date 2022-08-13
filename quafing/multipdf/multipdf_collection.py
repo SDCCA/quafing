@@ -4,25 +4,14 @@ import networkx as nx
 import community
 import metis
 
-from quafing.multipdf.multipdf import create_multi_pdf
 
 
-def create_mdpdf_collection(mdpfType, group_data, group_labels,colmetadata, calculate=True, validate_metadata=False, *args, **kwargs):
-    """
-    TODO
-    """
-    mdpdfs = []
-    for i, data in enumerate(group_data):
-    	mdpdf = create_multi_pdf(mdpdfType,data, colmetadata, calculate=calculate, *args, **kwargs)
-        mdpdfs.append(mdpdf)
-    mdpdf_collection = MultiPdfCollection(mdpdfs,group_labels, colmetadata, mdpdfType, validate_metadata=validate_metadata)
-	return mdpdf_collection
 
 class MultiPdfCollection(object): 
 
     def __init__(self, collection, labels, metadata, mdpdftype, validate_metadata=True):
 
-    	self._collection = collection
+        self._collection = collection
         self._labels = labels
         self._metadata = metadata
         self._mdpftype = mdpdftype
@@ -33,40 +22,42 @@ class MultiPdfCollection(object):
 
         self._validate()
         if validate_metadata:
-        	self._validate_metadata()
+            self._validate_metadata()
 
     def _validate(self):
 
-    	if len(self._labels) != len(list(set(self._labels))):
+        if len(self._labels) != len(list(set(self._labels))):
             warnings.warn(
-            	"Duplicate labels were passed ")
+                "Duplicate labels were passed ")
 
-    	if len(self._collection) != len(self._labels):
-    		raise RuntimeError(
-    			f"number of mdpdfs in collection ({len(self._collection)}) does not match number of labels ({len(self._labels)})")
+        if len(self._collection) != len(self._labels):
+            raise RuntimeError(
+                f"number of mdpdfs in collection ({len(self._collection)}) does not match number of labels ({len(self._labels)})")
 
         if not all([mdpdf._mdpftype == self._mdpftype for mdpdf in self._collection]):
-        	raise RuntimeError(
-        		'mpdf types do not match expected type') 
+            raise RuntimeError(
+        	    'mpdf types do not match expected type') 
         																																																																																																																																																								
     def _validate_metadata(self):
 
-    	if not all([mdpdf._colmetadata == self._metadata for mdpdf in self._collection]):
-    	    raise RuntimeError(
-    	    	'mismatch in metadata. mpdf column metadata does not match reference.')
+        if not all([mdpdf._colmetadata == self._metadata for mdpdf in self._collection]):
+            raise RuntimeError(
+            'mismatch in metadata. mpdf column metadata does not match reference.')
 
-    	if not all([mdpdf._colmetadata == self._collection[0]._colmetadata for mdpdf in self._collection]):
-    		raise RuntimeError(
-    			'mismatch between column metadata of mdpdfs in collection ')
+        if not all([mdpdf._colmetadata == self._collection[0]._colmetadata for mdpdf in self._collection]):
+            raise RuntimeError(
+            'mismatch between column metadata of mdpdfs in collection ')
 
 
     def _calculate_all_mdpdfs(self,*args,**kwargs):
-   	    mdpdf.caculate_pdf(*args,**kwargs) for mdpdf in self._collection
+        for mdpdf in self._collection:
+            mdpdf.caculate_pdf(*args,**kwargs)
 
-   	def calculate_distance_matrix(self,method=None,pwdist=None,dims=None, return_result=False,kwargs_list=None):
-   	    """
-   	    TODO
-   	    """
+ 	
+    def calculate_distance_matrix(self,method=None,pwdist=None,dims=None, return_result=False,kwargs_list=None):
+        """
+        TODO
+        """
         mdpdfs = self._collection
         dist_matrix = np.zeros((len(mdpdfs), len(mdpdfs)))
         for i in range(len(mdpdfs)):
@@ -87,7 +78,8 @@ class MultiPdfCollection(object):
         TODO
         """
 
-   	def calculate_shortest_path_matrix(self, dist_matrix=None, return_result=False):
+   	
+    def calculate_shortest_path_matrix(self, dist_matrix=None, return_result=False):
         """ Takes the distance matrix and computes the shortest path matrix
         between all pairs of units in the groups.
 
@@ -120,26 +112,27 @@ class MultiPdfCollection(object):
             self.shortest_path_matrix = new_mat
 
 
-   	def get_distance_matrix(self):
-   		if self._distance_matrix is None:
-   			raise ValueError(
+    def get_distance_matrix(self):
+        if self._distance_matrix is None:
+   	        raise ValueError(
                 'no distance matrix has been computed. Please o so prior to calling this function')
         else:
-   		    return self._distance_matrix
+            return self._distance_matrix
 
-   	def get_dissimilarity_matrix(self):
-   		if self._dissimilarity_matrix is None:
-   			raise ValueError(
-                'no dissimilarity matrix has been computed. Please o so prior to calling this function')
+    def get_dissimilarity_matrix(self):
+        if self._dissimilarity_matrix is None:
+            raise ValueError(
+                'no disssimilarity matrix has been compute. Pleasse do so prior to calling this function')
         else:
-   		    return self._dissimilarity_matrix
+            return self._dissimilarity_matrix
 
-   	def get_shortest_path_matrix(self):
-   	    if self._shortest_path_matrix is None:
-   			raise ValueError(
-                'no shortest path matrix has been computed. Please o so prior to calling this function')
+
+    def get_shortest_path_maatrix(self):
+        if self._shortest_path_matrix is None:
+            raise ValueError(
+                'no shortest path maatrix has been computed. Pleasse do so prior to calling this function')
         else:
-   		    return self._shortest_path_matrix  
+            return self._shortest_path_matrix
 
         
 

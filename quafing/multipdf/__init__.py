@@ -7,9 +7,9 @@ multipdf_types = {
 }
 
 def multipdf_init(pdftype):
-	"""
-	Initialize 
-	"""
+    """
+    Initialize 
+    """
     _check_type(pdftype)
     multipdf = multipdf_types[pdftype]()
     multipdf._type = pdftyp
@@ -18,4 +18,4 @@ def multipdf_init(pdftype):
 def _check_type(pdftype):
     if pdftype not in multipdf_types:
         raise NotImplementedError(
-        	"Multi-dimensional PDF type %s unknown. Supported types are: %s" % (pdftype, ', '.join(multipdf_types.keys())))	
+            "Multi-dimensional PDF type %s unknown. Supported types are: %s" % (pdftype, ', '.join(multipdf_types.keys())))	
