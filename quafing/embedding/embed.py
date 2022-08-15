@@ -1,4 +1,17 @@
 import os
+import networkx as nx
+import community
+import metis
+import numpy as np
+
+import matplotlib.pyplot as plt
+import matplotlib.cm as cm
+import matplotlib.mlab as mlab
+from mpl_toolkits.mplot3d import Axes3D
+from mpl_toolkits.mplot3d import proj3d
+#from mpltools import style
+plt.style.use("ggplot")
+
 from quafing.embedding import retrieve_embedder
 
 def get_embedding(method,mdpdf_collection=None, dimension=2,**kwargs):
@@ -7,10 +20,10 @@ def get_embedding(method,mdpdf_collection=None, dimension=2,**kwargs):
     return embedding
 
 def get_embedder(method,mdpdf_collection=None):
-    embedder = retrieve_embedder()
+    embedder = retrieve_embedder(method,mdpdf_collection=mdpdf_collection)
     return embedder
 
-def plot_embedding(embedding,mdpdf_collection,color="distance", plot_title=""):
+def plot_embedding(embedding,mdpdf_collection,color="distance", plot_title="",show_labels=True):
 	    
     color_axis = ["distance","partition","metis"]
 
@@ -18,9 +31,9 @@ def plot_embedding(embedding,mdpdf_collection,color="distance", plot_title=""):
         raise ValueError(
             f"color must be one of {[col for col in color_axis]}")
 
-    em = embedding[0]
-    auxinfo = embedding[1]
-    dimension = auxinfo['dimensions']
+    em = embedding["embedding"]
+    auxinfo = embedding["auxinfo"]
+    dimension = auxinfo['dimension']
     if dimension > 3:
 	    print('embedings with dimensions greater than 3 are currently not supported')
 	    pass
@@ -51,7 +64,7 @@ def plot_embedding(embedding,mdpdf_collection,color="distance", plot_title=""):
                 for i, txt in enumerate(labels):
                     ax.annotate(txt[0], (x[i]+0.05, y[i]))
 
-        elif d == 3:
+        elif dimension == 3:
             if color == "distance":
                 cms = (np.average(em[:,0]), np.average(em[:,1]), np.average(em[:,2]))
                 dx = em[:,0] - cms[0]

@@ -1,9 +1,11 @@
 import os
 import warnings
+import numpy as np
 import networkx as nx
 import community
 import metis
 
+from quafing.distance.information_distance import information_distance
 
 
 
@@ -14,7 +16,7 @@ class MultiPdfCollection(object):
         self._collection = collection
         self._labels = labels
         self._metadata = metadata
-        self._mdpftype = mdpdftype
+        self._mdpdftype = mdpdftype
         self.distance_matrix = None
         self._distance_matrix_type = None
         self.shortest_path_matrix = None
@@ -34,9 +36,9 @@ class MultiPdfCollection(object):
             raise RuntimeError(
                 f"number of mdpdfs in collection ({len(self._collection)}) does not match number of labels ({len(self._labels)})")
 
-        if not all([mdpdf._mdpftype == self._mdpftype for mdpdf in self._collection]):
+        if not all([mdpdf._type == self._mdpdftype for mdpdf in self._collection]):
             raise RuntimeError(
-        	    'mpdf types do not match expected type') 
+        	    'mdpdf types do not match expected type') 
         																																																																																																																																																								
     def _validate_metadata(self):
 
@@ -113,26 +115,26 @@ class MultiPdfCollection(object):
 
 
     def get_distance_matrix(self):
-        if self._distance_matrix is None:
+        if self.distance_matrix is None:
    	        raise ValueError(
                 'no distance matrix has been computed. Please o so prior to calling this function')
         else:
-            return self._distance_matrix
+            return self.distance_matrix
 
     def get_dissimilarity_matrix(self):
-        if self._dissimilarity_matrix is None:
+        if self.dissimilarity_matrix is None:
             raise ValueError(
                 'no disssimilarity matrix has been compute. Pleasse do so prior to calling this function')
         else:
-            return self._dissimilarity_matrix
+            return self.dissimilarity_matrix
 
 
     def get_shortest_path_maatrix(self):
-        if self._shortest_path_matrix is None:
+        if self.shortest_path_matrix is None:
             raise ValueError(
                 'no shortest path maatrix has been computed. Pleasse do so prior to calling this function')
         else:
-            return self._shortest_path_matrix
+            return self.shortest_path_matrix
 
         
 

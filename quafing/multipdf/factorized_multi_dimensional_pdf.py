@@ -61,7 +61,7 @@ class FactorizedMultiDimensionalPDF(MultiDimensionalPDF):
             for column in self._colmetadata:
                 d = self._data[column['ColNames']]
                 pdf = get_density_estimate(d,method=column['density_method'],metadata=None,discrete=column['discrete'],discretization=column['Disc'])
-                pdf_meta = {'method':column['density_method'], 'data_labels':column['ColNames'], 'data_dimension':d.shape, 'discrete':column['discrete'],'discretiztion':column['Disc']}
+                pdf_meta = {'method':column['density_method'], 'data_labels':column['ColNames'], 'data_dimension':len(d.shape), 'discrete':column['discrete'],'discretiztion':column['Disc']}
                 fpdfs.append(pdf)
                 fpdfs_meta.append(pdf_meta)
 

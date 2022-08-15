@@ -12,7 +12,7 @@ def multipdf_init(pdftype):
     """
     _check_type(pdftype)
     multipdf = multipdf_types[pdftype]()
-    multipdf._type = pdftyp
+    multipdf._type = pdftype
     return multipdf
 
 def _check_type(pdftype):

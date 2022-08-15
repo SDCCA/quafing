@@ -99,12 +99,12 @@ class InformationDistancePiecewise(InformationDistance):
         self._pwdistfunc = _get_pwdist_func(pwdist)
 
     def _auto_dims(self):
-        pdf_meta = self._mdpdfs1.get_pdf_metadata()
+        pdf_meta = self._mdpdf1.get_pdf_metadata()
         dims = []
         for i,md in enumerate(pdf_meta):
-            if len(md['data_dimension']) == 1:
+            if md['data_dimension'] == 1:
                 dim = '1d'
-            elif len(md['data_dimension']) >= 2:
+            elif md['data_dimension'] >= 2:
                 dim = 'nd'
             else:
                 raise RuntimeError(
@@ -125,10 +125,10 @@ class InformationDistancePiecewise(InformationDistance):
             raise RuntimeError(
                 "no distance function specified")
 
-        pdfs1 = self._mdpdfs1.get_pdf()
-        pdfs1_meta = self._mdpdfs1.get_pdf_metadata()
-        pdfs2 = self._mdpdfs2.get_pdf()
-        pdfs2_meta = self._mdpdfs2.get_pdf_metadata()
+        pdfs1 = self._mdpdf1.get_pdf()
+        pdfs1_meta = self._mdpdf1.get_pdf_metadata()
+        pdfs2 = self._mdpdf2.get_pdf()
+        pdfs2_meta = self._mdpdf2.get_pdf_metadata()
 
         if isinstance(self._info_dist,list):
             if len(self._info_dist) != len(pdfs1):

@@ -1,7 +1,9 @@
 import os
 from types import MappingProxyType
 
+import numpy as np
 from sklearn import manifold
+import matplotlib.pyplot as plt
 from quafing.embedding.base_embedder import Embedder
 
 
@@ -47,7 +49,7 @@ class MDSEmbedder(Embedder):
         mds = manifold.MDS(**self._mds_pars)
 
         if self._mdpdfc is not None:
-            dist_matrix = self._mdpdfcc.get_distance_matrix()
+            dist_matrix = self._mdpdfc.get_distance_matrix()
         elif self._dmatrix is not None:
             dist_matrix = self._dmatrix
         else:
@@ -58,7 +60,7 @@ class MDSEmbedder(Embedder):
         embedding = fit.embedding_
         stress = fit.stress_
 
-        auxinfo = {**self._mds_pars,**{'seed':seed,'stress':stress,"embedding_method":self._embedding_method}}
+        auxinfo = {**self._mds_pars,**{'dimension':dimension,'seed':seed,'stress':stress,"embedding_method":self._embedding_method}}
 
         if return_stress:
             return stress
@@ -71,7 +73,7 @@ class MDSEmbedder(Embedder):
     	
 
         if self._mdpdfc is not None:
-            dm = self._mdpdfcc.get_distance_matrix()
+            dm = self._mdpdfc.get_distance_matrix()
         elif self._dmatrix is not None:
             dm = self._dmatrix
 

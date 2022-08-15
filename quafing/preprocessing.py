@@ -1,6 +1,7 @@
 """ pre processing steps for loaded questionnaaire data """
 import pandas as pd
 import numpy as np
+import copy
 import warnings
 
 from quafing.discretization.discretize import discretize
@@ -26,6 +27,7 @@ class PreProcessor(object):
         self._groupingcolumn = None
         self._grouplabels = None
         self._groups = None
+        self._groupcolmetadata = None
         
         """ validate input formaat """
         if not isinstance(rawdata, pd.DataFrame):
@@ -112,10 +114,10 @@ class PreProcessor(object):
         else:
             if by_type == True:
                 self._check_colTypes(cols)
-                self._select_by_type(cols,deselect=False)
+                self._select_by_type(cols,deselect=deselect)
             else:
                 self._check_colNames(cols)
-                self._select_by_label(cols,deselect=False)
+                self._select_by_label(cols,deselect=deselect)
 
     def _check_selection(self):
         if (self._data is None) or (self._colmetadata is None):
@@ -343,6 +345,12 @@ class PreProcessor(object):
             groups.append(groupdata)
 
         self._groups = groups
+
+        self._groupcolmetadata = copy.deepcopy(self._colmetadata)
+        for i, d in enumerate(self._colmetadata):
+            if d['ColNames'] == self._groupingcolumn:
+                self._groupcolmetadata.pop(i)
+
 
     def get_joint_discretization(self,method=None,return_result=False,*args,**kwargs):
         """

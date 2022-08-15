@@ -21,7 +21,7 @@ def create_multi_pdf(mdpdfType, data,colmetadata,calculate=True,*args,**kwargs):
 	return mdpdf
 
 
-def create_mdpdf_collection(mdpfType, group_data, group_labels,colmetadata, calculate=True, validate_metadata=False, *args, **kwargs):
+def create_mdpdf_collection(mdpdfType, group_data, group_labels,colmetadata, calculate=True, validate_metadata=False, *args, **kwargs):
     """
     TODO
     """
