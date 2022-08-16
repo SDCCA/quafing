@@ -18,7 +18,14 @@ class FactorizedMultiDimensionalPDF(MultiDimensionalPDF):
         if self._pdf is None:
             if 'Disc' not in self._colmetadata[0].keys():
                 if discretization is None:
+<<<<<<< HEAD
                    [c.update({'Disc':None}) for c in self._colmetadata]
+||||||| 0ef5dee
+                   c.update({'Disc':None}) for c in self._colmetadata
+=======
+                    for c in self._colmetadata:
+                        c.update({'Disc':None}) 
+>>>>>>> development
                 else:
                     for c in self._colmetadata:
                         coldisc= [d for i,d in enumerate(discretization) if d['ColNames'] == c['ColNames']][0]
@@ -37,7 +44,8 @@ class FactorizedMultiDimensionalPDF(MultiDimensionalPDF):
                         'no method for density estimation specified')
                 else:
                     if isinstance(method,str):
-                        [c.update({'density_method':method}) for c in self._colmetadata]
+                        for c in self._colmetadata:
+                            c.update({'density_method':method})
                     else:
                         for c in self._colmetadata:
                             colmeth = [m for i,m in enumerate(method) if m['ColNames'] == c['ColNames']][0]
@@ -47,7 +55,8 @@ class FactorizedMultiDimensionalPDF(MultiDimensionalPDF):
                     pass
                 else:
                     if isinstance(method,str):
-                        [c.update({'density_method':method}) for c in self._colmetadata]
+                        for c in self._colmetadata:
+                            c.update({'density_method':method})
                     else:
                         for c in self._colmetadata:
                             colmeth = [m for i,m in enumerate(method) if m['ColNames'] == c['ColNames']][0]
@@ -58,7 +67,7 @@ class FactorizedMultiDimensionalPDF(MultiDimensionalPDF):
             for column in self._colmetadata:
                 d = self._data[column['ColNames']]
                 pdf = get_density_estimate(d,method=column['density_method'],metadata=None,discrete=column['discrete'],discretization=column['Disc'])
-                pdf_meta = {'method':column['density_method'], 'data_labels':column['ColNames'], 'data_dimension':d.shape, 'discrete':column['discrete'],'discretiztion':column['Disc']}
+                pdf_meta = {'method':column['density_method'], 'data_labels':column['ColNames'], 'data_dimension':len(d.shape), 'discrete':column['discrete'],'discretiztion':column['Disc']}
                 fpdfs.append(pdf)
                 fpdfs_meta.append(pdf_meta)
 
