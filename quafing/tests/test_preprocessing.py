@@ -1,18 +1,7 @@
-from re import A
-import sys
-from py import process
-from pyparsing import PrecededBy
-from zmq import PROTOCOL_ERROR_ZAP_INVALID_STATUS_CODE
-sys.path.insert(0, '/mnt/c/Documents and Settings/PranavChandramouli/Documents/One Drive/OneDrive - Netherlands eScience Center/Projects/Social_Dynamics/quafing')
-
 import pytest
-
 import numpy as np
 import pandas as pd
 import quafing
-
-import quafing.preprocessing
-
 
 path='test_data.xlsx'
 metadata_true,data_true=quafing.load(path)

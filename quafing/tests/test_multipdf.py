@@ -1,16 +1,7 @@
-from re import A
-import sys
-from py import process
-from pyparsing import PrecededBy
-from zmq import PROTOCOL_ERROR_ZAP_INVALID_STATUS_CODE
-
-sys.path.insert(0, '/mnt/c/Documents and Settings/PranavChandramouli/Documents/One Drive/OneDrive - Netherlands eScience Center/Projects/Social_Dynamics/quafing')
 import pytest
 import numpy as np
 import quafing
-import quafing.preprocessing
-import quafing.multipdf
-import quafing.multipdf.multipdf
+from quafing.multipdf.multipdf import create_multi_pdf
 from quafing.multipdf.multi_dimensional_pdf import MultiDimensionalPDF
 
 path='test_data.xlsx'
@@ -21,14 +12,14 @@ data.set_cont_disc([], by_type=True, complement=True)
 
 def test_check_type():
     with pytest.raises(NotImplementedError):
-        quafing.multipdf.multipdf.create_multi_pdf('Factrized', data._data, data._colmetadata,calculate=True)
+        create_multi_pdf('Factrized', data._data, data._colmetadata,calculate=True)
 
 def test_basic_validation():
     with pytest.raises(RuntimeError, match=r'raw data input is not of type pandas DataFrame'):
         a = np.random.randn(4,3)
-        quafing.multipdf.multipdf.create_multi_pdf('factorized', a, data._colmetadata,calculate=True)
+        create_multi_pdf('factorized', a, data._colmetadata,calculate=True)
     with pytest.raises(RuntimeError):
-        quafing.multipdf.multipdf.create_multi_pdf('factorized', data._data, a,calculate=True)
+        create_multi_pdf('factorized', data._data, a,calculate=True)
 
 def test_base_calculate_pdf():
     a = MultiDimensionalPDF()
@@ -37,22 +28,22 @@ def test_base_calculate_pdf():
 
 def test_density_method_not_None():
     with pytest.raises(RuntimeError, match=r'no method for density estimation specified'):
-        quafing.multipdf.multipdf.create_multi_pdf('factorized', data._data, data._colmetadata,method=None, calculate=True,discretization= None)
+        create_multi_pdf('factorized', data._data, data._colmetadata,method=None, calculate=True,discretization= None)
 
 def test_density_method_is_str():
-    quafing.multipdf.multipdf.create_multi_pdf('factorized', data._data, data._colmetadata,method='Discrete1D', calculate=True,discretization= None)
+    create_multi_pdf('factorized', data._data, data._colmetadata,method='Discrete1D', calculate=True,discretization= None)
     assert data._colmetadata[0]['density_method'] is 'Discrete1D'
 
 def test_density_method_is_dict():
     discretization = [{"ColNames":"Col2", "density_method":"Discrete1D"}]
-    quafing.multipdf.multipdf.create_multi_pdf('factorized', data._data, data._colmetadata,method='Discrete1D', calculate=True,discretization= None)
+    create_multi_pdf('factorized', data._data, data._colmetadata,method='Discrete1D', calculate=True,discretization= None)
     assert data._colmetadata[1]['density_method'] is 'Discrete1D'
 
 def test_disc_value():
-    quafing.multipdf.multipdf.create_multi_pdf('factorized', data._data, data._colmetadata,calculate=True, method='Discrete1D',discretization= None)
+    create_multi_pdf('factorized', data._data, data._colmetadata,calculate=True, method='Discrete1D',discretization= None)
     assert data._colmetadata[0]['Disc'] is None
 
 def test_mdpdf_output():
-    mdpdf = quafing.multipdf.multipdf.create_multi_pdf('factorized', data._data, data._colmetadata,calculate=True, method='Discrete1D',discretization= None)
+    mdpdf = create_multi_pdf('factorized', data._data, data._colmetadata,calculate=True, method='Discrete1D',discretization= None)
     assert mdpdf._pdf is not None
     assert mdpdf._pdf_meta is not None

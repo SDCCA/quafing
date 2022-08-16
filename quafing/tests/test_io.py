@@ -1,12 +1,6 @@
-import sys
-sys.path.insert(0, '/mnt/c/Documents and Settings/PranavChandramouli/Documents/One Drive/OneDrive - Netherlands eScience Center/Projects/Social_Dynamics/quafing')
-
 import pytest
-
 import numpy as np
 import quafing
-
-import quafing.io 
 
 def test_file_format_error():
     with pytest.raises(NotImplementedError):
