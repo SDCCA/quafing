@@ -3,7 +3,7 @@ import pytest
 import quafing
 from quafing.discretization.discretize import discretize
 
-path='test_data.xlsx'
+path='test_data/test_data.xlsx'
 metadata_true,data_true=quafing.load(path)
 processed_data = quafing.preprocessing.PreProcessor(data_true,metadata_true)
 processed_data.select_columns(select_all=True)
