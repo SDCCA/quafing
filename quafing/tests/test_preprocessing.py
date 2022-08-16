@@ -125,7 +125,7 @@ def test_split_to_group():
     processed_data.split_to_groups('Col1')
     assert processed_data._groups is not None
 
-def test_get_joint_discretization(method= 'BayesianBlocks'):
+def test_get_joint_discretization():
     disc = pd.DataFrame(None)
-    disc = processed_data.get_joint_discretization(method = 'BayesianBlocks')
+    disc = processed_data.get_joint_discretization(method = 'BayesianBlocks',return_result=True)
     assert disc is not None

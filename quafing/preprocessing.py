@@ -364,7 +364,7 @@ class PreProcessor(object):
         else:
             for i, ent in enumerate(disc):
                 for j, md in enumerate(self._colmetadata):
-                    if ent['ColNames'] == md['ColNames']
+                    if ent['ColNames'] == md['ColNames']:
                         self._colmetadata[j].update(ent)
                         break
                     else:

@@ -7,7 +7,7 @@ import metis
 from quafing.multipdf.multipdf import create_multi_pdf
 
 
-def create_mdpdf_collection(mdpfType, group_data, group_labels,colmetadata, calculate=True, validate_metadata=False, *args, **kwargs):
+def create_mdpdf_collection(mdpdfType, group_data, group_labels,colmetadata, calculate=True, validate_metadata=False, *args, **kwargs):
     """
     TODO
     """
@@ -25,7 +25,7 @@ class MultiPdfCollection(object):
     	self._collection = collection
         self._labels = labels
         self._metadata = metadata
-        self._mdpftype = mdpdftype
+        self._mdpdftype = mdpdftype
         self.distance_matrix = None
         self._distance_matrix_type = None
         self.shortest_path_matrix = None
@@ -61,7 +61,7 @@ class MultiPdfCollection(object):
 
 
     def _calculate_all_mdpdfs(self,*args,**kwargs):
-   	    mdpdf.caculate_pdf(*args,**kwargs) for mdpdf in self._collection
+   	    mdpdf.calculate_pdf(*args,**kwargs) for mdpdf in self._collection
 
    	def calculate_distance_matrix(self,method=None,pwdist=None,dims=None, return_result=False,kwargs_list=None):
    	    """

@@ -18,7 +18,7 @@ class FactorizedMultiDimensionalPDF(MultiDimensionalPDF):
         if self._pdf is None:
             if 'Disc' not in self._colmetadata[0].keys():
                 if discretization is None:
-                   c.update({'Disc':None}) for c in self._colmetadata
+                   [c.update({'Disc':None}) for c in self._colmetadata]
                 else:
                     for c in self._colmetadata:
                         coldisc= [d for i,d in enumerate(discretization) if d['ColNames'] == c['ColNames']][0]
@@ -32,26 +32,26 @@ class FactorizedMultiDimensionalPDF(MultiDimensionalPDF):
                         c.update(coldisc)
 
             if 'density_method' not in self._colmetadata[0].keys():
-        	    if method is None:
-        		    raise RuntimeError(
-        			    'no method for density estimation specified')
+                if method is None:
+                    raise RuntimeError(
+                        'no method for density estimation specified')
                 else:
-                    if is instance(method,str):
-                	    c.update({'density_method':method}) for c in self._colmetadata
+                    if isinstance(method,str):
+                        [c.update({'density_method':method}) for c in self._colmetadata]
                     else:
-                	    for c in self._colmetadata:
-                		    colmeth = [m for i,m in enumerate(method) if m['ColNames'] == c['ColNames']][0]
-                		    c.update(colmeth)
+                        for c in self._colmetadata:
+                            colmeth = [m for i,m in enumerate(method) if m['ColNames'] == c['ColNames']][0]
+                            c.update(colmeth)
             else:
-        	    if method is None:
-        		    pass
-        	    else:
-                    if is instance(method,str):
-                	    c.update({'density_method':method}) for c in self._colmetadata
+                if method is None:
+                    pass
+                else:
+                    if isinstance(method,str):
+                        [c.update({'density_method':method}) for c in self._colmetadata]
                     else:
-                	    for c in self._colmetadata:
-                		    colmeth = [m for i,m in enumerate(method) if m['ColNames'] == c['ColNames']][0]
-                		    c.update(colmeth)
+                        for c in self._colmetadata:
+                            colmeth = [m for i,m in enumerate(method) if m['ColNames'] == c['ColNames']][0]
+                            c.update(colmeth)
 
             fpdfs = []
             fpdfs_meta = []
