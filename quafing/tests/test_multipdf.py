@@ -17,6 +17,7 @@ path='test_data.xlsx'
 metadata_true,data_true=quafing.load(path)
 data = quafing.preprocessing.PreProcessor(data_true,metadata_true)
 data.select_columns(select_all=True)
+data.set_cont_disc([], by_type=True, complement=True)
 
 def test_check_type():
     with pytest.raises(NotImplementedError):
@@ -34,6 +35,24 @@ def test_base_calculate_pdf():
     with pytest.raises(NotImplementedError):
         a.calculate_pdf()
 
+def test_density_method_not_None():
+    with pytest.raises(RuntimeError, match=r'no method for density estimation specified'):
+        quafing.multipdf.multipdf.create_multi_pdf('factorized', data._data, data._colmetadata,method=None, calculate=True,discretization= None)
+
+def test_density_method_is_str():
+    quafing.multipdf.multipdf.create_multi_pdf('factorized', data._data, data._colmetadata,method='Discrete1D', calculate=True,discretization= None)
+    assert data._colmetadata[0]['density_method'] is 'Discrete1D'
+
+def test_density_method_is_dict():
+    discretization = [{"ColNames":"Col2", "density_method":"Discrete1D"}]
+    quafing.multipdf.multipdf.create_multi_pdf('factorized', data._data, data._colmetadata,method='Discrete1D', calculate=True,discretization= None)
+    assert data._colmetadata[1]['density_method'] is 'Discrete1D'
+
 def test_disc_value():
-    quafing.multipdf.multipdf.create_multi_pdf('factorized', data._data, data._colmetadata,calculate=True)
-    
+    quafing.multipdf.multipdf.create_multi_pdf('factorized', data._data, data._colmetadata,calculate=True, method='Discrete1D',discretization= None)
+    assert data._colmetadata[0]['Disc'] is None
+
+def test_mdpdf_output():
+    mdpdf = quafing.multipdf.multipdf.create_multi_pdf('factorized', data._data, data._colmetadata,calculate=True, method='Discrete1D',discretization= None)
+    assert mdpdf._pdf is not None
+    assert mdpdf._pdf_meta is not None

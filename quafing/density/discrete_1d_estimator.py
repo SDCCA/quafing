@@ -43,7 +43,7 @@ class DiscreteDensityEstimator1d(DiscreteDensityEstimator):
             disc_pdf[val] = count / len(self._data)
         self._discrete_pdf = disc_pdf
 
-    def _discretized_data_denity(self):
+    def _discretized_data_density(self):
         # Compute the probabilities of each bin
         h = np.histogram(self._data, bins=self._discretization, normed=True)[0]
         widths = [bins[i+1] - bins[i] for i in range(len(bins)-1)]

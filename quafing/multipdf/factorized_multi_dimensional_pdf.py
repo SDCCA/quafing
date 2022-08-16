@@ -18,14 +18,8 @@ class FactorizedMultiDimensionalPDF(MultiDimensionalPDF):
         if self._pdf is None:
             if 'Disc' not in self._colmetadata[0].keys():
                 if discretization is None:
-<<<<<<< HEAD
-                   [c.update({'Disc':None}) for c in self._colmetadata]
-||||||| 0ef5dee
-                   c.update({'Disc':None}) for c in self._colmetadata
-=======
                     for c in self._colmetadata:
                         c.update({'Disc':None}) 
->>>>>>> development
                 else:
                     for c in self._colmetadata:
                         coldisc= [d for i,d in enumerate(discretization) if d['ColNames'] == c['ColNames']][0]
