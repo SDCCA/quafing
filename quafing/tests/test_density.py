@@ -4,7 +4,7 @@ import pandas as pd
 import quafing
 from quafing.density.estimate_density import get_density_estimate
 
-path='test_data/test_data.xlsx'
+path='tests/test_data/test_data.xlsx'
 metadata_true,data_true=quafing.load(path)
 processed_data = quafing.preprocessing.PreProcessor(data_true,metadata_true)
 processed_data.select_columns(select_all=True)

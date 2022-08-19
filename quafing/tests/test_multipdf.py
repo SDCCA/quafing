@@ -4,7 +4,7 @@ import quafing
 from quafing.multipdf.multipdf import create_multi_pdf
 from quafing.multipdf.multi_dimensional_pdf import MultiDimensionalPDF
 
-path='test_data/test_data.xlsx'
+path='tests/test_data/test_data.xlsx'
 metadata_true,data_true=quafing.load(path)
 data = quafing.preprocessing.PreProcessor(data_true,metadata_true)
 data.select_columns(select_all=True)

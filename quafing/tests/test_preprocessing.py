@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import quafing
 
-path='test_data/test_data.xlsx'
+path='tests/test_data/test_data.xlsx'
 metadata_true,data_true=quafing.load(path)
 processed_data = quafing.preprocessing.PreProcessor(data_true,metadata_true)
 
