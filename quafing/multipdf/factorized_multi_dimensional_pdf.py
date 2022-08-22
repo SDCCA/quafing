@@ -1,5 +1,6 @@
 """ class for a factorized (indvidual independent variables) multidimensional pdf """
 import os
+import warning
 
 import pandas as pd
 import numpy as np
@@ -38,23 +39,35 @@ class FactorizedMultiDimensionalPDF(MultiDimensionalPDF):
                         'no method for density estimation specified')
                 else:
                     if isinstance(method,str):
+                        warning.warn(
+                            f'density method for ALL columns being set to {method}')
                         for c in self._colmetadata:
                             c.update({'density_method':method})
                     else:
                         for c in self._colmetadata:
-                            colmeth = [m for i,m in enumerate(method) if m['ColNames'] == c['ColNames']][0]
-                            c.update(colmeth)
+                            colmeth = [m for i,m in enumerate(method) if m['ColNames'] == c['ColNames']]
+                            if len(colmeth) == 0:
+                                warning.warn(f"No density method specified for {c['ColNames']}")
+                                c.update({'density_method':None})
+                            else:
+                                c.update(colmeth[0])
             else:
                 if method is None:
                     pass
                 else:
+                    warning.warn(
+                        'exisiting density methods are being overwritten')
                     if isinstance(method,str):
                         for c in self._colmetadata:
                             c.update({'density_method':method})
                     else:
                         for c in self._colmetadata:
-                            colmeth = [m for i,m in enumerate(method) if m['ColNames'] == c['ColNames']][0]
-                            c.update(colmeth)
+                            colmeth = [m for i,m in enumerate(method) if m['ColNames'] == c['ColNames']]
+                            if len(colmeth) == 0:
+                                warning.warn(f"No density method specified for {c['ColNames']}")
+                                c.update({'density_method':None})
+                            else:
+                                c.update(colmeth[0])
 
             fpdfs = []
             fpdfs_meta = []
