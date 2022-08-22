@@ -8,7 +8,6 @@ import metis
 from quafing.distance.information_distance import information_distance
 
 
-
 class MultiPdfCollection(object): 
 
     def __init__(self, collection, labels, metadata, mdpdftype, validate_metadata=True):
@@ -53,7 +52,7 @@ class MultiPdfCollection(object):
 
     def _calculate_all_mdpdfs(self,*args,**kwargs):
         for mdpdf in self._collection:
-            mdpdf.caculate_pdf(*args,**kwargs)
+            mdpdf.calculate_pdf(*args,**kwargs)
 
  	
     def calculate_distance_matrix(self,method=None,pwdist=None,dims=None, return_result=False,kwargs_list=None):
@@ -75,7 +74,7 @@ class MultiPdfCollection(object):
             self.distance_matrix = dist_matrix 
             self._distance_matrix_type = method
 
-    def caculate_dissimilarity_matrix(self):
+    def calculate_dissimilarity_matrix(self):
         """	
         TODO
         """
@@ -117,22 +116,22 @@ class MultiPdfCollection(object):
     def get_distance_matrix(self):
         if self.distance_matrix is None:
    	        raise ValueError(
-                'no distance matrix has been computed. Please o so prior to calling this function')
+                'no distance matrix has been computed. Please do so prior to calling this function')
         else:
             return self.distance_matrix
 
     def get_dissimilarity_matrix(self):
         if self.dissimilarity_matrix is None:
             raise ValueError(
-                'no disssimilarity matrix has been compute. Pleasse do so prior to calling this function')
+                'no disssimilarity matrix has been compute. Please do so prior to calling this function')
         else:
             return self.dissimilarity_matrix
 
 
-    def get_shortest_path_maatrix(self):
+    def get_shortest_path_matrix(self):
         if self.shortest_path_matrix is None:
             raise ValueError(
-                'no shortest path maatrix has been computed. Pleasse do so prior to calling this function')
+                'no shortest path matrix has been computed. Please do so prior to calling this function')
         else:
             return self.shortest_path_matrix
 

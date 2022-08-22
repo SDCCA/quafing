@@ -12,7 +12,7 @@ def _choose_cosine_func(dim):
         info_dist = cosine_nd
     else:
         raise RuntimeError(
-            f'invalid distance specification {dims}')
+            f'invalid distance specification {dim}')
     return info_dist
 
 
@@ -66,7 +66,7 @@ def continuous_cosine_1d(p1,p2,bbox=(-np.inf,np.inf)):
     integral = quad(lambda x: cos(x, p1, p2), bbox[0], bbox[1])
     return np.arccos(integral[0])
 
-def cosine_nd():
+def cosine_nd(is_discrete=False):
     """
     TO DO
     """

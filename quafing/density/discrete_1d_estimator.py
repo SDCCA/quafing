@@ -10,7 +10,7 @@ class DiscreteDensityEstimator1d(DiscreteDensityEstimator):
 
 
     def _check_input_1d(self):
-        if isinstance(self._data,pd.Series):
+        if isinstance(self._data,pd.Series ):
             pass    
         elif isinstance(self._data,np.ndarray):
             if self._data.ndim == 1:
@@ -43,7 +43,7 @@ class DiscreteDensityEstimator1d(DiscreteDensityEstimator):
             disc_pdf[val] = count / len(self._data)
         self._discrete_pdf = disc_pdf
 
-    def _discretized_data_denity(self):
+    def _discretized_data_density(self):
         # Compute the probabilities of each bin
         h = np.histogram(self._data, bins=self._discretization, normed=True)[0]
         widths = [bins[i+1] - bins[i] for i in range(len(bins)-1)]

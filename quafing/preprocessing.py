@@ -230,18 +230,18 @@ class PreProcessor(object):
         return colnames
 
     def set_cont_disc(self,cols=['c'],*,by_type=True,complement=True, disccols=[]):
-
         self._check_selection()
         if not by_type:
             cols = self._validate_by_label(cols)
-
+        
         if by_type:
             moniker = 'ColTypes'
         else:
             moniker = 'ColNames'
-
+        
         for c in self._colmetadata:
             if c[moniker] in cols:
+                print (c[moniker])
                 disc_entry = {'discrete':False}
             else:
                 if complement:
@@ -322,7 +322,6 @@ class PreProcessor(object):
         self._groupingcolumn = gbcol
         self._grouplabels = self._data[gbcol].unique()
         
-
     def split_to_groups(self, col, inplace=False):
         """
         split selected data into groups
