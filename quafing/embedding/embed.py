@@ -15,16 +15,16 @@ plt.style.use("ggplot")
 from quafing.embedding import retrieve_embedder
 
 def get_embedding(method,mdpdf_collection=None, dimension=2,**kwargs):
-	"""
-	Return lower diemension embeddding for a multi-dimesnional pddf collection using a valid embedding method
+    """
+    Return lower diemension embeddding for a multi-dimesnional pddf collection using a valid embedding method
 
-	:param method: str specifying method to be used for embedding. Must be one of embedders (see quafing.embdedding.__init__)
-	:param mdpdf_collecction: MultiPdfCollection to embed
-	:param dimension: dimesnion of embedding
-	:param kwargs: optional; keyword arguments setting embddeding parameters. passed to embedder
-	:return embedding: dictionary with keys: embedding (contains embedding as np.ndarray) and auxinfo (contains metadata incl.
-	                   embedding parameters) 
-	"""
+    :param method: str specifying method to be used for embedding. Must be one of embedders (see quafing.embdedding.__init__)
+    :param mdpdf_collecction: MultiPdfCollection to embed
+    :param dimension: dimesnion of embedding
+    :param kwargs: optional; keyword arguments setting embddeding parameters. passed to embedder
+    :return embedding: dictionary with keys: embedding (contains embedding as np.ndarray) and auxinfo (contains metadata incl.
+                       embedding parameters) 
+    """
     embedder = retrieve_embedder(method,mdpdf_collection=mdpdf_collection)
     if len(kwargs) != 0:
     	embedder.set_embedding_parmeters(**kwargs)
@@ -32,22 +32,22 @@ def get_embedding(method,mdpdf_collection=None, dimension=2,**kwargs):
     return embedding
 
 def get_embedder(method,mdpdf_collection=None):
-	"""
-	Return embedder for specified method and multi-ddimensional pdf collection
+    """
+    Return embedder for specified method and multi-ddimensional pdf collection
 
-	:param method: str specifying method to be used for embedding. Must be one of embedders (see quafing.embdedding.__init__)
-	:param mdpdf_collecction: MultiPdfCollection to embed
-	:return embedder: initiaalized embdedder instance
-	"""
+    :param method: str specifying method to be used for embedding. Must be one of embedders (see quafing.embdedding.__init__)
+    :param mdpdf_collecction: MultiPdfCollection to embed
+    :return embedder: initiaalized embdedder instance
+    """
     embedder = retrieve_embedder(method,mdpdf_collection=mdpdf_collection)
     return embedder
 
 def plot_embedding(embedding,mdpdf_collection,color="distance", plot_title="",show_labels=True):
-	"""
-	create plot of embedding for the case of embeddings in 2 or 3 dimensions. Points can be color coded according to 
-	distance, partition, or metis.
+    """
+    create plot of embedding for the case of embeddings in 2 or 3 dimensions. Points can be color coded according to 
+    distance, partition, or metis.
 
-	:param embedding: calculated embeding
+    :param embedding: calculated embeding
     :param mdpdf_collection: multi-dimensional pdf collection for which embedding was calulated
     :param color: basis for color coding. One of distance, partition, metis
     :param plot_title: title of plot to bbbe displayed

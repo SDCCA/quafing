@@ -36,10 +36,10 @@ def hellinger_1d(pdf1,pdf2,is_discrete=False, bbox=(-np.inf,np.inf)):
     :return : discrete or continuous 1d hellinger distance 
 
     """
-        if is_discrete:
-            return discrete_hellinger_1d(pdf1,pdf2)
-        else:
-            return continuous_hellinger_1d(pdf1,pdf2,bbox=bbox)
+    if is_discrete:
+        return discrete_hellinger_1d(pdf1,pdf2)
+    else:
+        return continuous_hellinger_1d(pdf1,pdf2,bbox=bbox)
 
 
 def discrete_hellinger_1d(p1,p2):
