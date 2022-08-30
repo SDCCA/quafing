@@ -1,6 +1,6 @@
 """ class for a factorized (indvidual independent variables) multidimensional pdf """
 import os
-import warning
+import warnings
 
 import pandas as pd
 import numpy as np
@@ -15,6 +15,17 @@ class FactorizedMultiDimensionalPDF(MultiDimensionalPDF):
     """
 
     def calculate_pdf(self,method=None,discretization=None):
+        """
+        construct multidimensional pdf as individual 1d pdfs per column, using density estimation method
+        specified (either passed with column metadata or explicity specified in call) and optional dicretization 
+        (either passed with column metadata or explicity specified in call specified. 
+        Method must be a valid supported option as listed in quafing.multipdf.__init__
+
+        :param method: str, optional; density estimation method to be used.
+        :param discretization: optional; discretization to be used for continuous data for which
+                              a discrete pdf is to be returned. Expected format is list of dictionaries
+                              as returned by discretize method.
+        """
         
         if self._pdf is None:
             if 'Disc' not in self._colmetadata[0].keys():
@@ -74,7 +85,7 @@ class FactorizedMultiDimensionalPDF(MultiDimensionalPDF):
             for column in self._colmetadata:
                 d = self._data[column['ColNames']]
                 pdf = get_density_estimate(d,method=column['density_method'],metadata=None,discrete=column['discrete'],discretization=column['Disc'])
-                pdf_meta = {'method':column['density_method'], 'data_labels':column['ColNames'], 'data_dimension':len(d.shape), 'discrete':column['discrete'],'discretiztion':column['Disc']}
+                pdf_meta = self._generate_pdf_meta_entry(column['density_method'], column['ColNames'], len(d.shape), column['discrete'],column['Disc'])
                 fpdfs.append(pdf)
                 fpdfs_meta.append(pdf_meta)
 
