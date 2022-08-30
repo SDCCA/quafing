@@ -77,7 +77,7 @@ class MDSEmbedder(Embedder):
             dist_matrix = self._dmatrix
         else:
             raise RuntimeError(
-                'No distance maatrix available to embed')        
+                'No distance matrix available to embed')        
 
         fit = mds.fit(dist_matrix)
         embedding = fit.embedding_

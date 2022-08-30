@@ -99,7 +99,7 @@ def continuous_hellinger_1d(p1,p2,bbox=(-np.inf,np.inf)):
     integral = quad(lambda x: hell(x,p1,p2), bbox[0], bbox[1])
     return np.sqrt(integral[0])
 
-def hellinger_nd():
+def hellinger_nd(is_discrete=False):
     """
     TO DO
     """

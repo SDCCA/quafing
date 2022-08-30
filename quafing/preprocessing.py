@@ -278,9 +278,10 @@ class PreProcessor(object):
             moniker = 'ColTypes'
         else:
             moniker = 'ColNames'
-
+        
         for c in self._colmetadata:
             if c[moniker] in cols:
+                print (c[moniker])
                 disc_entry = {'discrete':False}
             else:
                 if complement:
@@ -374,7 +375,6 @@ class PreProcessor(object):
         self._groupingcolumn = gbcol
         self._grouplabels = self._data[gbcol].unique()
         
-
     def split_to_groups(self, col, inplace=False):
         """
         split selected data into groups

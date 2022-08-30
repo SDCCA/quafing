@@ -2,6 +2,7 @@
 
 import numpy as np
 from scipy.integrate import quad
+import warnings
 from quafing.distance.base_distance import InformationDistancePiecewise
 
 def _choose_sym_kl_div_func(dim):
@@ -44,7 +45,7 @@ def sym_kl_div_1d(pdf1,pdf2,is_discrete=False, bbox=(-np.inf,np.inf),base=None):
             if np.isinf(kl12) and np.isinf(kl21):
                 return np.inf
             else:
-                m = 2.0 * np.nanmin([kl1, kl2])
+                m = 2.0 * np.nanmin([kl12, kl21])
                 return np.sqrt(m)
         else:
             kl12 = continuous_kl_div_1d(pdf1,pdf2,bbox=bbox,base=base)
@@ -52,7 +53,7 @@ def sym_kl_div_1d(pdf1,pdf2,is_discrete=False, bbox=(-np.inf,np.inf),base=None):
             if np.isinf(kl12) and np.isinf(kl21):
                 return np.inf
             else:
-                m = 2.0 * np.nanmin([kl1, kl2])
+                m = 2.0 * np.nanmin([kl12, kl21])
                 return np.sqrt(m)
 
             

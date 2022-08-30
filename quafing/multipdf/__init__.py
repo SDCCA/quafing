@@ -3,7 +3,7 @@ import os
 from .factorized_multi_dimensional_pdf import FactorizedMultiDimensionalPDF as FactorizedMDPDF
 
 multipdf_types = {
-	'factorized': FactorizedMDPDF
+    'factorized': FactorizedMDPDF
 }
 
 def multipdf_init(pdftype):

@@ -66,6 +66,7 @@ class DiscreteDensityEstimator1d(DiscreteDensityEstimator):
         calculate binned densities for intrinsically continuous data discrretized using the supplied discretization.
         updates the self._disrete_pdf attribute
         """
+
         # Compute the probabilities of each bin
         h = np.histogram(self._data, bins=self._discretization, normed=True)[0]
         widths = [bins[i+1] - bins[i] for i in range(len(bins)-1)]

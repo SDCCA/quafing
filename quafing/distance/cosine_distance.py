@@ -84,7 +84,7 @@ def continuous_cosine_1d(p1,p2,bbox=(-np.inf,np.inf)):
     integral = quad(lambda x: cos(x, p1, p2), bbox[0], bbox[1])
     return np.arccos(integral[0])
 
-def cosine_nd():
+def cosine_nd(is_discrete=False):
     """
     TO DO
     """
