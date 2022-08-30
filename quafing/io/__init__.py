@@ -14,7 +14,7 @@ io_handlers = {
 
 def get_io_handler(path, mode, format=None, overwrite=False):
     """
-    Return instance of of specific IOHandler already initialized tto read or write mode.
+    Return instance of of specific IOHandler already initialized to read or write mode.
 
     :param path: path where IO operation required
     :param mode: 'r' for reading, 'w' for writing
@@ -31,6 +31,11 @@ def get_io_handler(path, mode, format=None, overwrite=False):
     return io_handler(path, mode, overwrite=overwrite)
 
 def _check_format(format):
+    """
+    check whether requested io format is supported. Raises error if format isn't supported. 
+
+    :param format: format of file being requested
+    """
     if format not in io_handlers:
         raise NotImplementedError(
             "File format %s unknown. Supported format are : %s" % (format, ', '.join(io_handlers.keys())))

@@ -1,4 +1,4 @@
-""" pre processing steps for loaded questionnaaire data """
+""" pre processing steps for loaded questionnaire data """
 import pandas as pd
 import numpy as np
 import copy
@@ -120,17 +120,30 @@ class PreProcessor(object):
                 self._select_by_label(cols,deselect=deselect)
 
     def _check_selection(self):
+        """
+        check whether data for has already been selected from raw input data
+        """
         if (self._data is None) or (self._colmetadata is None):
             raise RuntimeError(
                 'No data has been selected for analysis. Please select data using the select_columns() method.')
 
     def _check_colTypes(self, cols):
+        """
+        check whether specified column type(s) exist in raw input (meta)data
+
+        :param cols: (list of) string(s) specifiying column types
+        """
         for i in range(len(cols)):
             if cols[i] not in [d['ColTypes'] for d in self._rawcolmetadata]:
                 warnings.warn("Warning: Column type '%s' not found in data. Please check column type."%cols[i])
 
 
     def _check_colNames(self, cols):
+        """
+        check whether specified column name(s) exist in raw input (meta)data
+
+        :param cols: (list of) string(s) specifiying column names
+        """
         for i in range(len(cols)):
             if cols[i] not in [d['ColNames'] for d in self._rawcolmetadata]:
                 warnings.warn("Warning: Column name %s not found in data. Please check column name."%cols[i])
@@ -219,6 +232,13 @@ class PreProcessor(object):
         self._data.loc[:,gbcol] = labels.values
 
     def _validate_by_label(self,cols):
+        """
+        Convert column specification by label (i.e. column index or name) to column name.
+        verify that specifiation supplied uses either numerical index OR name.
+
+        :param cols: (list of) column name(s) (str) or indicees (int, 0-indexed, based on self._data)
+        :return colnames: list of column names    
+        """
         colnames=None
         if all([isinstance(col,str) for _,col in enumerate(cols)]):
             colnames = cols
@@ -230,10 +250,29 @@ class PreProcessor(object):
         return colnames
 
     def set_cont_disc(self,cols=['c'],*,by_type=True,complement=True, disccols=[]):
+        """
+        label columns as containing continuous or discrete data. required for density estimation.
+        Updates column metadata 
+
+        :param cols: list of columns with continuous data. columns can be specified either by type
+                     (requires by_type=True), or by reference to column name or 0-based index
+                     (based on self._data). 
+        :param by_type: keyword, bool (default True); if true cols is interpreted a list of strings specifying
+                    column types) containing continuous data. If False, cols is interpreted as a list
+                    of columns, specified either by name or by index 
+        :param complement: keyword, bool (default=False), optional; If True, all columns not specified in cols
+                         are set to contain discrete data. If False, columns not specified in cols will have None
+                         as their ccolumn meta data discrete value, unless specied as discrete in the optional
+                         disccols parameter
+        :param disccols: keyword, optional; list of columns with continuous data. columns can be specified either by type
+                     (requires by_type=True), or by reference to column name or 0-based index (based on self._data).
+        """
 
         self._check_selection()
         if not by_type:
             cols = self._validate_by_label(cols)
+            if len(disccols) != 0:
+                disccols = self._validate_by_label(disccols)
 
         if by_type:
             moniker = 'ColTypes'
@@ -254,6 +293,19 @@ class PreProcessor(object):
             c.update(disc_entry)                
 
     def set_density_method(self,method=None,cols=['c'],*,by_type=True):
+        """
+        Specify density estimation method to be used (for groups of) columns
+        Updates column metadata
+
+        :param method: str, or list of str, or dict with colnames as keys and method a value.
+                        If method is a list or a dict it MUST be equal in length to cols
+        :param cols: list of columns data. columns can be specified either by type
+                     (requires by_type=True), or by reference to column name or 0-based index
+                     (based on self._data).
+        :param by_type: keyword, bool (default True); if true cols is interpreted a list of strings specifying
+                    column types). If False, cols is interpreted as a list of columns, specified either by name 
+                    or by index.              
+        """
 
         self._check_selection()
 
@@ -274,7 +326,7 @@ class PreProcessor(object):
                 cols=self._validate_by_label(cols)
             if len(method) != len(cols):
                     raise RuntimeError(
-                        'number of specified methods does not match number of specified columns/types')
+                        'number of specified methods dwoes not match number of specified columns/types')
             else:
                 for m in method:
                     _check_density_method(m)
@@ -362,7 +414,7 @@ class PreProcessor(object):
                               update self._colmetadata (default) of PreProcesor instance 
         :param *args: optional arguments to be passed to discretization methods
         :param *kwargs: optional keyword arguments to be passed to discrettization methods
-        :return discretization: list of arrays ith biin borders
+        :return discretization: list of dicts with ColNames key and density_method key of arrays with bin borders
         """
 
         self._check_selection()

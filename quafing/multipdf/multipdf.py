@@ -23,7 +23,18 @@ def create_multi_pdf(mdpdfType, data,colmetadata,calculate=True,*args,**kwargs):
 
 def create_mdpdf_collection(mdpdfType, group_data, group_labels,colmetadata, calculate=True, validate_metadata=False, *args, **kwargs):
     """
-    TODO
+    Create a multi-dimesional pdf ccolletion object from groups of data.
+
+    :param mdpdfType: str; Type of multidimensional pdfs to create. See quafing.multipdf.__init__() for valid types
+    :param group_data: list of pandas DDataFrames with the data for grouos of respondents
+    :param group_labels: list of labels associated with the groups
+    :param colmetadata: column metadata of the data/questions of ech group
+    :param calculate: bool (default True). If True calculate denssity estimates for all groups
+    :param validate_metaata: bool (default False). If true peform extended validation of metadata conformity between groups
+    :param args: optional positional arguments to pass to create_multi_pdf() method 
+    :param kwargs: optional keyword arguments to pass to create_multi_pdf() method
+    :return mpdf_collection: collection of multi-dimensional pdfs (type MultiPdfCollection)
+    
     """
     mdpdfs = []
     for i, data in enumerate(group_data):

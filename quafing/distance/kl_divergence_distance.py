@@ -1,24 +1,43 @@
+""" Kullback-Leibler divergence distance (symmetrisd) class and algorithm implementations  """
+
 import numpy as np
 from scipy.integrate import quad
 from quafing.distance.base_distance import InformationDistancePiecewise
 
 def _choose_sym_kl_div_func(dim):
+    """
+    Choose which implementation of the symmetrised KL divergence distance to employ (1d or nd)
+
+    :param dim: str indicating dimensionality of pdfs for which distaance is to be calculated
+    :return info_dist: information distance function using symmetrised KL divergence algorithm, either for 1d or nd 
+    """
     if dim == '1d':
         info_dist = sym_kl_div_1d
     elif dim == 'nd':
         """
-        TODO implement higher dimensional cosine distance
+        TODO implement higher dimensional KL distance
         """
         info_dist = sym_kl_div_nd
     else:
         raise RuntimeError(
-            f'invalid distance specification {dims}')
+            f'invalid distance specification {dim}')
     return info_dist
 
     
 
 
 def sym_kl_div_1d(pdf1,pdf2,is_discrete=False, bbox=(-np.inf,np.inf),base=None):
+    """
+    symmetrisation wrapper for 1d KL divergence distance. set SymKL = sqrt(2*min(Dkl(pdf1||pdf2),Dkl(pdf2||pdf1)))
+    This has the same convergence properties as Dkl.
+
+    :param pdf1: 1d pdf
+    :param pdf2: 1d pdf
+    :param is_discrete: bool (default=False), are pdf1 and pdf2 discrete (either intrinsically or by discretization)
+    :param bbox: optional; integration domain for calcualtion of continuous KL divergence
+    :param base: base of logartihm for KL divergence
+    :return: SymKL as defined above
+    """
         if is_discrete:
             kl12 = discrete_kl_div_1d(pdf1,pdf2,base=base)
             kl21 = discrete_kl_div_1d(pdf2,pdf1,base=base)
@@ -150,15 +169,34 @@ def continuous_kl_div_nd():
 
 
 class SymKLDivDistance(InformationDistancePiecewise):
+    """
+    class to compute symmetrised Kullback-Leibler divergence (SymKL) distance between mdpdfs
+    """
+    def __init__(self,mdpdf1, mdpdf2, pwdist=None, dims=None):
+        """
+        Initialize SymKL distance object
 
-    def __init__(self,mdpdfs1, mdpdfs2, pwdist=None, dims=None):
-        super().__init__(mdpdfs1,mdpdfs2,pwdist)
+        :param mdpdf1: multi-dimensional pdf of type derived from MultiDimensionalPdf class
+        :param mdpdf2: multi-dimensional pdf of type derived from MultiDimensionalPdf class
+        :param pwdist: str specifiying piecewise distance aggregator. One of valid keys in 
+                   quafing.distance.base_disctance._get_pwdist_func() pwdistfuncs
+        :param dims: optional; list of str or str specifying dimensionality ('1d' or 'nd') of constituent pdfs.
+                    a single str is dimensionality is te same for all constituent pdfs
+
+        """
+        super().__init__(mdpdf1,mdpdf2,pwdist)
         if dims is None:
             dims = self._auto_dims()
         self._set_dist(dims)
 
 
     def _set_dist(self, dims):
+        """
+        Inject appropriate distance funtion in class methods
+
+        :param dims: list of str or str specifying dimensionality ('1d' or 'nd') of constituent pdfs.
+                    a single str is dimensionality is te same for all constituent pdfs
+        """
         if isinstance(dims,str):
             self._info_dist = _choose_sym_kl_div_func(dims)
         elif isinstance(dims,list):

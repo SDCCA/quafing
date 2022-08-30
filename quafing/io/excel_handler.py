@@ -43,6 +43,13 @@ class ExcelHandler(IOHandler):
 
     def read_metadata(self,**kwargs):
         """
+        Read column metadata from spreadsheet
+
+        :param **kwargs: variable length dictonary of arguments. The dictionary contains the generic arguments to be passed to the
+                         pandas read_excel method. All required arguments are set in calling read function
+
+        :return metadata: Dictionary of arrays containing column names (key ColNames), column types (key ColTypes), and the number 
+                          of the associaated question on the questionaire (key QuestionNumbers). 
         """
 
         ColNameKWArgs = {'sheet_name':kwargs['sheet_name'],'header':kwargs['header'],'nrows':0}
@@ -57,6 +64,13 @@ class ExcelHandler(IOHandler):
 
     def read_data(self,ColNames,**kwargs):
         """
+        Read data from spreadsheet
+
+        :param ColNames: Names of columns. Used in creating column labels while reading data.
+        :param **kwargs: variable length dictonary of arguments. The dictionary contains the generic arguments to be passed to the
+                         pandas read_excel method. All required arguments are set in calling read function
+
+        :return data: Pandas dataframe containing data
         """
 
         kwargs.update({'names':ColNames,'header':None})

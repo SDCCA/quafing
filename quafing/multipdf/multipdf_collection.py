@@ -1,3 +1,4 @@
+""" collection of multi-dimensional pdfs"""
 import os
 import warnings
 import numpy as np
@@ -9,9 +10,22 @@ from quafing.distance.information_distance import information_distance
 
 
 
-class MultiPdfCollection(object): 
+class MultiPdfCollection(object):
+    """
+    Collection of multi-dimensional pdfs of uniform type over a uniform set of dimensions. E.g. multi-dimensional pdfs
+    of different groups of respondants for a given quuestionaire 
+    """ 
 
     def __init__(self, collection, labels, metadata, mdpdftype, validate_metadata=True):
+        """
+        initialize, set attributes, and validate
+
+        :param collection: list of multi-dimenssional pdfs (mdpdf)
+        :param labels: list of labels for mdpdfs
+        :param metadata: (column) metadata for mdpdfs
+        :param mdpdftype: type of mdpdf 
+        :param validate_metadata: bool (default=True). perform validation on metadata
+        """
 
         self._collection = collection
         self._labels = labels
@@ -27,6 +41,9 @@ class MultiPdfCollection(object):
             self._validate_metadata()
 
     def _validate(self):
+        """
+        Basic validation on input. Check for duplicate labels, mismatch between labels and data, inconsistent mdpdf types
+        """
 
         if len(self._labels) != len(list(set(self._labels))):
             warnings.warn(
@@ -41,6 +58,9 @@ class MultiPdfCollection(object):
         	    'mdpdf types do not match expected type') 
         																																																																																																																																																								
     def _validate_metadata(self):
+        """
+        Extended validation on meta data. Is provided metadata consistent with that of constituent pdfs and uniform.  
+        """
 
         if not all([mdpdf._colmetadata == self._metadata for mdpdf in self._collection]):
             raise RuntimeError(
@@ -52,13 +72,29 @@ class MultiPdfCollection(object):
 
 
     def _calculate_all_mdpdfs(self,*args,**kwargs):
+        """
+        Calculate densities for all mdpdf objects in collection
+
+        :param args: positional arguments for calculate_pdf() method of mdpdf object
+        :param kwargs: keyword arguments for calculate_pdf() method of mdpdf object
+        """
         for mdpdf in self._collection:
             mdpdf.caculate_pdf(*args,**kwargs)
 
  	
     def calculate_distance_matrix(self,method=None,pwdist=None,dims=None, return_result=False,kwargs_list=None):
         """
-        TODO
+        Calculate distance matrix (i.e matrix of pairwise distances) for collection member mpdfs.
+
+        :param method: str or list of str, method to be passed to information distance calculaation. 
+                       One of valid keys in quafing.distance.__init__ ID_measuress
+        :param pwdist: str, aggregation method for piecewise distance calculation. one of valid keys is 
+                       quafing.distance.base_disctance._get_pwdist_func() pwdistfuncs
+        :param dims: optional, str or list of str. dimensionality of (piecewise) mdpdfs for which (piecewise) distance is being calculated, 1d or nd.
+                     defaults to use of auto_dims if dims=None
+        :param return_result: bool (default False), return matrix if true, else update distance_matrix and _distance_matrix_type attributes
+        :param kwargs_list: list of keyword arguments dictionaires to to be passed to information distance calculaation
+        :return dist_matrix: optional distance matrix (if not returned object attribute is updated) 
         """
         mdpdfs = self._collection
         dist_matrix = np.zeros((len(mdpdfs), len(mdpdfs)))
@@ -85,10 +121,10 @@ class MultiPdfCollection(object):
         """ Takes the distance matrix and computes the shortest path matrix
         between all pairs of units in the groups.
 
-        Args:
-            A (numpy square matrix): A distances matrix (all entries positive)
+        :param dist_matrix: distance matrix (numpy square matrix, all entries positive)
+        :param return_result: bool (default=False). return resultant matrix. Else updaate object attributes 
 
-        Returns: A matrix with shortest distances.
+        :return new_mat: A matrix with shortest distances.
 
         """
         if not dist_matrix is None:
@@ -115,6 +151,9 @@ class MultiPdfCollection(object):
 
 
     def get_distance_matrix(self):
+        """
+        return distance matrix
+        """
         if self.distance_matrix is None:
    	        raise ValueError(
                 'no distance matrix has been computed. Please o so prior to calling this function')
@@ -122,6 +161,9 @@ class MultiPdfCollection(object):
             return self.distance_matrix
 
     def get_dissimilarity_matrix(self):
+        """
+        return dissimilarity matrix
+        """
         if self.dissimilarity_matrix is None:
             raise ValueError(
                 'no disssimilarity matrix has been compute. Pleasse do so prior to calling this function')
@@ -129,10 +171,13 @@ class MultiPdfCollection(object):
             return self.dissimilarity_matrix
 
 
-    def get_shortest_path_maatrix(self):
+    def get_shortest_path_matrix(self):
+        """
+        return shortest path matrix
+        """
         if self.shortest_path_matrix is None:
             raise ValueError(
-                'no shortest path maatrix has been computed. Pleasse do so prior to calling this function')
+                'no shortest path matrix has been computed. Pleasse do so prior to calling this function')
         else:
             return self.shortest_path_matrix
 

@@ -1,8 +1,16 @@
+""" Cossine distance class and algorithm implementations """
+
 import numpy as np
 from scipy.integrate import quad
 from quafing.distance.base_distance import InformationDistancePiecewise
 
 def _choose_cosine_func(dim):
+    """
+    Choose which implementation of the symmetrised KL divergence distance to employ (1d or nd)
+
+    :param dim: str indicating dimensionality of pdfs for which distaance is to be calculated
+    :return info_dist: information distance function using symmetrised KL divergence algorithm, either for 1d or nd 
+    """
     if dim == '1d':
         info_dist = cosine_1d
     elif dim == 'nd':
@@ -12,12 +20,22 @@ def _choose_cosine_func(dim):
         info_dist = cosine_nd
     else:
         raise RuntimeError(
-            f'invalid distance specification {dims}')
+            f'invalid distance specification {dim}')
     return info_dist
 
 
 
 def cosine_1d(pdf1,pdf2,is_discrete=False, bbox=(-np.inf,np.inf)):
+    """
+    wrapper for 1d implementations of the cosine distance between two 1d pdfs
+
+    :param pdf1: 1d pdf
+    :param pdf2: 1d pdf
+    :param is_discrete: bool (default False). if True pdfs are discrete valued
+    :param bbox: optional, tuple. bounding box (range) for the numerical integration of the continuous valued (is_discrete = False) pdf
+    :return : discrete or continuous 1d cosine distance 
+
+    """
         if is_discrete:
             return discrete_cosine_1d(pdf1,pdf2)
         else:
@@ -93,8 +111,22 @@ def continuous_cosine_nd():
 
 
 class CosineDistance(InformationDistancePiecewise):
+    """
+    class to compute cosine distance between mdpdfs
+    """
 
     def __init__(self,mdpdfs1, mdpdfs2, pwdist=None, dims=None):
+        """
+        Initialize cosine distance object
+
+        :param mdpdf1: multi-dimesnional pdf of type derived from MultiDimensionalPdf class
+        :param mdpdf2: multi-dimesnional pdf of type derived from MultiDimensionalPdf class
+        :param pwdist: str specifiying piecewise distance aggregator. One of valid keys in 
+                   quafing.distance.base_disctance._get_pwdist_func() pwdistfuncs
+        :param dims: optional; list of str or str specifying dimensionality ('1d' or 'nd') of constituent pdfs.
+                    a single str is dimensionality is te same for all constituent pdfs
+
+        """
         super().__init__(mdpdfs1,mdpdfs2,pwdist)
         if dims is None:
             dims = self._auto_dims()
@@ -102,6 +134,12 @@ class CosineDistance(InformationDistancePiecewise):
 
 
     def _set_dist(self, dims):
+        """
+        Inject appropriate distance funtion in class methods
+
+        :param dims: list of str or str specifying dimensionality ('1d' or 'nd') of constituent pdfs.
+                    a single str is dimensionality is te same for all constituent pdfs
+        """
         if isinstance(dims,str):
             self._info_dist = _choose_cosine_func(dims)
         elif isinstance(dims,list):

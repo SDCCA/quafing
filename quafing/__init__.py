@@ -1,6 +1,9 @@
 """Documentation about quafing"""
 import logging
 
+"""
+import frequently required functions
+"""
 from quafing.io.load import load
 from quafing.preprocessing import PreProcessor
 from quafing.multipdf.multipdf import create_mdpdf_collection

@@ -7,9 +7,14 @@ import numpy as np
 from quafing.density.base_density_estimators import DiscreteDensityEstimator
 
 class DiscreteDensityEstimator1d(DiscreteDensityEstimator):
-
+    """
+    Class to derive density estimates (pdfs) of 1 dimensional discrete data sets
+    """  
 
     def _check_input_1d(self):
+        """
+        validate input data type in initialized density estimator object
+        """
         if isinstance(self._data,pd.Series):
             pass    
         elif isinstance(self._data,np.ndarray):
@@ -23,6 +28,15 @@ class DiscreteDensityEstimator1d(DiscreteDensityEstimator):
                 'input data is not of supported type (pandas.Series or numpy.ndarray (1d)')
 
     def obtain_density(self, discrete=True, discretization=None):
+        """
+        return discrete 1d ensity estimate derived for data
+
+        :param discrete: bool; keyword parameter indicating whether data iss intrinsically discrete (default True)
+        :param discretization: keyword parameter ssupplying discretization scheme. Format musst conform to output format
+                               discretize. This parameter is optional and only appicable with intrinsically continuous data
+                               (i.e. discrete=False)
+        :return self._discrete_pdf: list with binned densities
+        """
         super()._check_discretization_info(discrete=discrete, discretization=discretization)
         self._check_input_1d()
 
@@ -33,6 +47,10 @@ class DiscreteDensityEstimator1d(DiscreteDensityEstimator):
         return self._discrete_pdf
 
     def _intrinsic_discrete_data_density(self):
+        """
+        calculate binned densities for intrinsically discrete data
+        updates the self._disrete_pdf attribute
+        """
         if isinstance(self._data, pd.Series):
             self._unique = self._data.unique()
         else:
@@ -44,6 +62,10 @@ class DiscreteDensityEstimator1d(DiscreteDensityEstimator):
         self._discrete_pdf = disc_pdf
 
     def _discretized_data_denity(self):
+        """
+        calculate binned densities for intrinsically continuous data discrretized using the supplied discretization.
+        updates the self._disrete_pdf attribute
+        """
         # Compute the probabilities of each bin
         h = np.histogram(self._data, bins=self._discretization, normed=True)[0]
         widths = [bins[i+1] - bins[i] for i in range(len(bins)-1)]

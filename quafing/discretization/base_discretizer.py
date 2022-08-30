@@ -23,7 +23,7 @@ class Discretizer(object):
         #self._dim = None
 
         self._check_data_type()
-        #_get_dimensionality()
+        
 
 
 
@@ -38,12 +38,13 @@ class Discretizer(object):
 
 
     def _check_data_type(self):
+        """
+        check whether type of data object is supported
+        """
+
         if not (isinstance(self._data, np.ndarray) or isinstance(self._data,pd.DataFrame) or isinstance(self._data,pd.Series)):
             raise TypeError(
                 'data of type %s not supported' )% (type(self._data))
 
-    """
-    def _get_dimensionality(self):
-        self._data_dim = self._data.ndim
-    """
+    
     
