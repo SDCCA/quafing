@@ -1,6 +1,15 @@
 """Documentation about quafing"""
 import logging
 
+"""
+import frequently required functions
+"""
+from quafing.io.load import load
+from quafing.preprocessing import PreProcessor
+from quafing.multipdf.multipdf import create_mdpdf_collection
+from quafing.embedding.embed import get_embedding
+from quafing.embedding.embed import get_embedder
+from quafing.embedding.embed import plot_embedding
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())
 
