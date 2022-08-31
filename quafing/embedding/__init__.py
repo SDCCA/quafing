@@ -19,11 +19,11 @@ def retrieve_embedder(method,mdpdf_collection=None):
     return embedder(mdpdf_collection)
 
 def _check_embedding_method(method):
-	"""
-	check whether requested embedder is supported.
+    """
+    check whether requested embedder is supported.
 
-	:param method: str; key for specified embeder in embedders dictionary
-	"""
+    :param method: str; key for specified embeder in embedders dictionary
+    """
     if method not in embedders:
         raise NotImplementedError(
             f"Embedding algorithm {method} is unknown")	

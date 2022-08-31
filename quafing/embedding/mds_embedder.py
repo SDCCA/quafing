@@ -10,12 +10,15 @@ from quafing.embedding.base_embedder import Embedder
 
 
 class MDSEmbedder(Embedder):
-	"""
-	class to calculate embeddings for the member mdp
-    def __init__(self,mdpdf_collecti
+    """
+    class to calculate embeddings for the member mdpdf collection
+    """
+
+    def __init__(self,mdpdf_collection=None):
+        """
         initialize MDSEmbedder instance, setting default parameters for mds embedder 
 
-        :param mdpdf_collection: optional; multi-dimensional pdf ccollection in the formaat of a MultiPdfCollection
+        :param mdpdf_collection: optional; multi-dimensional pdf collection in the formaat of a MultiPdfCollection
         """
         super().__init__(mdpdf_collection=mdpdf_collection)
 
@@ -34,7 +37,7 @@ class MDSEmbedder(Embedder):
 
 
     def set_embedding_parameters(self, default=False, **kwargs):
-    	"""
+        """
         set parameters for mds embedding algorithm
 
         :param default: bool (default=False); set mds embedding parameters back to defaultsss 
@@ -43,10 +46,10 @@ class MDSEmbedder(Embedder):
         if default:
             self._mds_pars = dict(self._mds_defaults)
         else:
-            self._mdsars.update(kwargs)
+            self._mds_pars.update(kwargs)
 
     def embed(self, dimension=2, seed=3,return_all=False,return_stress=False):
-    	"""
+        """
         calculate mds embedding for distance or similarity matrix provided by mdpdf-collection or user supplied matrix.
         Uses sklearn.manifold implementaation of MDS
 
@@ -93,15 +96,15 @@ class MDSEmbedder(Embedder):
         
 
     def eval_stress_v_dimension(self,seed=3,plot=False):
-    	"""
-    	Evaluate stress as a function of dimension for embeddings bassed on MDS algorithm. 
-    	Can generate plot for inspection 
+        """
+        Evaluate stress as a function of dimension for embeddings bassed on MDS algorithm. 
+        Can generate plot for inspection 
 
-    	:param seed: provide seed fo random state generaator. State is passed to embedder
-    	:param plot: bool( defaul False); plot stress as aa function of embedding dimension
+        :param seed: provide seed fo random state generaator. State is passed to embedder
+        :param plot: bool( defaul False); plot stress as aa function of embedding dimension
 
-    	:return stresses: list of stress as funtion of dimension for dimension>=2
-    	"""
+        :return stresses: list of stress as funtion of dimension for dimension>=2
+        """
     	
         if self._mdpdfc is not None:
             dm = self._mdpdfc.get_distance_matrix()

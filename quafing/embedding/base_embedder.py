@@ -31,17 +31,17 @@ class Embedder(object):
         self._embedding_method = None
 	    
 
-	def load_mdpdf_collection(self, collection):
+    def load_mdpdf_collection(self, collection):
         """
         load multi-dimensional pdf collectiion into embedder instance
         Updates self._mdpdfc
 
         :param collection: multi-pdf collection of type MultiPdfCollection  
         """
-		if self._mdpdfc is None:
-			if isinstance(collection, MultiPdfCollection):
+        if self._mdpdfc is None:
+            if isinstance(collection, MultiPdfCollection):
 	            self._mdpdfc = collection 
-	        else:
+            else:
                 self._mdpdfc = None
                 warnings.warn(f'Warning: specified multi dimensional pdf collection does not have expected type.')
         else:

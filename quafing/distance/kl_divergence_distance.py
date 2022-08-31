@@ -39,22 +39,22 @@ def sym_kl_div_1d(pdf1,pdf2,is_discrete=False, bbox=(-np.inf,np.inf),base=None):
     :param base: base of logartihm for KL divergence
     :return: SymKL as defined above
     """
-        if is_discrete:
-            kl12 = discrete_kl_div_1d(pdf1,pdf2,base=base)
-            kl21 = discrete_kl_div_1d(pdf2,pdf1,base=base)
-            if np.isinf(kl12) and np.isinf(kl21):
-                return np.inf
-            else:
-                m = 2.0 * np.nanmin([kl12, kl21])
-                return np.sqrt(m)
+    if is_discrete:
+        kl12 = discrete_kl_div_1d(pdf1,pdf2,base=base)
+        kl21 = discrete_kl_div_1d(pdf2,pdf1,base=base)
+        if np.isinf(kl12) and np.isinf(kl21):
+            return np.inf
         else:
-            kl12 = continuous_kl_div_1d(pdf1,pdf2,bbox=bbox,base=base)
-            kl21 = continuous_kl_div_1d(pdf2,pdf1,bbox=bbox,base=base)
-            if np.isinf(kl12) and np.isinf(kl21):
-                return np.inf
-            else:
-                m = 2.0 * np.nanmin([kl12, kl21])
-                return np.sqrt(m)
+            m = 2.0 * np.nanmin([kl12, kl21])
+            return np.sqrt(m)
+    else:
+        kl12 = continuous_kl_div_1d(pdf1,pdf2,bbox=bbox,base=base)
+        kl21 = continuous_kl_div_1d(pdf2,pdf1,bbox=bbox,base=base)
+        if np.isinf(kl12) and np.isinf(kl21):
+            return np.inf
+        else:
+            m = 2.0 * np.nanmin([kl12, kl21])
+            return np.sqrt(m)
 
             
 

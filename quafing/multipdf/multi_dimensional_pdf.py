@@ -44,8 +44,8 @@ class MultiDimensionalPDF(object):
         """
         calculate multi-dimensional pdf from data
         """
-    	raise NotImplementedError(
-    		"Class %s doesn't implement calculatae_pdf()"% self.__class__.__name__ )
+        raise NotImplementedError(
+    	    "Class %s doesn't implement calculatae_pdf()"% self.__class__.__name__ )
 
     def _generate_pdf_meta_entry(self,method, data_labels, data_dimension, discrete, discretization):
         """
@@ -59,13 +59,13 @@ class MultiDimensionalPDF(object):
         :param discretization: iscretization employed for continuous data (if applied).
         :return pdf_meta_entry: dictionary with pdf metadata
         """
-        return {'method':method, 'data_labels':data_labels, 'data_dimension':data_dimension, 'discrete':discrete, 'discretization':discretiztion}
+        return {'method':method, 'data_labels':data_labels, 'data_dimension':data_dimension, 'discrete':discrete, 'discretization':discretization}
 
     def get_pdf(self):
         """
         return derived multi-dimensional pdf
         """
-    	return self._pdf 
+        return self._pdf 
 
     def get_pdf_metadata(self):
         """
@@ -74,7 +74,7 @@ class MultiDimensionalPDF(object):
 
         :return self._pdf_meta: pdf metadata for constituent pdfs of multi-dimensional pdf
         """
-    	return self._pdf_meta
+        return self._pdf_meta
 
 
 

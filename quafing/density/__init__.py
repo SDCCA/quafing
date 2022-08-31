@@ -12,7 +12,7 @@ continuous_estimators = {
 estimators = dict(discrete_estimators, **continuous_estimators)
 
 def get_density_estimator(data, method, metadata=None):
-	"""
+    """
     Return instance of of specific density estimator specified by method, already initialized 
     with data and optionally column metadata.
 
@@ -26,10 +26,10 @@ def get_density_estimator(data, method, metadata=None):
     return estimator(data, metadata=metadata)
 
 def _check_density_method(method):
-	"""
-    check whether requested density estimation method is supported. Raises error if it isn't supported. 
+    """
+    check whether requestedd density estimation method is supported
 
-    :param method: density estimation method being requested
+    :param method: density estimation method requested
     """
     if method not in estimators:
         raise NotImplementedError(
