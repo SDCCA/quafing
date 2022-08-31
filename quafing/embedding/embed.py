@@ -91,7 +91,7 @@ def plot_embedding(embedding,mdpdf_collection,color="distance", plot_title="",sh
             if show_labels:
                 labels = mdpdf_collection._labels
                 for i, txt in enumerate(labels):
-                    ax.annotate(txt[0], (x[i]+0.05, y[i]))
+                    ax.annotate(txt, (x[i]+0.05, y[i]))
 
         elif dimension == 3:
             if color == "distance":
@@ -114,7 +114,7 @@ def plot_embedding(embedding,mdpdf_collection,color="distance", plot_title="",sh
                 lbls = []
                 for i, txt in enumerate(labels):
                     x2, y2, _ = proj3d.proj_transform(em[i,0], em[i,1],em[i,2], ax.get_proj())
-                    lbls += [ax.annotate(txt[0], (x2+0.002, y2))]
+                    lbls += [ax.annotate(txt, (x2+0.002, y2))]
         else:
             pass
         dmethod = mdpdf_collection._distance_matrix_type
