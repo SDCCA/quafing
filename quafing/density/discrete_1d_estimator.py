@@ -1,5 +1,4 @@
 """ density estimator for discrete 1-d data """
-
 import os
 import pandas as pd
 import numpy as np
@@ -61,14 +60,14 @@ class DiscreteDensityEstimator1d(DiscreteDensityEstimator):
             disc_pdf[val] = count / len(self._data)
         self._discrete_pdf = disc_pdf
 
-    def _discretized_data_denity(self):
+    def _discretized_data_density(self):
         """
         calculate binned densities for intrinsically continuous data discrretized using the supplied discretization.
         updates the self._disrete_pdf attribute
         """
-
         # Compute the probabilities of each bin
-        h = np.histogram(self._data, bins=self._discretization, normed=True)[0]
+        bins = self._discretization
+        h = np.histogram(self._data, bins=bins, density=True)[0]
         widths = [bins[i+1] - bins[i] for i in range(len(bins)-1)]
         probs = h * widths
         # The 'value' of each key is the bin number
@@ -76,4 +75,3 @@ class DiscreteDensityEstimator1d(DiscreteDensityEstimator):
         for i in range(len(bins)-1):
             disc_pdf[i] = probs[i]
         self._discrete_pdf = disc_pdf
-
