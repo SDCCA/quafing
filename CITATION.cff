@@ -1,18 +1,30 @@
 # YAML 1.2
 ---
 cff-version: "1.1.0"
-title: "quafing"
+title: "quafing - Questionaire Analysis Using Fisher Information Non-Parametric Embedding"
+abstract: "Questionaire Analysis Using Fisher Information Non-Parametric Embedding (quafing) provides methods and tools for the exploratory analysis of questionaire data using the formalism of statistical manifolds and the accompanying concept of the Fisher information distance as the appropriate distance metric for embedddings."
 authors:
   -
+    affiliation: "Netherlands eScience Center"
     family-names: Grootes
-    given-names: Meiert
-    orcid: "https://orcid.org/0000-0000-0000-0000"
-date-released: 20??-MM-DD
+    given-names: "Meiert W."
+    orcid: https://orcid.org/0000-0002-5733-4795
+  -
+    affiliation: "Informatics Institute, University of Amsterdam"
+    family-names: Roy
+    given-names: Debraj
+    orcid: https://orcid.org/0000-0003-1963-0056
+  - 
+    affiliation: "Netherlands eScience Center"
+    family-names: Chandramoul
+    given-names: Pranav
+    orcid: https://orcid.org/0000-0002-7896-2969
+date-released: 2023-04-20
 doi: <insert your DOI here>
-version: "0.1.0-alpha"
-repository-code: "https://github.com/https://github.com/SDCCA/quafing"
+version: 0.1.0-alpha
+repository-code: https://github.com/https://github.com/SDCCA/quafing
 keywords:
-  - Fisher Information distance
-  - embeding
+  - "Fisher Information distance"
+  - "embedding"
 message: "If you use this software, please cite it using these metadata."
 license: Apache-2.0
