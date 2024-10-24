@@ -1,0 +1,143 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "quaffing"
+version = "0.1.0 - alpha"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy",
+    "astropy"
+    "networkx"
+    "ipykernel",
+    "pandas",
+    "community",
+    "metis",
+    "sklearn",
+    "matplotlib",
+]
+description = "Questionnaire analysis using Fisher Information distance and non-parametric embedding"
+readme = "README.md"
+license = {file = "LICENSE"}
+authors = [
+    {name = "Meiert Willem Grootes", email = "m.grootes@esciencecenter.nl"},
+    {name = "Pranav Chandramouli"},
+    {name = "Debraj Roy"},
+]
+keywords = ["Fisher Information distance", "embedding"]
+classifiers=[
+    'Development Status :: 2 - Pre-Alpha',
+    'Intended Audience :: Developers',
+    'License :: OSI Approved :: Apache Software License',
+    'Natural Language :: English',
+    'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
+]
+
+[project.urls]
+repository = "https://github.com/SDCCA/quafing"
+doi = ""
+documentation = "https://VegeWaterDynamics.github.io/motrainer/"
+changelog = "https://VegeWaterDynamics.github.io/motrainer/CHANGELOG/"
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "pycodestyle",
+    "ruff",
+]
+docs = [
+    "mkdocs",
+    "mkdocs-material",
+    "mkdocs-jupyter",
+    "mkdocstrings[python]",
+    "mkdocs-gen-files",
+]
+demo = [
+]
+
+[tool.setuptools]
+packages = ["src/quaffing"]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "--cov --cov-report term"
+testpaths = [
+    "tests",
+]
+
+[tool.coverage.run]
+branch = true
+source = ["src/quaffing"]
+
+[tool.ruff]
+lint.select = [
+  "E",  # pycodestyle
+  "F",  # pyflakes
+  "B",  # flake8-bugbear
+  "D",  # pydocstyle
+  "I",  # isort
+  "N",  # PEP8-naming
+  "UP",  # pyupgrade (upgrade syntax to current syntax)
+  "PLE",  # Pylint error https://github.com/charliermarsh/ruff#error-ple
+]
+lint.ignore = [
+"D100", "D101", "D104", "D105", "D106", "D107", "D203", "D213", "D413"
+] # docstring style
+
+# Allow fix for all enabled rules (when `--fix`) is provided.
+lint.fixable = ["ALL"]
+lint.unfixable = []
+
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+    "docs",
+    "exploration",
+    "site",
+]
+
+line-length = 88
+indent-width = 4
+
+# Allow unused variables when underscore-prefixed.
+lint.dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+target-version = "py310"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["D"]
+
+[tool.ruff.format]
+# Like Black, use double quotes for strings.
+quote-style = "double"
+
+# Like Black, indent with spaces, rather than tabs.
+indent-style = "space"
+
+# Like Black, respect magic trailing commas.
+skip-magic-trailing-comma = false
+
+# Like Black, automatically detect the appropriate line ending.
+line-ending = "auto"
